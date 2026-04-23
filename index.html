@@ -1,32 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Creative Portfolio</title>
+<title>Rotoscoping Portfolio</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <header>
-    <h1>Creative Portfolio</h1>
-    <p>Rotoscoping & 3D Projects</p>
+    <h1>Rotoscoping & 3D Portfolio</h1>
+    <p>MMA Student Project</p>
 </header>
 
 <nav>
     <a href="index.html">Home</a>
-    <a href="rotoscoping.html">Rotoscoping</a>
-    <a href="planet.html">3D Planet</a>
+    <a href="about.html">About</a>
+    <a href="solar.html">3D Solar System</a>
 </nav>
 
 <div class="container">
-    <div class="card">
-        <h2>Welcome</h2>
-        <p>This website showcases my weekly outputs in Rotoscoping and 3D design.</p>
+
+<div class="card">
+    <h2>Welcome</h2>
+    <p>This website shows my 12-week rotoscoping journey and 3D solar system project.</p>
+</div>
+
+<div class="card">
+    <h2>Rotoscoping Progress</h2>
+    <div class="grid">
+        <script>
+            for(let i=1;i<=12;i++){
+                document.write(`<a href="week${i}.html" class="card">Week ${i}</a>`);
+            }
+        </script>
     </div>
 </div>
 
+</div>
+
 <footer>
-    <p>© 2026 Student Portfolio</p>
+    <p>© 2026 MMA Student</p>
 </footer>
 
 </body>
