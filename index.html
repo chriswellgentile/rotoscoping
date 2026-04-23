@@ -1,46 +1,988 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Rotoscoping Portfolio</title>
-<link rel="stylesheet" href="style.css">
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rotoscoping Journal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sun: #FFD000;
+    --sun-soft: #FFF3A3;
+    --sun-pale: #FFFBE6;
+    --sun-warm: #FFE566;
+    --amber: #F5A623;
+    --gold: #C89000;
+    --dark: #1A1400;
+    --ink: #2D2200;
+    --muted: #6B5C00;
+    --cream: #FFFDF0;
+    --white: #FFFFFF;
+    --shadow: rgba(200,144,0,0.18);
+    --radius: 18px;
+  }
 
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,253,240,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid var(--sun);
+    padding: 0 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.7rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    cursor: pointer;
+  }
+  .nav-links {
+    display: flex; gap: 8px; align-items: center; list-style: none;
+  }
+  .nav-links li a, .nav-links li span {
+    font-size: 0.85rem; font-weight: 500;
+    color: var(--muted); text-decoration: none;
+    padding: 6px 14px; border-radius: 30px;
+    cursor: pointer; transition: all .2s;
+    letter-spacing: .5px;
+  }
+  .nav-links li a:hover, .nav-links li span:hover,
+  .nav-links li a.active, .nav-links li span.active {
+    background: var(--sun); color: var(--ink);
+  }
+  .nav-dropdown { position: relative; }
+  .nav-dropdown-menu {
+    display: none;
+    position: absolute; top: calc(100% + 8px); left: 0;
+    background: var(--white);
+    border: 2px solid var(--sun-warm);
+    border-radius: 14px;
+    padding: 10px;
+    min-width: 200px;
+    box-shadow: 0 8px 32px var(--shadow);
+    z-index: 200;
+  }
+  .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+  .nav-dropdown-menu a {
+    display: block; padding: 8px 14px;
+    font-size: 0.82rem; color: var(--muted);
+    border-radius: 8px; cursor: pointer;
+    text-decoration: none; transition: all .2s;
+  }
+  .nav-dropdown-menu a:hover { background: var(--sun-pale); color: var(--ink); }
+
+  /* ── PAGES ── */
+  .page { display: none; min-height: 100vh; padding-top: 64px; }
+  .page.active { display: block; }
+
+  /* ── HOME PAGE ── */
+  .home-hero {
+    min-height: calc(100vh - 64px);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, #FFF3A3 0%, var(--cream) 70%);
+  }
+  .home-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: 
+      radial-gradient(circle 300px at 10% 20%, rgba(255,208,0,0.15) 0%, transparent 70%),
+      radial-gradient(circle 200px at 90% 80%, rgba(245,166,35,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 0.8rem; letter-spacing: 4px; font-weight: 500;
+    color: var(--amber); text-transform: uppercase; margin-bottom: 20px;
+    animation: fadeUp .6s ease both;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 12vw, 9rem);
+    line-height: .95;
+    color: var(--dark);
+    letter-spacing: 2px;
+    animation: fadeUp .7s .1s ease both;
+    position: relative;
+  }
+  .hero-title em {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--muted); max-width: 520px;
+    line-height: 1.7; margin-top: 28px;
+    animation: fadeUp .7s .2s ease both;
+    font-weight: 300;
+  }
+  .hero-cta {
+    display: flex; gap: 14px; margin-top: 44px; flex-wrap: wrap; justify-content: center;
+    animation: fadeUp .7s .35s ease both;
+  }
+  .btn-primary {
+    background: var(--sun); color: var(--ink);
+    border: none; padding: 14px 32px; border-radius: 40px;
+    font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 500;
+    cursor: pointer; transition: all .2s; letter-spacing: .5px;
+    box-shadow: 0 4px 20px rgba(255,208,0,0.4);
+  }
+  .btn-primary:hover { background: var(--amber); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,166,35,0.4); }
+  .btn-secondary {
+    background: transparent; color: var(--gold);
+    border: 2px solid var(--sun-warm); padding: 12px 30px; border-radius: 40px;
+    font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 500;
+    cursor: pointer; transition: all .2s; letter-spacing: .5px;
+  }
+  .btn-secondary:hover { background: var(--sun-pale); border-color: var(--gold); transform: translateY(-2px); }
+
+  .hero-filmstrip {
+    display: flex; gap: 12px; margin-top: 70px;
+    animation: fadeUp .7s .5s ease both;
+  }
+  .filmstrip-hole {
+    width: 56px; height: 8px; border-radius: 4px;
+    background: var(--sun-warm);
+    transition: all .3s;
+  }
+  .filmstrip-hole.active { background: var(--amber); width: 80px; }
+
+  .home-sections {
+    padding: 80px 40px;
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+    gap: 24px;
+  }
+  .home-card {
+    background: var(--white);
+    border: 2px solid var(--sun-warm);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    transition: all .25s;
+    cursor: pointer;
+    position: relative; overflow: hidden;
+  }
+  .home-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--sun), var(--amber));
+  }
+  .home-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px var(--shadow); }
+  .home-card-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem; color: var(--sun-soft);
+    line-height: 1; margin-bottom: 12px;
+  }
+  .home-card h3 { font-size: 1.2rem; font-weight: 500; color: var(--ink); margin-bottom: 10px; }
+  .home-card p { font-size: .9rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+  /* ── ABOUT PAGE ── */
+  .about-hero {
+    background: linear-gradient(135deg, #FFF9D0 0%, #FFF3A3 50%, #FFE566 100%);
+    padding: 80px 40px 60px;
+    text-align: center;
+  }
+  .section-tag {
+    display: inline-block;
+    font-size: 0.75rem; letter-spacing: 3px; font-weight: 500;
+    color: var(--amber); text-transform: uppercase;
+    border: 1.5px solid var(--amber); border-radius: 30px;
+    padding: 5px 16px; margin-bottom: 20px;
+  }
+  .page-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    color: var(--dark); letter-spacing: 2px; line-height: 1;
+    margin-bottom: 20px;
+  }
+  .page-subtitle {
+    font-size: 1.1rem; color: var(--muted); max-width: 560px;
+    margin: 0 auto; line-height: 1.7; font-weight: 300;
+  }
+  .about-body { max-width: 1000px; margin: 0 auto; padding: 60px 40px; }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 60px;
+  }
+  @media (max-width: 700px) { .about-grid { grid-template-columns: 1fr; } }
+  .about-text-block h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem; color: var(--dark); margin-bottom: 16px;
+  }
+  .about-text-block p {
+    color: var(--muted); line-height: 1.8; font-weight: 300; font-size: .95rem;
+    margin-bottom: 14px;
+  }
+  .about-visual {
+    background: linear-gradient(135deg, var(--sun-pale), var(--sun-warm));
+    border-radius: var(--radius);
+    border: 2px solid var(--sun-warm);
+    display: flex; align-items: center; justify-content: center;
+    min-height: 240px; flex-direction: column; gap: 16px;
+    padding: 40px;
+  }
+  .about-icon { font-size: 4rem; }
+  .about-visual p { font-size: .9rem; color: var(--muted); text-align: center; line-height: 1.6; }
+
+  .connection-cards {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    margin-top: 60px;
+  }
+  @media (max-width: 700px) { .connection-cards { grid-template-columns: 1fr; } }
+  .conn-card {
+    background: var(--white); border: 2px solid var(--sun-warm);
+    border-radius: var(--radius); padding: 32px 24px; text-align: center;
+  }
+  .conn-card .icon { font-size: 2.5rem; margin-bottom: 16px; }
+  .conn-card h4 { font-size: 1.05rem; font-weight: 500; color: var(--ink); margin-bottom: 10px; }
+  .conn-card p { font-size: .85rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+  /* ── SOLAR SYSTEM ── */
+  .solar-hero {
+    background: radial-gradient(ellipse 100% 60% at 50% 0%, #FFF3A3, var(--cream));
+    padding: 80px 40px 50px; text-align: center;
+  }
+  .planets-grid {
+    max-width: 1200px; margin: 0 auto;
+    padding: 50px 40px 80px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 28px;
+  }
+  .planet-card {
+    background: var(--white);
+    border: 2px solid var(--sun-warm);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all .3s;
+    cursor: pointer;
+  }
+  .planet-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px var(--shadow); }
+  .planet-render {
+    height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px;
+    font-size: 3.5rem;
+    position: relative; overflow: hidden;
+  }
+  .planet-render-label {
+    font-size: 0.72rem; letter-spacing: 2px; color: var(--muted);
+    text-transform: uppercase; font-weight: 500;
+  }
+  .planet-render-placeholder {
+    font-size: 0.8rem; color: rgba(107,92,0,0.5);
+    font-style: italic;
+  }
+  .upload-hint {
+    font-size: 0.7rem; color: rgba(107,92,0,0.4);
+    margin-top: 4px;
+  }
+  .planet-info { padding: 24px; }
+  .planet-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem; color: var(--dark); letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .planet-type {
+    font-size: 0.75rem; letter-spacing: 2px; color: var(--amber);
+    text-transform: uppercase; font-weight: 500; margin-bottom: 12px;
+  }
+  .planet-desc { font-size: .88rem; color: var(--muted); line-height: 1.7; font-weight: 300; margin-bottom: 16px; }
+  .planet-stats { display: flex; gap: 16px; flex-wrap: wrap; }
+  .planet-stat { font-size: .8rem; color: var(--muted); }
+  .planet-stat strong { color: var(--ink); font-weight: 500; display: block; font-size: .72rem; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* Blender upload area */
+  .blender-upload {
+    border: 2px dashed var(--sun-warm);
+    border-radius: 10px;
+    margin: 0 24px 24px;
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s;
+    font-size: .78rem; color: var(--muted);
+    background: var(--sun-pale);
+  }
+  .blender-upload:hover { border-color: var(--amber); background: var(--sun-soft); }
+
+  /* ── ROTO WEEK PAGES ── */
+  .week-hero {
+    background: linear-gradient(135deg, var(--sun-pale) 0%, #FFF9CC 100%);
+    padding: 70px 40px 50px; text-align: center;
+  }
+  .week-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--sun); color: var(--ink);
+    border-radius: 40px; padding: 8px 20px;
+    font-size: .8rem; font-weight: 500; letter-spacing: 1px;
+    margin-bottom: 24px;
+  }
+  .week-nav-row {
+    display: flex; justify-content: center; gap: 10px; margin-top: 36px;
+    flex-wrap: wrap;
+  }
+  .week-nav-btn {
+    background: var(--white); border: 2px solid var(--sun-warm);
+    border-radius: 30px; padding: 8px 18px;
+    font-size: .82rem; cursor: pointer; transition: all .2s;
+    font-family: 'DM Sans', sans-serif; font-weight: 500; color: var(--muted);
+  }
+  .week-nav-btn:hover, .week-nav-btn.active { background: var(--sun); border-color: var(--sun); color: var(--ink); }
+
+  .week-content { max-width: 900px; margin: 0 auto; padding: 50px 40px 80px; }
+  .video-embed-area {
+    background: var(--dark);
+    border-radius: 20px; overflow: hidden;
+    aspect-ratio: 16/9; position: relative;
+    margin-bottom: 36px;
+    box-shadow: 0 16px 60px rgba(200,144,0,0.25);
+  }
+  .video-embed-area iframe { width: 100%; height: 100%; border: none; }
+  .video-placeholder {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; color: rgba(255,253,240,0.6);
+  }
+  .video-placeholder .play-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: rgba(255,208,0,0.2); border: 2px solid rgba(255,208,0,0.4);
+    display: flex; align-items: center; justify-content: center; font-size: 2rem;
+  }
+  .video-placeholder p { font-size: .95rem; }
+  .video-placeholder small { font-size: .8rem; opacity: .5; }
+
+  .url-input-row {
+    display: flex; gap: 10px; margin-bottom: 40px;
+  }
+  .url-input {
+    flex: 1; padding: 12px 18px;
+    border: 2px solid var(--sun-warm); border-radius: 40px;
+    font-family: 'DM Sans', sans-serif; font-size: .9rem;
+    background: var(--white); color: var(--ink);
+    outline: none; transition: all .2s;
+  }
+  .url-input:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(245,166,35,0.15); }
+  .url-input::placeholder { color: rgba(107,92,0,0.4); }
+
+  .week-details {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    margin-bottom: 36px;
+  }
+  @media (max-width: 600px) { .week-details { grid-template-columns: 1fr; } }
+  .detail-box {
+    background: var(--white); border: 2px solid var(--sun-warm);
+    border-radius: var(--radius); padding: 28px;
+  }
+  .detail-box h4 {
+    font-size: .75rem; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 12px; font-weight: 500;
+  }
+  .detail-box p { font-size: .9rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+  .progress-timeline {
+    background: var(--white); border: 2px solid var(--sun-warm);
+    border-radius: var(--radius); padding: 32px; margin-bottom: 36px;
+  }
+  .progress-timeline h4 {
+    font-size: .75rem; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 24px; font-weight: 500;
+  }
+  .timeline-bar {
+    display: flex; gap: 6px; align-items: center;
+  }
+  .timeline-seg {
+    flex: 1; height: 10px; border-radius: 5px;
+    background: var(--sun-soft); position: relative; cursor: pointer;
+    transition: all .2s;
+  }
+  .timeline-seg.filled { background: var(--sun); }
+  .timeline-seg.current { background: var(--amber); }
+  .timeline-seg:hover { transform: scaleY(1.5); }
+  .timeline-label {
+    display: flex; justify-content: space-between;
+    font-size: .75rem; color: var(--muted); margin-top: 10px;
+  }
+
+  .notes-area {
+    background: var(--white); border: 2px solid var(--sun-warm);
+    border-radius: var(--radius); padding: 28px;
+  }
+  .notes-area h4 {
+    font-size: .75rem; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 14px; font-weight: 500;
+  }
+  .notes-textarea {
+    width: 100%; border: 1.5px solid var(--sun-warm);
+    border-radius: 12px; padding: 14px;
+    font-family: 'DM Sans', sans-serif; font-size: .9rem;
+    color: var(--ink); resize: vertical; min-height: 100px;
+    background: var(--sun-pale); outline: none; transition: all .2s;
+  }
+  .notes-textarea:focus { border-color: var(--amber); background: var(--white); }
+
+  /* ── WEEK OVERVIEW (grid) ── */
+  .weeks-grid {
+    max-width: 1100px; margin: 0 auto;
+    padding: 50px 40px 80px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .week-thumb {
+    background: var(--white); border: 2px solid var(--sun-warm);
+    border-radius: var(--radius); padding: 28px 24px;
+    cursor: pointer; transition: all .25s; text-decoration: none;
+    display: block;
+  }
+  .week-thumb:hover { transform: translateY(-5px); box-shadow: 0 12px 40px var(--shadow); border-color: var(--amber); }
+  .week-thumb-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; color: var(--sun-warm); line-height: 1;
+  }
+  .week-thumb h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin-top: 8px; margin-bottom: 8px; }
+  .week-thumb p { font-size: .8rem; color: var(--muted); font-weight: 300; line-height: 1.6; }
+  .week-thumb .duration-tag {
+    display: inline-block; margin-top: 14px;
+    background: var(--sun-pale); border: 1.5px solid var(--sun-warm);
+    border-radius: 30px; padding: 4px 12px;
+    font-size: .72rem; color: var(--amber); font-weight: 500; letter-spacing: 1px;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark); color: rgba(255,253,240,0.5);
+    text-align: center; padding: 40px;
+    font-size: .82rem; letter-spacing: .5px;
+  }
+  footer strong { color: var(--sun); }
+
+  /* ── PLANET COLORS ── */
+  .mercury-bg { background: linear-gradient(135deg, #E8D5B7, #C4A882); }
+  .venus-bg { background: linear-gradient(135deg, #FFF0C0, #F5C842); }
+  .earth-bg { background: linear-gradient(135deg, #B3E5FC, #66BB6A); }
+  .mars-bg { background: linear-gradient(135deg, #FFCCBC, #E57373); }
+  .jupiter-bg { background: linear-gradient(135deg, #FFE0B2, #FFAB40); }
+  .saturn-bg { background: linear-gradient(135deg, #FFF9C4, #FFD54F); }
+  .uranus-bg { background: linear-gradient(135deg, #B2EBF2, #4DD0E1); }
+  .neptune-bg { background: linear-gradient(135deg, #BBDEFB, #42A5F5); }
+
+  /* ── RESPONSIVE NAV ── */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { gap: 4px; }
+    .nav-links li a, .nav-links li span { padding: 5px 10px; font-size: .78rem; }
+    .home-hero, .about-body, .planets-grid, .week-content, .weeks-grid { padding-left: 20px; padding-right: 20px; }
+    .home-sections { padding: 40px 20px; }
+    .url-input-row { flex-direction: column; }
+  }
+</style>
+</head>
 <body>
 
-<header>
-    <h1>Rotoscoping & 3D Portfolio</h1>
-    <p>MMA Student Project</p>
-</header>
-
+<!-- ── NAV ── -->
 <nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="solar.html">3D Solar System</a>
+  <div class="nav-logo" onclick="showPage('home')">ROTO<em style="font-family:DM Serif Display,serif;font-style:italic;color:var(--amber)">scope</em></div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" id="nav-home">Home</a></li>
+    <li><a onclick="showPage('about')" id="nav-about">About</a></li>
+    <li><a onclick="showPage('solar')" id="nav-solar">3D Solar System</a></li>
+    <li class="nav-dropdown">
+      <span id="nav-roto">Rotoscoping ▾</span>
+      <div class="nav-dropdown-menu" id="roto-dropdown-menu"></div>
+    </li>
+  </ul>
 </nav>
 
-<div class="container">
-
-<div class="card">
-    <h2>Welcome</h2>
-    <p>This website shows my 12-week rotoscoping journey and 3D solar system project.</p>
-</div>
-
-<div class="card">
-    <h2>Rotoscoping Progress</h2>
-    <div class="grid">
-        <script>
-            for(let i=1;i<=12;i++){
-                document.write(`<a href="week${i}.html" class="card">Week ${i}</a>`);
-            }
-        </script>
+<!-- ════════════════════════ HOME ════════════════════════ -->
+<div class="page active" id="page-home">
+  <section class="home-hero">
+    <div class="hero-eyebrow">MMA · Rotoscoping · 3D Animation</div>
+    <h1 class="hero-title">Roto<br><em>scope</em></h1>
+    <p class="hero-sub">A 12-week creative journey documenting the art of rotoscoping — frame by frame, 5 seconds at a time.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="showPage('roto-1')">View Progress</button>
+      <button class="btn-secondary" onclick="showPage('about')">About the Course</button>
     </div>
+    <div class="hero-filmstrip">
+      <div class="filmstrip-hole active"></div>
+      <div class="filmstrip-hole"></div>
+      <div class="filmstrip-hole"></div>
+      <div class="filmstrip-hole"></div>
+      <div class="filmstrip-hole"></div>
+      <div class="filmstrip-hole"></div>
+      <div class="filmstrip-hole"></div>
+      <div class="filmstrip-hole"></div>
+      <div class="filmstrip-hole"></div>
+      <div class="filmstrip-hole"></div>
+      <div class="filmstrip-hole"></div>
+      <div class="filmstrip-hole"></div>
+    </div>
+  </section>
+
+  <section class="home-sections">
+    <div class="home-card" onclick="showPage('about')">
+      <div class="home-card-num">01</div>
+      <h3>About the Course</h3>
+      <p>Discover the MMA course and how rotoscoping connects animation principles to real 3D workflows.</p>
+    </div>
+    <div class="home-card" onclick="showPage('solar')">
+      <div class="home-card-num">02</div>
+      <h3>3D Solar System</h3>
+      <p>Explore Blender-rendered planet models — each one a full 3D study in texture, lighting, and composition.</p>
+    </div>
+    <div class="home-card" onclick="showPage('roto-overview')">
+      <div class="home-card-num">03</div>
+      <h3>12-Week Rotoscoping</h3>
+      <p>5 seconds of progress per week, totaling a 60-second rotoscoped animation from start to finish.</p>
+    </div>
+  </section>
+
+  <footer>
+    Made with intention · <strong>Rotoscoping Journal</strong> · MMA Course Documentation
+  </footer>
 </div>
 
+<!-- ════════════════════════ ABOUT ════════════════════════ -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+    <div class="section-tag">MMA Course</div>
+    <h1 class="page-title">About the Course</h1>
+    <p class="page-subtitle">Where motion meets art — and rotoscoping bridges the hand-drawn with the digital world.</p>
+  </div>
+
+  <div class="about-body">
+    <div class="about-grid">
+      <div class="about-text-block">
+        <h2>What is MMA?</h2>
+        <p>MMA (Multimedia Arts) is a dynamic course that covers the full spectrum of digital creative production — from concept development and storyboarding to 3D modeling, animation, and post-production.</p>
+        <p>The course challenges students to think visually, communicate through motion, and master industry-standard tools like Blender, Adobe After Effects, and Photoshop.</p>
+        <p>Rotoscoping is one of the core techniques explored — a process that dates back to the golden age of animation and remains deeply relevant in modern VFX pipelines.</p>
+      </div>
+      <div class="about-visual">
+        <div class="about-icon">🎬</div>
+        <p>Multimedia Arts bridges traditional animation techniques with modern digital workflows, creating a foundation for careers in film, games, and interactive media.</p>
+      </div>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-visual">
+        <div class="about-icon">✏️</div>
+        <p>Rotoscoping involves tracing over live-action footage frame by frame to produce realistic animation — a technique used by Disney, Ralph Bakshi, and modern studios alike.</p>
+      </div>
+      <div class="about-text-block">
+        <h2>What is Rotoscoping?</h2>
+        <p>Rotoscoping is the animation technique of tracing over motion picture footage, frame by frame, to produce realistic action. Originally invented by Max Fleischer in 1917, it was patented as the "Rotoscope."</p>
+        <p>In this course, we apply rotoscoping to 5-second clips per week over 12 weeks — building a cumulative 60-second animation that demonstrates mastery of timing, line quality, and motion study.</p>
+        <p>The technique directly informs 3D animation by training the eye to read motion, weight, and silhouette — essential skills whether working in 2D or in Blender.</p>
+      </div>
+    </div>
+
+    <div class="about-text-block" style="margin-bottom:32px">
+      <h2>Connection to 3D Animation</h2>
+      <p>Rotoscoping and 3D animation are deeply intertwined. Understanding how real movement translates to keyframes is foundational to rigging and animating 3D characters in Blender. The 3D Solar System project in this course applies those same principles — studying light, form, and motion at a planetary scale.</p>
+    </div>
+
+    <div class="connection-cards">
+      <div class="conn-card">
+        <div class="icon">🖊️</div>
+        <h4>Frame-by-Frame Study</h4>
+        <p>Rotoscoping trains you to see motion as a sequence of discrete poses — the same mental model used when setting keyframes in 3D.</p>
+      </div>
+      <div class="conn-card">
+        <div class="icon">💡</div>
+        <h4>Light & Shadow</h4>
+        <p>Reading how light falls on live subjects directly transfers to understanding Blender's shading, materials, and HDRI lighting setups.</p>
+      </div>
+      <div class="conn-card">
+        <div class="icon">🪐</div>
+        <h4>3D Application</h4>
+        <p>The Solar System project applies motion and rendering knowledge to create photorealistic planet renders — the culmination of these studies.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Made with intention · <strong>Rotoscoping Journal</strong> · MMA Course Documentation
+  </footer>
 </div>
 
-<footer>
-    <p>© 2026 MMA Student</p>
-</footer>
+<!-- ════════════════════════ SOLAR SYSTEM ════════════════════════ -->
+<div class="page" id="page-solar">
+  <div class="solar-hero">
+    <div class="section-tag">Blender 3D</div>
+    <h1 class="page-title">The Solar System</h1>
+    <p class="page-subtitle">Eight planets rendered in Blender — each card holds space for your 3D render. Click the upload area to insert your image.</p>
+  </div>
 
+  <div class="planets-grid" id="planets-grid">
+    <!-- Populated by JS -->
+  </div>
+
+  <footer>
+    Made with intention · <strong>Rotoscoping Journal</strong> · MMA Course Documentation
+  </footer>
+</div>
+
+<!-- ════════════════════════ ROTO OVERVIEW ════════════════════════ -->
+<div class="page" id="page-roto-overview">
+  <div class="week-hero">
+    <div class="section-tag">12-Week Journey</div>
+    <h1 class="page-title">Rotoscoping Progress</h1>
+    <p class="page-subtitle">5 seconds per week · 12 weeks total · 60 seconds of animation</p>
+  </div>
+  <div class="weeks-grid" id="weeks-grid">
+    <!-- Populated by JS -->
+  </div>
+  <footer>
+    Made with intention · <strong>Rotoscoping Journal</strong> · MMA Course Documentation
+  </footer>
+</div>
+
+<!-- ════════════════════════ WEEK PAGES (1–12) ════════════════════════ -->
+<div id="week-pages-container"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+
+const PLANETS = [
+  { name: 'Mercury', emoji: '⚫', type: 'Terrestrial', bg: 'mercury-bg',
+    desc: 'The smallest planet and closest to the Sun. Extreme temperature swings and a heavily cratered surface.',
+    stats: [{ label:'Distance from Sun', val:'0.39 AU' }, { label:'Diameter', val:'4,879 km' }, { label:'Moons', val:'0' }] },
+  { name: 'Venus', emoji: '🟡', type: 'Terrestrial', bg: 'venus-bg',
+    desc: 'Shrouded in thick sulfuric acid clouds, Venus is the hottest planet despite not being closest to the Sun.',
+    stats: [{ label:'Distance from Sun', val:'0.72 AU' }, { label:'Diameter', val:'12,104 km' }, { label:'Moons', val:'0' }] },
+  { name: 'Earth', emoji: '🔵', type: 'Terrestrial', bg: 'earth-bg',
+    desc: 'Our home — the only known planet with life, liquid water, and a protective magnetosphere.',
+    stats: [{ label:'Distance from Sun', val:'1.00 AU' }, { label:'Diameter', val:'12,742 km' }, { label:'Moons', val:'1' }] },
+  { name: 'Mars', emoji: '🔴', type: 'Terrestrial', bg: 'mars-bg',
+    desc: 'The Red Planet, home to Olympus Mons — the tallest volcano in the solar system.',
+    stats: [{ label:'Distance from Sun', val:'1.52 AU' }, { label:'Diameter', val:'6,779 km' }, { label:'Moons', val:'2' }] },
+  { name: 'Jupiter', emoji: '🟠', type: 'Gas Giant', bg: 'jupiter-bg',
+    desc: 'The largest planet, with its iconic Great Red Spot — a storm raging for centuries.',
+    stats: [{ label:'Distance from Sun', val:'5.20 AU' }, { label:'Diameter', val:'139,820 km' }, { label:'Moons', val:'95' }] },
+  { name: 'Saturn', emoji: '🪐', type: 'Gas Giant', bg: 'saturn-bg',
+    desc: 'Distinguished by its stunning ring system made of ice and rock fragments orbiting at high speed.',
+    stats: [{ label:'Distance from Sun', val:'9.58 AU' }, { label:'Diameter', val:'116,460 km' }, { label:'Moons', val:'146' }] },
+  { name: 'Uranus', emoji: '🩵', type: 'Ice Giant', bg: 'uranus-bg',
+    desc: 'Tilted on its side, Uranus has a unique blue-green color from methane in its atmosphere.',
+    stats: [{ label:'Distance from Sun', val:'19.2 AU' }, { label:'Diameter', val:'50,724 km' }, { label:'Moons', val:'28' }] },
+  { name: 'Neptune', emoji: '🔵', type: 'Ice Giant', bg: 'neptune-bg',
+    desc: 'The windiest planet — storms on Neptune can reach speeds of over 2,000 km/h.',
+    stats: [{ label:'Distance from Sun', val:'30.1 AU' }, { label:'Diameter', val:'49,244 km' }, { label:'Moons', val:'16' }] },
+];
+
+const WEEKS = [
+  { title: 'Introduction & Setup', focus: 'Getting familiar with the footage, setting up layers in After Effects or Photoshop, and practicing basic line tracing.', skills: 'Line quality, software setup, workspace organization' },
+  { title: 'Body Silhouette', focus: 'Tracing the full body silhouette to capture pose and overall shape without internal detail.', skills: 'Shape recognition, pose reading, timing basics' },
+  { title: 'Head & Shoulders', focus: 'Detailed rotoscoping of the head and shoulder region, capturing subtle head tilts and neck movement.', skills: 'Facial motion, micro-movements, weight in upper body' },
+  { title: 'Arm Mechanics', focus: 'Tracing arm movement — swings, reaches, and bends — understanding the arc of motion.', skills: 'Arc of action, elbow/wrist relationships, foreshortening' },
+  { title: 'Hand & Fingers', focus: 'The most detailed challenge yet — fingers, grips, and fine motor gestures traced frame by frame.', skills: 'Fine detail work, gesture, hand anatomy in motion' },
+  { title: 'Leg & Foot Motion', focus: 'Footfalls, weight shifts, and leg swing — understanding how the lower body drives locomotion.', skills: 'Weight, balance, contact points, walking cycle' },
+  { title: 'Full Body Walk Cycle', focus: 'Combining all prior weeks to rotoscope a complete walking sequence — the animation holy grail.', skills: 'Timing, spacing, overlap, follow-through' },
+  { title: 'Acting & Performance', focus: 'Moving beyond mechanics into performance — capturing emotion through body language and gesture.', skills: 'Anticipation, staging, emotional weight' },
+  { title: 'Clothing & Fabric', focus: 'Layering secondary motion — how clothing drapes, folds, and lags behind the body.', skills: 'Secondary animation, drag, overlap, fabric physics' },
+  { title: 'Speed & Timing', focus: 'Experimenting with fast actions — quick reactions, sudden stops — and how timing conveys energy.', skills: 'Ease-in/out, holds, smear frames, energy' },
+  { title: 'Environment Interaction', focus: 'The subject interacts with props or surfaces — tracing both figure and object reaction.', skills: 'Contact, cause-and-effect, spatial awareness' },
+  { title: 'Final Composite', focus: 'All 60 seconds assembled — final cleanup, color consistency, and presentation of the complete animation.', skills: 'Compositing, line clean-up, presentation, reflection' },
+];
+
+// ── PLANET IMAGES (stored in-memory per session) ─────────────────────────────
+const planetImages = {};
+
+// ── WEEK VIDEO URLS (stored in-memory) ────────────────────────────────────────
+const weekVideos = {};
+const weekNotes = {};
+
+// ── ROUTER ────────────────────────────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('page-' + id);
+  if (el) {
+    el.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  // Update nav active state
+  document.querySelectorAll('.nav-links a, .nav-links span').forEach(a => a.classList.remove('active'));
+  const map = { home:'nav-home', about:'nav-about', solar:'nav-solar' };
+  if (map[id]) document.getElementById(map[id])?.classList.add('active');
+  if (id.startsWith('roto')) document.getElementById('nav-roto')?.classList.add('active');
+}
+
+// ── BUILD PLANET CARDS ────────────────────────────────────────────────────────
+function buildPlanets() {
+  const grid = document.getElementById('planets-grid');
+  grid.innerHTML = PLANETS.map((p, i) => `
+    <div class="planet-card" id="planet-card-${i}">
+      <div class="planet-render ${p.bg}" id="planet-render-${i}">
+        ${planetImages[i]
+          ? `<img src="${planetImages[i]}" style="width:100%;height:100%;object-fit:cover;" alt="${p.name}">`
+          : `<span style="font-size:3.5rem">${p.emoji}</span>
+             <span class="planet-render-label">3D Render</span>
+             <span class="planet-render-placeholder">Blender render here</span>`
+        }
+      </div>
+      <label class="blender-upload" title="Upload your Blender render for ${p.name}">
+        📁 Upload Blender Render for ${p.name}
+        <input type="file" accept="image/*" style="display:none" onchange="uploadPlanetRender(event,${i})">
+      </label>
+      <div class="planet-info">
+        <div class="planet-name">${p.name}</div>
+        <div class="planet-type">${p.type}</div>
+        <p class="planet-desc">${p.desc}</p>
+        <div class="planet-stats">
+          ${p.stats.map(s => `<div class="planet-stat"><strong>${s.label}</strong>${s.val}</div>`).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function uploadPlanetRender(event, index) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    planetImages[index] = e.target.result;
+    buildPlanets(); // rebuild to show image
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── BUILD WEEK OVERVIEW ───────────────────────────────────────────────────────
+function buildWeekOverview() {
+  const grid = document.getElementById('weeks-grid');
+  grid.innerHTML = WEEKS.map((w, i) => {
+    const num = i + 1;
+    const cumSeconds = num * 5;
+    return `
+      <div class="week-thumb" onclick="showPage('roto-${num}')">
+        <div class="week-thumb-num">${String(num).padStart(2,'0')}</div>
+        <h3>${w.title}</h3>
+        <p>${w.focus.substring(0, 80)}…</p>
+        <span class="duration-tag">⏱ ${cumSeconds}s cumulative</span>
+      </div>
+    `;
+  }).join('');
+}
+
+// ── BUILD ROTO DROPDOWN NAV ───────────────────────────────────────────────────
+function buildRotoDropdown() {
+  const menu = document.getElementById('roto-dropdown-menu');
+  const overviewLink = `<a onclick="showPage('roto-overview')">All Weeks Overview</a>`;
+  const weekLinks = WEEKS.map((w, i) => {
+    const num = i + 1;
+    return `<a onclick="showPage('roto-${num}')">Week ${num} — ${w.title}</a>`;
+  }).join('');
+  menu.innerHTML = overviewLink + '<hr style="border:none;border-top:1px solid var(--sun-warm);margin:6px 0">' + weekLinks;
+}
+
+// ── BUILD WEEK PAGES ──────────────────────────────────────────────────────────
+function buildWeekPages() {
+  const container = document.getElementById('week-pages-container');
+  container.innerHTML = WEEKS.map((w, i) => {
+    const num = i + 1;
+    const prevNum = num > 1 ? num - 1 : null;
+    const nextNum = num < 12 ? num + 1 : null;
+
+    const navBtns = Array.from({length:12}, (_,j) => {
+      const n = j+1;
+      return `<button class="week-nav-btn${n===num?' active':''}" onclick="showPage('roto-${n}')">W${n}</button>`;
+    }).join('');
+
+    // Progress bar: weeks before = filled, current = amber, after = empty
+    const segBar = Array.from({length:12}, (_,j) => {
+      const cls = j < num-1 ? 'filled' : j === num-1 ? 'current' : '';
+      return `<div class="timeline-seg ${cls}" title="Week ${j+1}" onclick="showPage('roto-${j+1}')"></div>`;
+    }).join('');
+
+    return `
+      <div class="page" id="page-roto-${num}">
+        <div class="week-hero">
+          <div class="week-badge">✏️ Week ${num} of 12</div>
+          <h1 class="page-title">${w.title}</h1>
+          <p class="page-subtitle">${w.focus}</p>
+          <div class="week-nav-row">${navBtns}</div>
+        </div>
+
+        <div class="week-content">
+
+          <!-- VIDEO EMBED -->
+          <div class="video-embed-area" id="video-area-${num}">
+            <div class="video-placeholder" id="video-placeholder-${num}">
+              <div class="play-icon">▶</div>
+              <p>Week ${num} Progress Video</p>
+              <small>Paste a YouTube link below to embed your 5-second clip</small>
+            </div>
+          </div>
+
+          <!-- URL INPUT -->
+          <div class="url-input-row">
+            <input class="url-input" type="text" id="url-input-${num}" placeholder="Paste YouTube URL — e.g. https://www.youtube.com/watch?v=..." value="${weekVideos[num] || ''}">
+            <button class="btn-primary" onclick="embedVideo(${num})">Embed</button>
+            <button class="btn-secondary" onclick="clearVideo(${num})">Clear</button>
+          </div>
+
+          <!-- PROGRESS TIMELINE -->
+          <div class="progress-timeline">
+            <h4>Overall Progress · ${num * 5}s of 60s complete</h4>
+            <div class="timeline-bar">${segBar}</div>
+            <div class="timeline-label"><span>Week 1 (5s)</span><span>Week 12 (60s)</span></div>
+          </div>
+
+          <!-- DETAIL BOXES -->
+          <div class="week-details">
+            <div class="detail-box">
+              <h4>This Week's Focus</h4>
+              <p>${w.focus}</p>
+            </div>
+            <div class="detail-box">
+              <h4>Key Skills Practiced</h4>
+              <p>${w.skills}</p>
+            </div>
+          </div>
+
+          <!-- NOTES -->
+          <div class="notes-area">
+            <h4>Personal Notes</h4>
+            <textarea class="notes-textarea" id="notes-${num}" placeholder="Write your reflection for Week ${num}…" oninput="saveNote(${num})">${weekNotes[num] || ''}</textarea>
+          </div>
+
+          <!-- PAGINATION -->
+          <div style="display:flex;justify-content:space-between;margin-top:32px;gap:12px;">
+            ${prevNum ? `<button class="btn-secondary" onclick="showPage('roto-${prevNum}')">← Week ${prevNum}</button>` : '<div></div>'}
+            <button class="btn-secondary" onclick="showPage('roto-overview')">All Weeks</button>
+            ${nextNum ? `<button class="btn-primary" onclick="showPage('roto-${nextNum}')">Week ${nextNum} →</button>` : '<div></div>'}
+          </div>
+        </div>
+
+        <footer>
+          Made with intention · <strong>Rotoscoping Journal</strong> · MMA Course Documentation
+        </footer>
+      </div>
+    `;
+  }).join('');
+
+  // After building, restore any saved videos
+  WEEKS.forEach((_, i) => {
+    const num = i + 1;
+    if (weekVideos[num]) embedVideo(num, true);
+  });
+}
+
+// ── VIDEO EMBED ───────────────────────────────────────────────────────────────
+function embedVideo(num, silent = false) {
+  const input = document.getElementById(`url-input-${num}`);
+  const url = input?.value?.trim() || weekVideos[num];
+  if (!url) return;
+
+  const videoId = extractYouTubeId(url);
+  if (!videoId) {
+    if (!silent) alert('Please enter a valid YouTube URL.');
+    return;
+  }
+
+  weekVideos[num] = url;
+
+  const area = document.getElementById(`video-area-${num}`);
+  const placeholder = document.getElementById(`video-placeholder-${num}`);
+  if (placeholder) placeholder.remove();
+
+  // Remove old iframe if any
+  const oldIframe = area.querySelector('iframe');
+  if (oldIframe) oldIframe.remove();
+
+  const iframe = document.createElement('iframe');
+  iframe.src = `https://www.youtube.com/embed/${videoId}`;
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+  iframe.allowFullscreen = true;
+  iframe.style.cssText = 'width:100%;height:100%;border:none;';
+  area.appendChild(iframe);
+}
+
+function clearVideo(num) {
+  delete weekVideos[num];
+  const input = document.getElementById(`url-input-${num}`);
+  if (input) input.value = '';
+  const area = document.getElementById(`video-area-${num}`);
+  const oldIframe = area.querySelector('iframe');
+  if (oldIframe) oldIframe.remove();
+  if (!area.querySelector('.video-placeholder')) {
+    area.innerHTML = `
+      <div class="video-placeholder" id="video-placeholder-${num}">
+        <div class="play-icon">▶</div>
+        <p>Week ${num} Progress Video</p>
+        <small>Paste a YouTube link below to embed your 5-second clip</small>
+      </div>
+    `;
+  }
+}
+
+function extractYouTubeId(url) {
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+  ];
+  for (const p of patterns) {
+    const m = url.match(p);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+function saveNote(num) {
+  const ta = document.getElementById(`notes-${num}`);
+  if (ta) weekNotes[num] = ta.value;
+}
+
+// ── FILMSTRIP ANIMATION ───────────────────────────────────────────────────────
+function animateFilmstrip() {
+  const holes = document.querySelectorAll('.filmstrip-hole');
+  let idx = 0;
+  setInterval(() => {
+    holes.forEach(h => h.classList.remove('active'));
+    holes[idx].classList.add('active');
+    idx = (idx + 1) % holes.length;
+  }, 400);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  buildPlanets();
+  buildWeekOverview();
+  buildRotoDropdown();
+  buildWeekPages();
+  animateFilmstrip();
+});
+</script>
 </body>
 </html>
