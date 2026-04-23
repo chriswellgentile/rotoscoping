@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rotoscoping Studio</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #0f172a;
+    color: white;
+}
+
+header {
+    background: #1e293b;
+    text-align: center;
+    padding: 30px;
+}
+
+header h1 {
+    color: #38bdf8;
+}
+
+nav {
+    background: #020617;
+    padding: 10px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    margin: 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #38bdf8;
+}
+
+section {
+    padding: 30px;
+}
+
+.card {
+    background: #1e293b;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 10px;
+}
+
+footer {
+    background: #020617;
+    text-align: center;
+    padding: 15px;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+    <h1>Rotoscoping Studio</h1>
+    <p>Bringing Animation to Life Frame by Frame</p>
+</header>
+
+<nav>
+    <a href="#about">About</a>
+    <a href="#process">Process</a>
+    <a href="#examples">Examples</a>
+</nav>
+
+<section id="about">
+    <div class="card">
+        <h2>What is Rotoscoping?</h2>
+        <p>
+            Rotoscoping is an animation technique where artists trace over live-action footage 
+            frame by frame to create realistic motion. It is widely used in films, animation, 
+            and visual effects.
+        </p>
+    </div>
+</section>
+
+<section id="process">
+    <div class="card">
+        <h2>Rotoscoping Process</h2>
+        <ul>
+            <li>Import video footage</li>
+            <li>Break into frames</li>
+            <li>Trace each frame carefully</li>
+            <li>Add color and details</li>
+            <li>Export final animation</li>
+        </ul>
+    </div>
+</section>
+
+<section id="examples">
+    <div class="card">
+        <h2>Famous Uses</h2>
+        <p>
+            Rotoscoping has been used in classic animations and modern films to create 
+            smooth and realistic movement.
+        </p>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Rotoscoping Studio | Created by Student</p>
+</footer>
+
+</body>
+</html>
