@@ -657,11 +657,7 @@
   <div class="roto-page">
     <!-- Video embed area -->
     <div style="margin-bottom:0.5rem;">
-      <div class="section-label">// youtube embed</div>
-    </div>
-    <div class="yt-input-row">
-      <input type="text" id="yt-url-input" placeholder="Paste YouTube URL or video ID here..." oninput="previewYT()">
-      <button onclick="embedYT()">Embed Video</button>
+      <div class="section-label">// youtube embed · to update: find <strong>youryoutubelink</strong> in the WEEKS array in the script</div>
     </div>
     <div class="video-embed-area" id="video-embed-area">
       <div class="video-placeholder">
@@ -725,18 +721,18 @@
 <script>
 // ═══ DATA ═══
 const WEEKS = [
-  { title: "Foundation & Setup", subtitle: "Introduction to rotoscoping pipeline", technique: "Reference Study", tools: "After Effects, Photoshop", notes: "Setting up the rotoscoping workspace in After Effects. Imported the reference footage and analyzed the subject's movement. Learned the Roto Brush 2.0 tool and created initial rough masks for the first 5 seconds of footage. Focus this week: getting clean edge detection on high-contrast frames." },
-  { title: "First Strokes", subtitle: "Beginning frame-by-frame masking", technique: "Roto Brush 2.0", tools: "After Effects", notes: "Applied Roto Brush across the 5-second segment and propagated the selection across frames. Discovered edge cases where the subject's hair and loose clothing caused errors. Used the Refine Edge tool to improve hair isolation. Manual Bezier mask correction on 12 problem frames." },
-  { title: "Edge Refinement", subtitle: "Sharpening mask boundaries", technique: "Roto Brush + Refine Edge", tools: "After Effects, Photoshop", notes: "Major focus on edge quality this week. Used Photoshop to paint-over rough edges on exported PNG sequences. Back-imported corrected frames as a pre-comp. Learning to balance speed with precision — some fast-motion frames required full manual masking." },
-  { title: "Motion Blur", subtitle: "Handling fast movement", technique: "Motion Blur Compositing", tools: "After Effects", notes: "Fast arm movements created significant motion blur challenges. Studied how real motion blur works and replicated it artificially on the isolated subject using the CC Force Motion Blur effect. This week's 5 seconds contain the most dynamic movement of the whole sequence." },
-  { title: "Background Removal", subtitle: "Isolating subject from background", technique: "BG Removal & Keying", tools: "After Effects", notes: "Experimented with background replacement — substituting the original background with a solid gradient and later a space-themed backdrop to tie into the solar system 3D renders. Used Keylight for green-tinted areas and manual roto for the rest." },
-  { title: "3D Integration Prep", subtitle: "Preparing for Blender elements", technique: "Tracking & Matchmove", tools: "After Effects, Blender", notes: "Camera tracking this week to match the movement of the live footage. Created a basic camera solve in After Effects' 3D camera tracker, which will be used to place Blender-rendered planet elements in the scene realistically." },
-  { title: "Blender Elements", subtitle: "Compositing 3D planets into footage", technique: "3D Compositing", tools: "Blender, After Effects", notes: "First successful composite of a Blender-rendered planet into the rotoscoped footage! Used EXR output from Blender with separate passes (diffuse, specular, shadow) for full compositing control in After Effects. Planet appears behind the subject thanks to the roto mask." },
-  { title: "Depth & Lighting", subtitle: "Matching 3D light to real footage", technique: "Light Matching", tools: "Blender, After Effects, Photoshop", notes: "Spent this week matching the lighting of 3D elements to the real-world footage. Analyzed the key light direction in the reference video and replicated it in Blender's HDRI setup. Added color grading in After Effects to unify the look of roto and 3D renders." },
-  { title: "Color Grading", subtitle: "Cinematic look development", technique: "Color Grading", tools: "After Effects, Photoshop", notes: "Developed a cinematic color grade: desaturated shadows, warm highlights, enhanced yellows and golds to match the overall project aesthetic. Applied LUT-based grading as a starting point, then fine-tuned with Curves and Color Balance. Added film grain overlay." },
-  { title: "VFX & Glow", subtitle: "Adding atmospheric effects", technique: "Particle & Glow FX", tools: "After Effects", notes: "Added atmospheric glow effects around the 3D planet elements. Particle systems for space dust and light rays. Used the Glow effect and CC Light Sweep for energy-like highlights on planet surfaces. The footage is starting to feel cinematic and polished." },
-  { title: "Final Corrections", subtitle: "Fixing remaining issues", technique: "Full Pipeline Polish", tools: "After Effects, Photoshop, Blender", notes: "Review pass over all 55 seconds compiled so far. Fixed 8 frames with edge artifacts, re-rendered 2 planet shots in Blender for better quality, and adjusted color consistency across weeks. Focus on making the whole 55 seconds feel like one cohesive piece." },
-  { title: "Final Compilation", subtitle: "60-second final output", technique: "Export & Compilation", tools: "After Effects, Photoshop, Blender", notes: "Final week! Assembled all 12 weeks of footage into a single 60-second sequence. Applied master color grade, added opening title card and end credits. Exported in 1080p H.264 for submission. This is the complete MMA final project — rotoscoping meets 3D solar system." }
+  { title: "Foundation & Setup",   technique: "Reference Study",            tools: "FlipACLip",        ytId: "BJjLD5oU380", notes: "Setting up the rotoscoping workspace in After Effects. Imported the reference footage and analyzed the subject's movement. Learned the Roto Brush 2.0 tool and created initial rough masks for the first 5 seconds of footage. Focus this week: getting clean edge detection on high-contrast frames." },
+  { title: "First Strokes",        technique: "Roto Brush 2.0",             tools: "FlipACLip",        ytId: "youryoutubelink", notes: "Applied Roto Brush across the 5-second segment and propagated the selection across frames. Discovered edge cases where the subject's hair and loose clothing caused errors. Used the Refine Edge tool to improve hair isolation. Manual Bezier mask correction on 12 problem frames." },
+  { title: "Edge Refinement",      technique: "Roto Brush + Refine Edge",   tools: "FlipACLip",        ytId: "youryoutubelink", notes: "Major focus on edge quality this week. Used Photoshop to paint-over rough edges on exported PNG sequences. Back-imported corrected frames as a pre-comp. Learning to balance speed with precision — some fast-motion frames required full manual masking." },
+  { title: "Motion Blur",          technique: "Motion Blur Compositing",    tools: "FlipACLip",        ytId: "youryoutubelink", notes: "Fast arm movements created significant motion blur challenges. Studied how real motion blur works and replicated it artificially on the isolated subject using the CC Force Motion Blur effect. This week's 5 seconds contain the most dynamic movement of the whole sequence." },
+  { title: "Background Removal",   technique: "BG Removal & Keying",        tools: "FlipACLip",        ytId: "youryoutubelink", notes: "Experimented with background replacement — substituting the original background with a solid gradient and later a space-themed backdrop to tie into the solar system 3D renders. Used Keylight for green-tinted areas and manual roto for the rest." },
+  { title: "3D Integration Prep",  technique: "Tracking & Matchmove",       tools: "FlipACLip",        ytId: "youryoutubelink", notes: "Camera tracking this week to match the movement of the live footage. Created a basic camera solve in After Effects' 3D camera tracker, which will be used to place Blender-rendered planet elements in the scene realistically." },
+  { title: "Blender Elements",     technique: "3D Compositing",             tools: "FlipACLip",        ytId: "youryoutubelink", notes: "First successful composite of a Blender-rendered planet into the rotoscoped footage! Used EXR output from Blender with separate passes (diffuse, specular, shadow) for full compositing control in After Effects. Planet appears behind the subject thanks to the roto mask." },
+  { title: "Depth & Lighting",     technique: "Light Matching",             tools: "FlipACLip",        ytId: "youryoutubelink", notes: "Spent this week matching the lighting of 3D elements to the real-world footage. Analyzed the key light direction in the reference video and replicated it in Blender's HDRI setup. Added color grading in After Effects to unify the look of roto and 3D renders." },
+  { title: "Color Grading",        technique: "Color Grading",              tools: "FlipACLip",        ytId: "youryoutubelink", notes: "Developed a cinematic color grade: desaturated shadows, warm highlights, enhanced yellows and golds to match the overall project aesthetic. Applied LUT-based grading as a starting point, then fine-tuned with Curves and Color Balance. Added film grain overlay." },
+  { title: "VFX & Glow",           technique: "Particle & Glow FX",         tools: "FlipACLip",        ytId: "youryoutubelink", notes: "Added atmospheric glow effects around the 3D planet elements. Particle systems for space dust and light rays. Used the Glow effect and CC Light Sweep for energy-like highlights on planet surfaces. The footage is starting to feel cinematic and polished." },
+  { title: "Final Corrections",    technique: "Full Pipeline Polish",       tools: "FlipACLip",        ytId: "youryoutubelink", notes: "Review pass over all 55 seconds compiled so far. Fixed 8 frames with edge artifacts, re-rendered 2 planet shots in Blender for better quality, and adjusted color consistency across weeks. Focus on making the whole 55 seconds feel like one cohesive piece." },
+  { title: "Final Compilation",    technique: "Export & Compilation",       tools: "FlipACLip",        ytId: "youryoutubelink", notes: "Final week! Assembled all 12 weeks of footage into a single 60-second sequence. Applied master color grade, added opening title card and end credits. Exported in 1080p H.264 for submission. This is the complete MMA final project — rotoscoping meets 3D solar system." }
 ];
 
 const PLANETS = [
@@ -750,7 +746,6 @@ const PLANETS = [
   { name: "Neptune", color: "#4169E1", bg: "#000820", yearLen: 164.8, desc: "The windiest planet — winds reach 2,100 km/h. Neptune was predicted mathematically before it was ever observed.", ring: false, glow: "#6090ff", texture: "radial-gradient(circle at 35% 35%, #6090ff, #4169E1 55%, #2040a0)" }
 ];
 
-const ytCache = {};
 let currentWeek = 1;
 
 // ═══ NAVIGATION ═══
@@ -804,20 +799,21 @@ function loadWeek(n) {
   document.getElementById('roto-notes-body').textContent = w.notes;
   document.getElementById('roto-pct').textContent = `${pct}%`;
   document.getElementById('roto-progress-fill').style.width = pct + '%';
-  document.getElementById('roto-embed-week').textContent = currentWeek;
   document.getElementById('week-counter').textContent = `Week ${currentWeek} of 12`;
   document.getElementById('prev-week-btn').disabled = currentWeek === 1;
   document.getElementById('next-week-btn').disabled = currentWeek === 12;
 
-  // Restore cached YT or reset
+  // Load hardcoded YouTube video for this week
+  // To update: find ytId: "youryoutubelink" for the week you want in the WEEKS array above and replace with your real YouTube video ID
   const area = document.getElementById('video-embed-area');
-  const input = document.getElementById('yt-url-input');
-  if (ytCache[currentWeek]) {
-    area.innerHTML = `<iframe src="${ytCache[currentWeek]}" allowfullscreen></iframe>`;
-    input.value = ytCache[currentWeek].replace('https://www.youtube.com/embed/','https://www.youtube.com/watch?v=');
+  const ytId = w.ytId;
+  if (ytId && ytId !== 'youryoutubelink') {
+    area.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytId}" allowfullscreen></iframe>`;
   } else {
-    input.value = '';
-    area.innerHTML = `<div class="video-placeholder"><div class="play-icon" onclick="embedYTPrompt()">▶</div><p>Paste a YouTube URL above to embed your Week <span id="roto-embed-week">${currentWeek}</span> progress video</p></div>`;
+    area.innerHTML = `<div class="video-placeholder">
+      <div class="play-icon">▶</div>
+      <p>Week ${currentWeek} video coming soon —<br>replace <strong style="color:var(--y4)">youryoutubelink</strong> in the WEEKS array</p>
+    </div>`;
   }
 
   // Update weeks grid
@@ -837,27 +833,6 @@ function buildWeeksGrid() {
 }
 
 function changeWeek(delta) { loadWeek(currentWeek + delta); }
-
-// ═══ YOUTUBE EMBED ═══
-function getYTId(url) {
-  url = url.trim();
-  const patterns = [/youtube\.com\/watch\?v=([^&]+)/, /youtu\.be\/([^?]+)/, /youtube\.com\/embed\/([^?]+)/];
-  for (const p of patterns) { const m = url.match(p); if (m) return m[1]; }
-  if (/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
-  return null;
-}
-function previewYT() {}
-function embedYT() {
-  const val = document.getElementById('yt-url-input').value;
-  const id = getYTId(val);
-  if (!id) { alert('Please enter a valid YouTube URL or video ID.'); return; }
-  const src = `https://www.youtube.com/embed/${id}`;
-  ytCache[currentWeek] = src;
-  document.getElementById('video-embed-area').innerHTML = `<iframe src="${src}" allowfullscreen></iframe>`;
-}
-function embedYTPrompt() {
-  document.getElementById('yt-url-input').focus();
-}
 
 // ═══ SOLAR SYSTEM ═══
 function updateAges() {
