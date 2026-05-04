@@ -322,16 +322,29 @@
   }
   .planet-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(180,130,0,0.15); border-color: var(--y4); }
   .planet-render {
-    height: 180px;
-    display: flex; align-items: center; justify-content: center;
-    position: relative; overflow: hidden;
-    font-size: 0.65rem; font-family: var(--mono);
-    color: rgba(255,255,255,0.5); letter-spacing: 0.1em;
+    /* To achieve a 3:4 aspect ratio, height = width * 1.33 */
+    aspect-ratio: 3 / 4; 
+    width: 100%;
+    height: auto;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    position: relative; 
+    overflow: hidden;
+    font-size: 0.65rem; 
+    font-family: var(--mono);
+    color: rgba(255,255,255,0.5); 
+    letter-spacing: 0.1em;
     text-transform: uppercase;
   }
   .planet-render .planet-visual {
-    width: 100px; height: 100px; border-radius: 50%;
-    position: relative; z-index: 1;
+    /* Adjusted to fill the 3:4 container while maintaining video proportions */
+    width: 100%; 
+    height: 100%; 
+    border-radius: 0; /* Removed circle radius to fit the card shape */
+    object-fit: cover; /* Ensures video fills the 3:4 area without stretching */
+    position: relative; 
+    z-index: 1;
     transition: transform 0.3s;
   }
   .planet-card:hover .planet-visual { transform: scale(1.08) rotate(5deg); }
@@ -854,14 +867,15 @@ function buildPlanets() {
 
     let ringEl = '';
     if (p.ring) {
-      ringEl = `<div style="position:absolute;width:150px;height:30px;border-radius:50%;border:6px solid rgba(228,209,145,0.5);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:2;"></div>`;
+      // Adjusted ring position for the taller 3:4 container
+      ringEl = `<div style="position:absolute;width:80%;height:auto;aspect-ratio:1/.2;border-radius:50%;border:6px solid rgba(228,209,145,0.4);top:50%;left:50%;transform:translate(-50%,-50%) rotateX(75deg);pointer-events:none;z-index:2;"></div>`;
     }
 
     card.innerHTML = `
       <div class="planet-render" style="background:${p.bg};">
-        <video src="planets/${p.name.toLowerCase()}_animation.mp4" class="planet-visual" autoplay loop muted playsinline style="width:100px;height:100px;border-radius:50%;object-fit:cover;position:relative;z-index:3;box-shadow:0 0 30px ${p.glow}55;"></video>
+        <video src="planets/${p.name.toLowerCase()}_animation.mp4" class="planet-visual" autoplay loop muted playsinline style="box-shadow: inset 0 0 50px rgba(0,0,0,0.5);"></video>
         ${ringEl}
-        <div class="render-label">[ 3D Render Slot ]</div>
+        <div class="render-label">[ 3:4 Render ]</div>
       </div>
       <div class="planet-info">
         <div class="planet-name">${p.name}</div>
@@ -875,15 +889,6 @@ function buildPlanets() {
         </div>
       </div>`;
     grid.appendChild(card);
-  });
-}
-
-// Fix updateAges to use class-based selectors
-function updateAges() {
-  const earthAge = parseFloat(document.getElementById('earth-age-input').value) || 20;
-  PLANETS.forEach((p, i) => {
-    const el = document.querySelector(`.planet-age-val-${i}`);
-    if (el) el.textContent = `${(earthAge / p.yearLen).toFixed(2)} yrs`;
   });
 }
 
