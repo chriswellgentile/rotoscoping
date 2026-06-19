@@ -276,21 +276,59 @@
 
   /* ── SOLAR SYSTEM ── */
   .solar-hero {
-    background: var(--dark2);
-    color: var(--y2);
-    text-align: center;
-    padding: 5rem 2rem 3rem;
-    position: relative;
-    overflow: hidden;
+  background: var(--dark2);
+  color: var(--y2);
+  text-align: center;
+  padding: 5rem 2rem 3rem;
+  position: relative;
+  overflow: hidden;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   }
   .solar-hero::before {
     content: '';
     position: absolute; inset: 0;
     background: radial-gradient(circle at center, rgba(255,213,0,0.08) 0%, transparent 70%);
   }
-  .solar-hero h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2rem,5vw,4rem); letter-spacing: -2px; position: relative; }
-  .solar-hero p { font-size: 0.95rem; color: rgba(255,243,176,0.7); max-width: 500px; margin: 1rem auto 0; font-weight: 300; position: relative; }
+  .solar-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  }
+  .solar-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(26,18,0,0.45), rgba(26,18,0,0.65)),
+    radial-gradient(circle at center, rgba(255,213,0,0.08) 0%, transparent 70%);
+  z-index: 1;
+  }
+  .solar-hero-content {
+    position: relative;
+    z-index: 2;
+  }
+  .solar-hero h1 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(2rem,5vw,4rem);
+    letter-spacing: -2px;
+    position: relative;
+  }
+  .solar-hero p {
+    font-size: 0.95rem;
+    color: rgba(255,243,176,0.82);
+    max-width: 500px;
+    margin: 1rem auto 0;
+    font-weight: 300;
+    position: relative;
+  }
   .solar-hero .section-label { color: var(--y4); }
+  
   .solar-body { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 5rem; }
   .solar-input-row {
     display: flex; align-items: center; gap: 1rem;
@@ -320,38 +358,51 @@
     transition: all 0.2s;
     cursor: default;
   }
-  .planet-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(180,130,0,0.15); border-color: var(--y4); }
+ .planet-card {
+  background: var(--white);
+  border: 1.5px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: all 0.25s ease;
+  cursor: default;
+  }
+  .planet-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(180,130,0,0.15);
+    border-color: var(--y4);
+  }
   .planet-render {
-    /* To achieve a 3:4 aspect ratio, height = width * 1.33 */
-    aspect-ratio: 3 / 4; 
+    aspect-ratio: 3 / 4;
     width: 100%;
     height: auto;
-    display: flex; 
-    align-items: center; 
+    display: flex;
+    align-items: center;
     justify-content: center;
-    position: relative; 
+    position: relative;
     overflow: hidden;
-    font-size: 0.65rem; 
+    font-size: 0.65rem;
     font-family: var(--mono);
-    color: rgba(255,255,255,0.5); 
+    color: rgba(255,255,255,0.5);
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    padding: 1rem;
   }
   .planet-render .planet-visual {
-    /* Adjusted to fill the 3:4 container while maintaining video proportions */
-    width: 100%; 
-    height: 100%; 
-    border-radius: 0; /* Removed circle radius to fit the card shape */
-    object-fit: cover; /* Ensures video fills the 3:4 area without stretching */
-    position: relative; 
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    max-height: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+    position: relative;
     z-index: 1;
-    transition: transform 0.3s;
+    transition: transform 0.35s ease;
+    box-shadow:
+      0 10px 30px rgba(0,0,0,0.28),
+      inset 0 0 50px rgba(0,0,0,0.35);
   }
-  .planet-card:hover .planet-visual { transform: scale(1.08) rotate(5deg); }
-  .planet-render .render-label {
-    position: absolute; bottom: 8px; right: 10px;
-    font-family: var(--mono); font-size: 0.55rem;
-    color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em;
+  .planet-card:hover .planet-visual {
+    transform: scale(1.12);
   }
   .planet-info { padding: 1.25rem; }
   .planet-name { font-family: var(--display); font-weight: 800; font-size: 1.3rem; color: var(--dark); letter-spacing: -0.5px; }
@@ -451,18 +502,40 @@
   }
   .roto-notes h2 { font-family: var(--display); font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }
   .roto-notes p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+  .roto-top-nav {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 2rem 0;
+  }
   .week-nav {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-top: 3rem; flex-wrap: wrap; gap: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
   .week-nav button {
-    font-family: var(--display); font-weight: 700; font-size: 0.82rem;
-    border: 1.5px solid var(--border2); background: var(--white);
-    color: var(--dark); padding: 10px 20px; border-radius: var(--radius-sm);
-    cursor: pointer; transition: all 0.2s;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.82rem;
+  border: 1.5px solid var(--border2);
+  background: var(--white);
+  color: var(--dark);
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
   }
-  .week-nav button:hover { background: var(--y2); border-color: var(--y5); }
-  .week-nav button:disabled { opacity: 0.35; cursor: not-allowed; }
+  
+  .week-nav button:hover {
+    background: var(--y2);
+    border-color: var(--y5);
+  }
+  
+  .week-nav button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
   .weeks-grid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(130px,1fr));
     gap: 0.75rem; margin: 1.5rem 0;
@@ -644,10 +717,17 @@
 <!-- ════ SOLAR SYSTEM PAGE ════ -->
 <div class="page" id="page-solar">
   <div class="solar-hero" id="solar-hero-bg">
+  <video class="solar-bg-video" autoplay muted loop playsinline>
+    <source src="solarSystem.mp4" type="video/mp4">
+  </video>
+  <div class="solar-hero-overlay"></div>
+  <div class="solar-hero-content">
     <div class="section-label">// blender + python rendered</div>
     <h1>Solar System</h1>
-    <p>Enter your Earth age to compute how old you'd be on each planet — plus Blender 3D render placeholders for each world.</p>
+    <p>Enter your Earth age to compute how old you'd be on each planet - plus Blender 3D render placeholders for each world.</p>
   </div>
+</div>
+
   <div class="solar-body">
     <div class="solar-input-row">
       <label>Your Earth Age (years):</label>
@@ -666,6 +746,13 @@
     <div class="week-badge" id="roto-week-badge">WEEK 1</div>
     <h1 id="roto-week-title">Foundation &amp; Setup</h1>
     <p id="roto-week-subtitle">5 seconds · Weeks 1 of 12 · 0:00 – 0:05</p>
+  </div>
+  <div class="roto-top-nav">
+    <div class="week-nav">
+      <button id="prev-week-btn" onclick="changeWeek(-1)">← Previous</button>
+      <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted);" id="week-counter">Week 1 of 12</span>
+      <button id="next-week-btn" onclick="changeWeek(1)">Next →</button>
+    </div>
   </div>
   <div class="roto-page">
     <!-- Video embed area -->
@@ -720,11 +807,7 @@
     </div>
     <div class="weeks-grid" id="weeks-grid"></div>
 
-    <div class="week-nav">
-      <button id="prev-week-btn" onclick="changeWeek(-1)">← Previous</button>
-      <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted);" id="week-counter">Week 1 of 12</span>
-      <button id="next-week-btn" onclick="changeWeek(1)">Next →</button>
-    </div>
+    
   </div>
   <footer>
     <strong>Chriswell Mae Gentile</strong> · BSIT-NS-2A · TUP — Taguig · Multimedia & Authoring
@@ -738,7 +821,7 @@ const WEEKS = [
   { title: "First Strokes",        technique: "Roto Brush 2.0",             tools: "FlipACLip",        ytId: "Xske9xSFnMc", notes: "Applied Roto Brush across the 5-second segment and propagated the selection across frames. Discovered edge cases where the subject's hair and loose clothing caused errors. Used the Refine Edge tool to improve hair isolation. Manual Bezier mask correction on 12 problem frames." },
   { title: "Edge Refinement",      technique: "Roto Brush + Refine Edge",   tools: "FlipACLip",        ytId: "UcaxrMpUWXA", notes: "Major focus on edge quality this week. Used Photoshop to paint-over rough edges on exported PNG sequences. Back-imported corrected frames as a pre-comp. Learning to balance speed with precision — some fast-motion frames required full manual masking." },
   { title: "Motion Blur",          technique: "Motion Blur Compositing",    tools: "FlipACLip",        ytId: "9S58Gy0Lryc", notes: "Fast arm movements created significant motion blur challenges. Studied how real motion blur works and replicated it artificially on the isolated subject using the CC Force Motion Blur effect. This week's 5 seconds contain the most dynamic movement of the whole sequence." },
-  { title: "Background Removal",   technique: "BG Removal & Keying",        tools: "FlipACLip",        ytId: "8cpdvv0jC3s/", notes: "Experimented with background replacement — substituting the original background with a solid gradient and later a space-themed backdrop to tie into the solar system 3D renders. Used Keylight for green-tinted areas and manual roto for the rest." },
+  { title: "Background Removal",   technique: "BG Removal & Keying",        tools: "FlipACLip",        ytId: "8cpdvv0jC3s", notes: "Experimented with background replacement — substituting the original background with a solid gradient and later a space-themed backdrop to tie into the solar system 3D renders. Used Keylight for green-tinted areas and manual roto for the rest." },
   { title: "3D Integration Prep",  technique: "Tracking & Matchmove",       tools: "FlipACLip",        ytId: "QPAPPm_YY1Y", notes: "Camera tracking this week to match the movement of the live footage. Created a basic camera solve in After Effects' 3D camera tracker, which will be used to place Blender-rendered planet elements in the scene realistically." },
   { title: "Blender Elements",     technique: "3D Compositing",             tools: "FlipACLip",        ytId: "B0RKuKz0mro", notes: "First successful composite of a Blender-rendered planet into the rotoscoped footage! Used EXR output from Blender with separate passes (diffuse, specular, shadow) for full compositing control in After Effects. Planet appears behind the subject thanks to the roto mask." },
   { title: "Depth & Lighting",     technique: "Light Matching",             tools: "FlipACLip",        ytId: "9AKVq845kMk", notes: "Spent this week matching the lighting of 3D elements to the real-world footage. Analyzed the key light direction in the reference video and replicated it in Blender's HDRI setup. Added color grading in After Effects to unify the look of roto and 3D renders." },
@@ -868,7 +951,7 @@ function buildPlanets() {
     let ringEl = '';
     if (p.ring) {
       // Adjusted ring position for the taller 3:4 container
-      ringEl = `<div style="position:absolute;width:80%;height:auto;aspect-ratio:1/.2;border-radius:50%;border:6px solid rgba(228,209,145,0.4);top:50%;left:50%;transform:translate(-50%,-50%) rotateX(75deg);pointer-events:none;z-index:2;"></div>`;
+      ringEl = `<div style="position:absolute;width:72%;aspect-ratio:16/4;border-radius:50%;border:6px solid rgba(228,209,145,0.4);top:50%;left:50%;transform:translate(-50%,-50%) rotateX(75deg);pointer-events:none;z-index:2;"></div>`;
     }
 
     card.innerHTML = `
