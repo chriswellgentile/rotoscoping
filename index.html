@@ -276,59 +276,38 @@
 
   /* ── SOLAR SYSTEM ── */
   .solar-hero {
-  background: var(--dark2);
-  color: var(--y2);
-  text-align: center;
-  padding: 5rem 2rem 3rem;
-  position: relative;
-  overflow: hidden;
-  min-height: 340px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    background: var(--dark2);
+    color: var(--y2);
+    text-align: center;
+    padding: 5rem 2rem 3rem;
+    position: relative;
+    overflow: hidden;
   }
   .solar-hero::before {
     content: '';
     position: absolute; inset: 0;
     background: radial-gradient(circle at center, rgba(255,213,0,0.08) 0%, transparent 70%);
+    z-index: 1;
+    pointer-events: none;
   }
-  .solar-bg-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
+  .solar-hero-video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    z-index: 0;
   }
+  .solar-hero-video.visible { opacity: 0.55; }
   .solar-hero-overlay {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(to bottom, rgba(26,18,0,0.45), rgba(26,18,0,0.65)),
-    radial-gradient(circle at center, rgba(255,213,0,0.08) 0%, transparent 70%);
-  z-index: 1;
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(46,32,0,0.55) 0%, rgba(46,32,0,0.85) 100%);
+    z-index: 1;
+    pointer-events: none;
   }
-  .solar-hero-content {
-    position: relative;
-    z-index: 2;
-  }
-  .solar-hero h1 {
-    font-family: var(--display);
-    font-weight: 800;
-    font-size: clamp(2rem,5vw,4rem);
-    letter-spacing: -2px;
-    position: relative;
-  }
-  .solar-hero p {
-    font-size: 0.95rem;
-    color: rgba(255,243,176,0.82);
-    max-width: 500px;
-    margin: 1rem auto 0;
-    font-weight: 300;
-    position: relative;
-  }
-  .solar-hero .section-label { color: var(--y4); }
-  
+  .solar-hero h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2rem,5vw,4rem); letter-spacing: -2px; position: relative; z-index: 2; }
+  .solar-hero p { font-size: 0.95rem; color: rgba(255,243,176,0.7); max-width: 500px; margin: 1rem auto 0; font-weight: 300; position: relative; z-index: 2; }
+  .solar-hero .section-label { color: var(--y4); position: relative; z-index: 2; }
   .solar-body { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 5rem; }
   .solar-input-row {
     display: flex; align-items: center; gap: 1rem;
@@ -354,22 +333,16 @@
     background: var(--white);
     border: 1.5px solid var(--border2);
     border-radius: var(--radius);
-    overflow: hidden;
-    transition: all 0.2s;
-    cursor: default;
-  }
- .planet-card {
-  background: var(--white);
-  border: 1.5px solid var(--border2);
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: all 0.25s ease;
-  cursor: default;
+    overflow: visible;
+    transition: transform 0.25s cubic-bezier(.2,.8,.2,1), box-shadow 0.25s, border-color 0.2s;
+    cursor: pointer;
+    position: relative;
   }
   .planet-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(180,130,0,0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 16px 36px rgba(180,130,0,0.18);
     border-color: var(--y4);
+    z-index: 5;
   }
   .planet-render {
     aspect-ratio: 3 / 4;
@@ -380,29 +353,112 @@
     justify-content: center;
     position: relative;
     overflow: hidden;
+    border-radius: var(--radius) var(--radius) 0 0;
     font-size: 0.65rem;
     font-family: var(--mono);
     color: rgba(255,255,255,0.5);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 1rem;
   }
   .planet-render .planet-visual {
     width: 100%;
-    aspect-ratio: 16 / 9;
-    height: auto;
-    max-height: 100%;
-    border-radius: 12px;
+    height: 100%;
+    border-radius: 0;
     object-fit: cover;
     position: relative;
     z-index: 1;
-    transition: transform 0.35s ease;
-    box-shadow:
-      0 10px 30px rgba(0,0,0,0.28),
-      inset 0 0 50px rgba(0,0,0,0.35);
+    transition: transform 0.35s;
   }
-  .planet-card:hover .planet-visual {
-    transform: scale(1.12);
+  .planet-card:hover .planet-visual { transform: scale(1.05); }
+  .planet-render .render-label {
+    position: absolute; bottom: 8px; right: 10px;
+    font-family: var(--mono); font-size: 0.55rem;
+    color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em;
+  }
+
+  /* ── PLANET EXPANDED VIEW (overlay, near-fullscreen) ── */
+  .planet-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(10,8,0,0.78);
+    display: none;
+    align-items: center; justify-content: center;
+    padding: 3vh 3vw;
+  }
+  .planet-overlay.active { display: flex; }
+  .planet-expanded {
+    background: var(--dark2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    width: 100%; height: 100%;
+    max-width: 1400px;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    animation: expandIn 0.3s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes expandIn {
+    from { transform: scale(0.94); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .expanded-video-side {
+    flex: 0 0 75%;
+    max-width: 75%;
+    position: relative;
+    background: #000;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .expanded-video-side video {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .expanded-info-side {
+    flex: 0 0 25%;
+    max-width: 25%;
+    background: var(--surface);
+    padding: 2rem 1.75rem;
+    overflow-y: auto;
+    display: flex; flex-direction: column;
+  }
+  @media (max-width: 800px) {
+    .planet-expanded { flex-direction: column; }
+    .expanded-video-side { flex: 0 0 50%; max-width: 100%; height: 50%; }
+    .expanded-info-side { flex: 1 1 50%; max-width: 100%; }
+  }
+  .expanded-close {
+    position: absolute; top: 16px; right: 16px; z-index: 10;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(0,0,0,0.55); color: var(--y3);
+    border: 1px solid rgba(255,255,255,0.2);
+    font-size: 1.1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .expanded-close:hover { background: var(--y4); color: var(--dark2); }
+  .expanded-name { font-family: var(--display); font-weight: 800; font-size: 1.8rem; color: var(--dark); letter-spacing: -1px; }
+  .expanded-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin: 0.75rem 0 1.5rem; }
+  .expanded-age-box {
+    background: var(--y2); border: 1px solid var(--border2);
+    border-radius: var(--radius); padding: 1rem 1.1rem;
+    margin-bottom: 1rem;
+  }
+  .expanded-age-label { font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.4rem; }
+  .expanded-age-val { font-family: var(--display); font-weight: 800; font-size: 1.8rem; color: var(--y7); }
+  .expanded-input-row { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border2); }
+  .expanded-input-row label { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); display: block; margin-bottom: 0.5rem; }
+  .expanded-input-row input {
+    width: 100%; font-family: var(--display); font-weight: 700; font-size: 1.1rem;
+    border: 1.5px solid var(--border2); border-radius: var(--radius-sm);
+    padding: 8px 14px; background: var(--surface2); color: var(--dark);
+    outline: none;
+  }
+  .expanded-input-row input:focus { border-color: var(--y4); }
+  .expanded-stat-pill {
+    display: inline-block;
+    font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 4px 10px; color: var(--mid);
+    margin-bottom: 1.5rem;
   }
   .planet-info { padding: 1.25rem; }
   .planet-name { font-family: var(--display); font-weight: 800; font-size: 1.3rem; color: var(--dark); letter-spacing: -0.5px; }
@@ -426,7 +482,7 @@
   }
 
   /* ── ROTOSCOPING WEEKLY ── */
-  .roto-page { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+  .roto-page { max-width: 900px; margin: 0 auto; padding: 1rem 2rem 5rem; }
   .roto-header {
     background: var(--dark2);
     padding: 4rem 2rem 3rem;
@@ -442,6 +498,18 @@
   }
   .roto-header h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2rem,5vw,3.5rem); letter-spacing: -2px; }
   .roto-header p { color: rgba(255,243,176,0.65); font-size: 0.9rem; margin-top: 0.5rem; font-weight: 300; }
+  .week-nav-top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin: 1.5rem 0 1rem; flex-wrap: wrap; gap: 1rem;
+  }
+  .week-nav-top button {
+    font-family: var(--display); font-weight: 700; font-size: 0.82rem;
+    border: 1.5px solid var(--border2); background: var(--white);
+    color: var(--dark); padding: 10px 20px; border-radius: var(--radius-sm);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .week-nav-top button:hover { background: var(--y2); border-color: var(--y5); }
+  .week-nav-top button:disabled { opacity: 0.35; cursor: not-allowed; }
   .video-embed-area {
     background: var(--dark2);
     border-radius: var(--radius);
@@ -502,40 +570,6 @@
   }
   .roto-notes h2 { font-family: var(--display); font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }
   .roto-notes p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
-  .roto-top-nav {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 1rem 2rem 0;
-  }
-  .week-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  .week-nav button {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 0.82rem;
-  border: 1.5px solid var(--border2);
-  background: var(--white);
-  color: var(--dark);
-  padding: 10px 20px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all 0.2s;
-  }
-  
-  .week-nav button:hover {
-    background: var(--y2);
-    border-color: var(--y5);
-  }
-  
-  .week-nav button:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-  }
   .weeks-grid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(130px,1fr));
     gap: 0.75rem; margin: 1.5rem 0;
@@ -558,7 +592,7 @@
   footer strong { color: var(--y3); }
 
   /* ── STARS BG for dark sections ── */
-  .star { position: absolute; border-radius: 50%; background: rgba(255,243,176,0.6); }
+  .star { position: absolute; border-radius: 50%; background: rgba(255,243,176,0.6); z-index: 1; }
 
   /* scrollbar */
   ::-webkit-scrollbar { width: 6px; }
@@ -717,17 +751,12 @@
 <!-- ════ SOLAR SYSTEM PAGE ════ -->
 <div class="page" id="page-solar">
   <div class="solar-hero" id="solar-hero-bg">
-  <video class="solar-bg-video" autoplay muted loop playsinline>
-    <source src="solarSystem.mp4" type="video/mp4">
-  </video>
-  <div class="solar-hero-overlay"></div>
-  <div class="solar-hero-content">
+    <video class="solar-hero-video" id="solar-hero-video" src="solarSystem.mp4" muted playsinline></video>
+    <div class="solar-hero-overlay"></div>
     <div class="section-label">// blender + python rendered</div>
     <h1>Solar System</h1>
-    <p>Enter your Earth age to compute how old you'd be on each planet - plus Blender 3D render placeholders for each world.</p>
+    <p>Enter your Earth age to compute how old you'd be on each planet — plus Blender 3D render placeholders for each world.</p>
   </div>
-</div>
-
   <div class="solar-body">
     <div class="solar-input-row">
       <label>Your Earth Age (years):</label>
@@ -735,6 +764,30 @@
     </div>
     <div class="planets-grid" id="planets-grid"></div>
   </div>
+
+  <!-- Expanded planet overlay -->
+  <div class="planet-overlay" id="planet-overlay" onclick="if(event.target===this) closePlanetExpand()">
+    <div class="planet-expanded">
+      <div class="expanded-video-side">
+        <button class="expanded-close" onclick="closePlanetExpand()">✕</button>
+        <video id="expanded-video" class="planet-visual" autoplay loop muted playsinline></video>
+      </div>
+      <div class="expanded-info-side">
+        <div class="expanded-name" id="expanded-name">Earth</div>
+        <div class="expanded-stat-pill" id="expanded-yearlen">1yr = 1 Earth yrs</div>
+        <div class="expanded-desc" id="expanded-desc">Description goes here.</div>
+        <div class="expanded-age-box">
+          <div class="expanded-age-label" id="expanded-age-label">Your age on Earth</div>
+          <div class="expanded-age-val" id="expanded-age-val">20 yrs</div>
+        </div>
+        <div class="expanded-input-row">
+          <label>Your Earth Age (years)</label>
+          <input type="number" id="expanded-age-input" min="1" max="120" value="20" oninput="onExpandedAgeInput()">
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <strong>Chriswell Mae Gentile</strong> · BSIT-NS-2A · TUP — Taguig · Multimedia & Authoring
   </footer>
@@ -747,14 +800,15 @@
     <h1 id="roto-week-title">Foundation &amp; Setup</h1>
     <p id="roto-week-subtitle">5 seconds · Weeks 1 of 12 · 0:00 – 0:05</p>
   </div>
-  <div class="roto-top-nav">
-    <div class="week-nav">
+
+  <div class="roto-page">
+    <!-- Week nav moved right below the header -->
+    <div class="week-nav-top">
       <button id="prev-week-btn" onclick="changeWeek(-1)">← Previous</button>
       <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted);" id="week-counter">Week 1 of 12</span>
       <button id="next-week-btn" onclick="changeWeek(1)">Next →</button>
     </div>
-  </div>
-  <div class="roto-page">
+
     <!-- Video embed area -->
     <div style="margin-bottom:0.5rem;">
       <div class="section-label">// youtube embed · to update: find <strong>youryoutubelink</strong> in the WEEKS array in the script</div>
@@ -806,8 +860,6 @@
       <div class="section-label">// jump to week</div>
     </div>
     <div class="weeks-grid" id="weeks-grid"></div>
-
-    
   </div>
   <footer>
     <strong>Chriswell Mae Gentile</strong> · BSIT-NS-2A · TUP — Taguig · Multimedia & Authoring
@@ -821,7 +873,7 @@ const WEEKS = [
   { title: "First Strokes",        technique: "Roto Brush 2.0",             tools: "FlipACLip",        ytId: "Xske9xSFnMc", notes: "Applied Roto Brush across the 5-second segment and propagated the selection across frames. Discovered edge cases where the subject's hair and loose clothing caused errors. Used the Refine Edge tool to improve hair isolation. Manual Bezier mask correction on 12 problem frames." },
   { title: "Edge Refinement",      technique: "Roto Brush + Refine Edge",   tools: "FlipACLip",        ytId: "UcaxrMpUWXA", notes: "Major focus on edge quality this week. Used Photoshop to paint-over rough edges on exported PNG sequences. Back-imported corrected frames as a pre-comp. Learning to balance speed with precision — some fast-motion frames required full manual masking." },
   { title: "Motion Blur",          technique: "Motion Blur Compositing",    tools: "FlipACLip",        ytId: "9S58Gy0Lryc", notes: "Fast arm movements created significant motion blur challenges. Studied how real motion blur works and replicated it artificially on the isolated subject using the CC Force Motion Blur effect. This week's 5 seconds contain the most dynamic movement of the whole sequence." },
-  { title: "Background Removal",   technique: "BG Removal & Keying",        tools: "FlipACLip",        ytId: "8cpdvv0jC3s", notes: "Experimented with background replacement — substituting the original background with a solid gradient and later a space-themed backdrop to tie into the solar system 3D renders. Used Keylight for green-tinted areas and manual roto for the rest." },
+  { title: "Background Removal",   technique: "BG Removal & Keying",        tools: "FlipACLip",        ytId: "8cpdvv0jC3s/", notes: "Experimented with background replacement — substituting the original background with a solid gradient and later a space-themed backdrop to tie into the solar system 3D renders. Used Keylight for green-tinted areas and manual roto for the rest." },
   { title: "3D Integration Prep",  technique: "Tracking & Matchmove",       tools: "FlipACLip",        ytId: "QPAPPm_YY1Y", notes: "Camera tracking this week to match the movement of the live footage. Created a basic camera solve in After Effects' 3D camera tracker, which will be used to place Blender-rendered planet elements in the scene realistically." },
   { title: "Blender Elements",     technique: "3D Compositing",             tools: "FlipACLip",        ytId: "B0RKuKz0mro", notes: "First successful composite of a Blender-rendered planet into the rotoscoped footage! Used EXR output from Blender with separate passes (diffuse, specular, shadow) for full compositing control in After Effects. Planet appears behind the subject thanks to the roto mask." },
   { title: "Depth & Lighting",     technique: "Light Matching",             tools: "FlipACLip",        ytId: "9AKVq845kMk", notes: "Spent this week matching the lighting of 3D elements to the real-world footage. Analyzed the key light direction in the reference video and replicated it in Blender's HDRI setup. Added color grading in After Effects to unify the look of roto and 3D renders." },
@@ -859,8 +911,24 @@ function navigate(page) {
     if (el) el.classList.add('active');
     const navBtn = document.getElementById('nav-' + page);
     if (navBtn) navBtn.classList.add('active');
+    if (page === 'solar') playSolarHeroVideo();
   }
   window.scrollTo(0,0);
+}
+
+// ═══ SOLAR HERO VIDEO ═══
+// Plays solarSystem.mp4 once when entering the Solar System page,
+// then it becomes the looping background of the header.
+function playSolarHeroVideo() {
+  const vid = document.getElementById('solar-hero-video');
+  if (!vid) return;
+  vid.classList.add('visible');
+  vid.currentTime = 0;
+  vid.loop = true;
+  const playPromise = vid.play();
+  if (playPromise && playPromise.catch) {
+    playPromise.catch(() => { /* autoplay may be blocked until user interacts */ });
+  }
 }
 
 // ═══ BUILD WEEK DROPDOWN ═══
@@ -947,18 +1015,19 @@ function buildPlanets() {
     const age = (earthAge / p.yearLen).toFixed(2);
     const card = document.createElement('div');
     card.className = 'planet-card';
+    card.onclick = () => openPlanetExpand(i);
 
     let ringEl = '';
     if (p.ring) {
       // Adjusted ring position for the taller 3:4 container
-      ringEl = `<div style="position:absolute;width:72%;aspect-ratio:16/4;border-radius:50%;border:6px solid rgba(228,209,145,0.4);top:50%;left:50%;transform:translate(-50%,-50%) rotateX(75deg);pointer-events:none;z-index:2;"></div>`;
+      ringEl = `<div style="position:absolute;width:80%;height:auto;aspect-ratio:1/.2;border-radius:50%;border:6px solid rgba(228,209,145,0.4);top:50%;left:50%;transform:translate(-50%,-50%) rotateX(75deg);pointer-events:none;z-index:2;"></div>`;
     }
 
     card.innerHTML = `
       <div class="planet-render" style="background:${p.bg};">
         <video src="planets/${p.name.toLowerCase()}_animation.mp4" class="planet-visual" autoplay loop muted playsinline style="box-shadow: inset 0 0 50px rgba(0,0,0,0.5);"></video>
         ${ringEl}
-        <div class="render-label">[ 3:4 Render ]</div>
+        <div class="render-label">[ Click to expand ]</div>
       </div>
       <div class="planet-info">
         <div class="planet-name">${p.name}</div>
@@ -974,6 +1043,55 @@ function buildPlanets() {
     grid.appendChild(card);
   });
 }
+
+// ═══ EXPANDED PLANET OVERLAY ═══
+let expandedPlanetIndex = null;
+
+function openPlanetExpand(i) {
+  expandedPlanetIndex = i;
+  const p = PLANETS[i];
+  const earthAge = parseFloat(document.getElementById('earth-age-input').value) || 20;
+
+  document.getElementById('expanded-name').textContent = p.name;
+  document.getElementById('expanded-desc').textContent = p.desc;
+  document.getElementById('expanded-yearlen').textContent = `1yr = ${p.yearLen} Earth yrs`;
+  document.getElementById('expanded-age-label').textContent = `Your age on ${p.name}`;
+  document.getElementById('expanded-age-input').value = earthAge;
+
+  const age = (earthAge / p.yearLen).toFixed(2);
+  document.getElementById('expanded-age-val').textContent = `${age} yrs`;
+
+  const vid = document.getElementById('expanded-video');
+  vid.src = `planets/${p.name.toLowerCase()}_animation.mp4`;
+  vid.play().catch(() => {});
+
+  document.getElementById('planet-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePlanetExpand() {
+  document.getElementById('planet-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+  const vid = document.getElementById('expanded-video');
+  vid.pause();
+  expandedPlanetIndex = null;
+}
+
+function onExpandedAgeInput() {
+  if (expandedPlanetIndex === null) return;
+  const earthAge = parseFloat(document.getElementById('expanded-age-input').value) || 20;
+  // Keep the main page input and all cards in sync with this value
+  document.getElementById('earth-age-input').value = earthAge;
+  updateAges();
+  const p = PLANETS[expandedPlanetIndex];
+  const age = (earthAge / p.yearLen).toFixed(2);
+  document.getElementById('expanded-age-val').textContent = `${age} yrs`;
+}
+
+// Close on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closePlanetExpand();
+});
 
 // ═══ STARS BG for solar page ═══
 function buildStars() {
