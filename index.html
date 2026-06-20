@@ -1,1 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rotoscoping Portfolio — Chriswell Mae Gentile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --y1: #FFF8DC;
+    --y2: #FFF3B0;
+    --y3: #FFE566;
+    --y4: #FFD700;
+    --y5: #F5C518;
+    --y6: #D4A000;
+    --y7: #8B6500;
+    --dark: #1A1200;
+    --dark2: #2E2000;
+    --mid: #6B4E00;
+    --muted: #8B7340;
+    --surface: #FFFDF0;
+    --surface2: #FFF9D6;
+    --border: rgba(180,130,0,0.2);
+    --border2: rgba(180,130,0,0.4);
+    --white: #ffffff;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --mono: 'Space Mono', monospace;
+    --display: 'Syne', sans-serif;
+    --body: 'DM Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body);
+    background: var(--surface);
+    color: var(--dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,248,220,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border2);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-logo {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--dark);
+    letter-spacing: -0.5px;
+    cursor: pointer;
+  }
+  .nav-logo span { color: var(--y6); }
+  .nav-links { display: flex; gap: 0.25rem; align-items: center; }
+  .nav-links button {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    background: none;
+    border: none;
+    color: var(--mid);
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .nav-links button:hover, .nav-links button.active {
+    background: var(--y3);
+    color: var(--dark);
+  }
+  .nav-roto { position: relative; }
+  .nav-roto .dropdown {
+    position: absolute; top: 100%; left: 0;
+    background: var(--white);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    min-width: 180px;
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .nav-roto:hover .dropdown { display: flex; }
+  .dropdown button {
+    border-radius: 0 !important;
+    text-align: left;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.65rem !important;
+    color: var(--dark) !important;
+  }
+  .dropdown button:last-child { border-bottom: none; }
+  .dropdown button:hover { background: var(--y2) !important; }
+
+  /* ── PAGES ── */
+  .page { display: none; padding-top: 60px; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* ── HOME ── */
+  .hero {
+    min-height: calc(100vh - 60px);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 4rem 2rem;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 20% 50%, rgba(255,213,0,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255,229,102,0.12) 0%, transparent 40%),
+      radial-gradient(circle at 60% 80%, rgba(245,197,24,0.1) 0%, transparent 40%);
+  }
+  .orbit-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    animation: spin linear infinite;
+  }
+  .orbit-ring:nth-child(1) { width: 600px; height: 600px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-duration: 30s; }
+  .orbit-ring:nth-child(2) { width: 900px; height: 900px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-duration: 50s; }
+  .orbit-ring:nth-child(3) { width: 1200px; height: 1200px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-duration: 70s; }
+  @keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+  .orbit-dot {
+    position: absolute; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--y5); top: -4px; left: 50%; transform: translateX(-50%);
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 760px; }
+  .hero-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--y6);
+    background: var(--y2);
+    border: 1px solid var(--border2);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -3px;
+    color: var(--dark);
+    margin-bottom: 1rem;
+  }
+  .hero h1 .accent { color: var(--y5); }
+  .hero-sub {
+    font-family: var(--body);
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 500px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .hero-profile {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0.75rem; margin-bottom: 2.5rem;
+  }
+  .avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--y4);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display);
+    font-weight: 800; font-size: 0.8rem; color: var(--dark2);
+    border: 2px solid var(--y6);
+    flex-shrink: 0;
+  }
+  .profile-text { text-align: left; }
+  .profile-name { font-family: var(--display); font-weight: 700; font-size: 0.95rem; color: var(--dark); }
+  .profile-sub { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); letter-spacing: 0.05em; }
+  .hero-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    font-family: var(--display); font-weight: 700; font-size: 0.85rem;
+    background: var(--y4); color: var(--dark2);
+    border: 2px solid var(--y6);
+    padding: 12px 28px; border-radius: var(--radius-sm);
+    cursor: pointer; transition: all 0.2s;
+    letter-spacing: -0.2px;
+  }
+  .btn-primary:hover { background: var(--y5); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(212,160,0,0.3); }
+  .btn-secondary {
+    font-family: var(--display); font-weight: 600; font-size: 0.85rem;
+    background: transparent; color: var(--dark);
+    border: 1.5px solid var(--border2);
+    padding: 12px 28px; border-radius: var(--radius-sm);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: var(--y2); border-color: var(--y5); }
+
+  .home-section {
+    padding: 5rem 2rem;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .section-label {
+    font-family: var(--mono); font-size: 0.65rem;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--y6); margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: var(--display); font-weight: 800;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    letter-spacing: -1.5px; color: var(--dark);
+    margin-bottom: 1.5rem;
+    line-height: 1.05;
+  }
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem; margin-top: 2rem;
+  }
+  .tool-card {
+    background: var(--white);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: all 0.2s;
+  }
+  .tool-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(180,130,0,0.12); border-color: var(--y4); }
+  .tool-icon { font-size: 1.8rem; margin-bottom: 0.75rem; }
+  .tool-name { font-family: var(--display); font-weight: 700; font-size: 1rem; color: var(--dark); margin-bottom: 0.3rem; }
+  .tool-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+  .tool-tag {
+    display: inline-block; font-family: var(--mono); font-size: 0.55rem;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    background: var(--y2); color: var(--y7);
+    padding: 2px 8px; border-radius: 10px; margin-top: 0.75rem;
+  }
+
+  /* ── ABOUT ── */
+  .about-hero {
+    background: linear-gradient(135deg, var(--y1) 0%, var(--surface2) 100%);
+    border-bottom: 1px solid var(--border2);
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+  }
+  .about-body { max-width: 900px; margin: 0 auto; padding: 4rem 2rem; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 3rem 0; }
+  @media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+  .about-card {
+    background: var(--white);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 2rem;
+  }
+  .about-card h2 { font-family: var(--display); font-weight: 700; font-size: 1.15rem; margin-bottom: 0.75rem; color: var(--dark); }
+  .about-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+  .timeline { position: relative; padding-left: 2rem; margin: 2rem 0; }
+  .timeline::before { content:''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--y4); }
+  .tl-item { position: relative; margin-bottom: 2rem; }
+  .tl-item::before {
+    content: ''; position: absolute; left: -2.4rem; top: 4px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--y5); border: 2px solid var(--y6);
+  }
+  .tl-week { font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--y6); margin-bottom: 0.2rem; }
+  .tl-title { font-family: var(--display); font-weight: 700; font-size: 0.95rem; color: var(--dark); }
+  .tl-desc { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; line-height: 1.5; }
+
+  /* ── SOLAR SYSTEM ── */
+  .solar-hero {
+    background: var(--dark2);
+    color: var(--y2);
+    text-align: center;
+    padding: 5rem 2rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .solar-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at center, rgba(255,213,0,0.08) 0%, transparent 70%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .solar-hero-video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    z-index: 0;
+  }
+  .solar-hero-video.visible { opacity: 0.55; }
+  .solar-hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(46,32,0,0.55) 0%, rgba(46,32,0,0.85) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .solar-hero h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2rem,5vw,4rem); letter-spacing: -2px; position: relative; z-index: 2; }
+  .solar-hero p { font-size: 0.95rem; color: rgba(255,243,176,0.7); max-width: 500px; margin: 1rem auto 0; font-weight: 300; position: relative; z-index: 2; }
+  .solar-hero .section-label { color: var(--y4); position: relative; z-index: 2; }
+  .solar-body { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+  .solar-input-row {
+    display: flex; align-items: center; gap: 1rem;
+    background: var(--white); border: 1px solid var(--border2);
+    border-radius: var(--radius); padding: 1rem 1.5rem;
+    margin-bottom: 3rem; flex-wrap: wrap;
+  }
+  .solar-input-row label { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); white-space: nowrap; }
+  .solar-input-row input {
+    flex: 1; min-width: 120px;
+    font-family: var(--display); font-weight: 700; font-size: 1.1rem;
+    border: 1.5px solid var(--border2); border-radius: var(--radius-sm);
+    padding: 8px 14px; background: var(--surface2); color: var(--dark);
+    outline: none;
+  }
+  .solar-input-row input:focus { border-color: var(--y4); }
+  .planets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  .planet-card {
+    background: var(--white);
+    border: 1.5px solid var(--border2);
+    border-radius: var(--radius);
+    overflow: visible;
+    transition: transform 0.25s cubic-bezier(.2,.8,.2,1), box-shadow 0.25s, border-color 0.2s;
+    cursor: pointer;
+    position: relative;
+  }
+  .planet-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 36px rgba(180,130,0,0.18);
+    border-color: var(--y4);
+    z-index: 5;
+  }
+  .planet-render {
+    aspect-ratio: 3 / 4;
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius) var(--radius) 0 0;
+    font-size: 0.65rem;
+    font-family: var(--mono);
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .planet-render .planet-visual {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.35s;
+  }
+  .planet-card:hover .planet-visual { transform: scale(1.05); }
+  .planet-render .render-label {
+    position: absolute; bottom: 8px; right: 10px;
+    font-family: var(--mono); font-size: 0.55rem;
+    color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em;
+  }
+
+  /* ── PLANET EXPANDED VIEW (overlay, near-fullscreen) ── */
+  .planet-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(10,8,0,0.78);
+    display: none;
+    align-items: center; justify-content: center;
+    padding: 3vh 3vw;
+  }
+  .planet-overlay.active { display: flex; }
+  .planet-expanded {
+    background: var(--dark2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    width: 100%; height: 100%;
+    max-width: 1400px;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    animation: expandIn 0.3s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes expandIn {
+    from { transform: scale(0.94); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .expanded-video-side {
+    flex: 0 0 75%;
+    max-width: 75%;
+    position: relative;
+    background: #000;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .expanded-video-side video {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .expanded-info-side {
+    flex: 0 0 25%;
+    max-width: 25%;
+    background: var(--surface);
+    padding: 2rem 1.75rem;
+    overflow-y: auto;
+    display: flex; flex-direction: column;
+  }
+  @media (max-width: 800px) {
+    .planet-expanded { flex-direction: column; }
+    .expanded-video-side { flex: 0 0 50%; max-width: 100%; height: 50%; }
+    .expanded-info-side { flex: 1 1 50%; max-width: 100%; }
+  }
+  .expanded-close {
+    position: absolute; top: 16px; right: 16px; z-index: 10;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(0,0,0,0.55); color: var(--y3);
+    border: 1px solid rgba(255,255,255,0.2);
+    font-size: 1.1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .expanded-close:hover { background: var(--y4); color: var(--dark2); }
+  .expanded-name { font-family: var(--display); font-weight: 800; font-size: 1.8rem; color: var(--dark); letter-spacing: -1px; }
+  .expanded-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin: 0.75rem 0 1.5rem; }
+  .expanded-age-box {
+    background: var(--y2); border: 1px solid var(--border2);
+    border-radius: var(--radius); padding: 1rem 1.1rem;
+    margin-bottom: 1rem;
+  }
+  .expanded-age-label { font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.4rem; }
+  .expanded-age-val { font-family: var(--display); font-weight: 800; font-size: 1.8rem; color: var(--y7); }
+  .expanded-input-row { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border2); }
+  .expanded-input-row label { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); display: block; margin-bottom: 0.5rem; }
+  .expanded-input-row input {
+    width: 100%; font-family: var(--display); font-weight: 700; font-size: 1.1rem;
+    border: 1.5px solid var(--border2); border-radius: var(--radius-sm);
+    padding: 8px 14px; background: var(--surface2); color: var(--dark);
+    outline: none;
+  }
+  .expanded-input-row input:focus { border-color: var(--y4); }
+  .expanded-stat-pill {
+    display: inline-block;
+    font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 4px 10px; color: var(--mid);
+    margin-bottom: 1.5rem;
+  }
+  .planet-info { padding: 1.25rem; }
+  .planet-name { font-family: var(--display); font-weight: 800; font-size: 1.3rem; color: var(--dark); letter-spacing: -0.5px; }
+  .planet-desc { font-size: 0.8rem; color: var(--muted); margin: 0.4rem 0 0.75rem; line-height: 1.5; }
+  .planet-age-box {
+    background: var(--y2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 0.9rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .planet-age-label { font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .planet-age-val { font-family: var(--display); font-weight: 800; font-size: 1.1rem; color: var(--y7); }
+  .planet-stats {
+    display: flex; gap: 0.5rem; margin-top: 0.6rem;
+  }
+  .planet-stat-pill {
+    font-family: var(--mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.06em;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 3px 8px; color: var(--mid);
+  }
+
+  /* ── ROTOSCOPING WEEKLY ── */
+  .roto-page { max-width: 900px; margin: 0 auto; padding: 1rem 2rem 5rem; }
+  .roto-header {
+    background: var(--dark2);
+    padding: 4rem 2rem 3rem;
+    text-align: center; color: var(--y2);
+    border-bottom: 3px solid var(--y4);
+  }
+  .roto-header .week-badge {
+    display: inline-block;
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+    background: var(--y4); color: var(--dark2);
+    padding: 5px 16px; border-radius: 20px; margin-bottom: 1rem;
+    font-weight: 700;
+  }
+  .roto-header h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2rem,5vw,3.5rem); letter-spacing: -2px; }
+  .roto-header p { color: rgba(255,243,176,0.65); font-size: 0.9rem; margin-top: 0.5rem; font-weight: 300; }
+  .week-nav-top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin: 1.5rem 0 1rem; flex-wrap: wrap; gap: 1rem;
+  }
+  .week-nav-top button {
+    font-family: var(--display); font-weight: 700; font-size: 0.82rem;
+    border: 1.5px solid var(--border2); background: var(--white);
+    color: var(--dark); padding: 10px 20px; border-radius: var(--radius-sm);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .week-nav-top button:hover { background: var(--y2); border-color: var(--y5); }
+  .week-nav-top button:disabled { opacity: 0.35; cursor: not-allowed; }
+  .video-embed-area {
+    background: var(--dark2);
+    border-radius: var(--radius);
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    position: relative;
+    margin: 2rem 0;
+    border: 2px solid var(--y4);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .video-embed-area iframe { width: 100%; height: 100%; border: none; }
+  .video-placeholder {
+    text-align: center; color: rgba(255,243,176,0.5);
+  }
+  .video-placeholder .play-icon {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: rgba(255,215,0,0.15);
+    border: 2px solid rgba(255,215,0,0.3);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem; font-size: 1.5rem; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .video-placeholder .play-icon:hover { background: rgba(255,215,0,0.3); }
+  .video-placeholder p { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; }
+  .yt-input-row {
+    display: flex; gap: 0.75rem; margin-bottom: 0.5rem; flex-wrap: wrap;
+  }
+  .yt-input-row input {
+    flex: 1; min-width: 200px;
+    font-family: var(--mono); font-size: 0.75rem;
+    border: 1.5px solid var(--border2); border-radius: var(--radius-sm);
+    padding: 10px 14px; background: var(--surface2); color: var(--dark);
+    outline: none;
+  }
+  .yt-input-row input:focus { border-color: var(--y4); }
+  .yt-input-row button {
+    font-family: var(--display); font-weight: 700; font-size: 0.82rem;
+    background: var(--y4); color: var(--dark2);
+    border: none; border-radius: var(--radius-sm);
+    padding: 10px 20px; cursor: pointer; transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .yt-input-row button:hover { background: var(--y5); }
+  .roto-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0; }
+  @media (max-width: 560px) { .roto-info-grid { grid-template-columns: 1fr; } }
+  .roto-info-card {
+    background: var(--white); border: 1px solid var(--border2);
+    border-radius: var(--radius); padding: 1.25rem;
+  }
+  .roto-info-label { font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.4rem; }
+  .roto-info-val { font-family: var(--display); font-weight: 700; font-size: 1.1rem; color: var(--dark); }
+  .progress-bar-wrap { background: var(--y2); border-radius: 4px; height: 6px; margin-top: 1.5rem; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--y5); border-radius: 4px; transition: width 0.5s; }
+  .roto-notes {
+    background: var(--y1); border: 1px solid var(--border2);
+    border-radius: var(--radius); padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .roto-notes h2 { font-family: var(--display); font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }
+  .roto-notes p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+  .weeks-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(130px,1fr));
+    gap: 0.75rem; margin: 1.5rem 0;
+  }
+  .week-thumb {
+    background: var(--white); border: 1.5px solid var(--border2);
+    border-radius: var(--radius-sm); padding: 0.75rem 1rem;
+    cursor: pointer; transition: all 0.2s; text-align: center;
+  }
+  .week-thumb:hover, .week-thumb.active { background: var(--y3); border-color: var(--y5); }
+  .week-thumb-num { font-family: var(--display); font-weight: 800; font-size: 1.2rem; color: var(--dark); }
+  .week-thumb-label { font-family: var(--mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+
+  /* ── SHARED FOOTER ── */
+  footer {
+    background: var(--dark2); color: rgba(255,243,176,0.6);
+    text-align: center; padding: 2rem;
+    font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em;
+  }
+  footer strong { color: var(--y3); }
+
+  /* ── STARS BG for dark sections ── */
+  .star { position: absolute; border-radius: 50%; background: rgba(255,243,176,0.6); z-index: 1; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--y1); }
+  ::-webkit-scrollbar-thumb { background: var(--y4); border-radius: 3px; }
+
+  /* responsive nav */
+  @media (max-width: 700px) {
+    .nav-links button { font-size: 0.6rem; padding: 6px 8px; }
+    .nav-logo { font-size: 0.9rem; }
+  }
+  @media (max-width: 480px) {
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="navigate('home')">
+    MMA<span>PORTFOLIO</span>
+  </div>
+  <div class="nav-links">
+    <button id="nav-home" onclick="navigate('home')">Home</button>
+    <button id="nav-about" onclick="navigate('about')">About</button>
+    <button id="nav-solar" onclick="navigate('solar')">Solar System</button>
+    <div class="nav-roto">
+      <button id="nav-roto">Rotoscoping ▾</button>
+      <div class="dropdown" id="roto-dropdown"></div>
+    </div>
+  </div>
+</nav>
+
+<!-- ════ HOME PAGE ════ -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-bg">
+      <div class="orbit-ring"><div class="orbit-dot"></div></div>
+      <div class="orbit-ring"><div class="orbit-dot"></div></div>
+      <div class="orbit-ring"><div class="orbit-dot"></div></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-tag">✦ MMA Final Output · BSIT-NS-2A · TUP Taguig</div>
+      <h1>MMA<br><span class="accent">PORTFOLIO</span></h1>
+      <p class="hero-sub">A 60-second rotoscoping journey across 12 weeks — blending Blender 3D, Python scripting, Photoshop, and After Effects.</p>
+      <div class="hero-profile">
+        <div class="avatar">CMG</div>
+        <div class="profile-text">
+          <div class="profile-name">Chriswell Mae Gentile</div>
+          <div class="profile-sub">BSIT-NS-2A · TUP — Taguig · MMA Course</div>
+        </div>
+      </div>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="navigate('roto-1')">View Week 1 Progress</button>
+        <button class="btn-secondary" onclick="navigate('solar')">Explore Solar System</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-section">
+    <div class="section-label">// tools & workflow</div>
+    <div class="section-title">What's inside<br>this project</div>
+    <div class="tools-grid">
+      <div class="tool-card">
+        <div class="tool-icon">🪐</div>
+        <div class="tool-name">Blender + Python</div>
+        <div class="tool-desc">3D planet rendering with custom Python scripts for procedural texturing, lighting, and camera automation.</div>
+        <div class="tool-tag">3D Render</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">🎞️</div>
+        <div class="tool-name">After Effects</div>
+        <div class="tool-desc">Frame-by-frame rotoscoping using AE's Roto Brush tool for precise subject isolation and compositing.</div>
+        <div class="tool-tag">Rotoscoping</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">🎨</div>
+        <div class="tool-name">Photoshop</div>
+        <div class="tool-desc">Manual masking, paint-over corrections, and texture enhancement for each frame of the rotoscoped sequence.</div>
+        <div class="tool-tag">Post-process</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">🎬</div>
+        <div class="tool-name">12-Week Journey</div>
+        <div class="tool-desc">5 seconds of progress per week, compiling into a 60-second final rotoscoped masterpiece for MMA.</div>
+        <div class="tool-tag">Timeline</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <strong>Chriswell Mae Gentile</strong> · BSIT-NS-2A · TUP — Taguig · Multimedia & Authoring
+  </footer>
+</div>
+
+<!-- ════ ABOUT PAGE ════ -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+    <div class="section-label">// the course</div>
+    <h1 class="section-title" style="max-width:600px;margin:0 auto;">Multimedia &amp;<br>Authoring (MMA)</h1>
+    <p style="color:var(--muted);max-width:520px;margin:1rem auto 0;font-size:0.95rem;line-height:1.7;font-weight:300;">An IT elective that bridges digital media production with programming — where creativity meets code.</p>
+  </div>
+
+  <div class="about-body">
+    <p style="font-size:0.95rem;color:var(--muted);line-height:1.8;margin-bottom:2rem;">
+      Multimedia &amp; Authoring is a core subject for IT students at Technological University of the Philippines — Taguig. It covers digital media production workflows including animation, video editing, 3D modeling, and interactive media authoring. This project serves as the final capstone output, combining rotoscoping techniques with 3D rendering.
+    </p>
+
+    <div class="about-grid">
+      <div class="about-card">
+        <h2>🎭 What is Rotoscoping?</h2>
+        <p>Rotoscoping is an animation technique where artists trace over live-action footage, frame by frame, to create realistic movement. Originally invented by Max Fleischer in 1915, it's now done digitally using tools like After Effects.</p>
+      </div>
+      <div class="about-card">
+        <h2>🪐 Connection to 3D</h2>
+        <p>3D rendered elements from Blender are composited into the rotoscoped footage, creating a seamless blend of real-world and computer-generated imagery — a technique widely used in modern VFX pipelines.</p>
+      </div>
+      <div class="about-card">
+        <h2>🐍 Python Scripting</h2>
+        <p>Blender's Python API (bpy) is used to automate the planet rendering pipeline — controlling materials, lighting, rotation keyframes, and camera paths programmatically for consistency across all 8 planets.</p>
+      </div>
+      <div class="about-card">
+        <h2>⏱️ 60-Second Output</h2>
+        <p>Each week produces 5 seconds of rotoscoped footage. Across 12 weeks, this compounds into a 60-second final video showcasing the full progress and growth of the rotoscoping work.</p>
+      </div>
+    </div>
+
+    <div style="margin:3rem 0;">
+      <div class="section-label">// weekly breakdown</div>
+      <div class="section-title" style="font-size:1.8rem;">12-Week Timeline</div>
+      <div class="timeline" style="margin-top:1.5rem;">
+        <div class="tl-item"><div class="tl-week">Week 1–2</div><div class="tl-title">Foundation & Setup</div><div class="tl-desc">Introduction to rotoscoping techniques, setting up the pipeline, shooting reference footage.</div></div>
+        <div class="tl-item"><div class="tl-week">Week 3–4</div><div class="tl-title">First Frames</div><div class="tl-desc">Beginning frame-by-frame masking in After Effects, learning Roto Brush workflows.</div></div>
+        <div class="tl-item"><div class="tl-week">Week 5–6</div><div class="tl-title">Refinement</div><div class="tl-desc">Improving edge quality, motion blur handling, and integrating Photoshop paint-overs.</div></div>
+        <div class="tl-item"><div class="tl-week">Week 7–8</div><div class="tl-title">3D Integration</div><div class="tl-desc">Compositing Blender-rendered planets and elements into the rotoscoped footage.</div></div>
+        <div class="tl-item"><div class="tl-week">Week 9–10</div><div class="tl-title">Color &amp; Effects</div><div class="tl-desc">Color grading, glow effects, and atmospheric compositing for cinematic look.</div></div>
+        <div class="tl-item"><div class="tl-week">Week 11–12</div><div class="tl-title">Final Polish</div><div class="tl-desc">Final corrections, sound design placeholder, export and final 60-second compilation.</div></div>
+      </div>
+    </div>
+
+    <div style="background:var(--y2);border:1px solid var(--border2);border-radius:var(--radius);padding:2rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+      <div class="avatar" style="width:64px;height:64px;font-size:1.1rem;flex-shrink:0;">CMG</div>
+      <div>
+        <div style="font-family:var(--display);font-weight:800;font-size:1.2rem;color:var(--dark);">Chriswell Mae Gentile</div>
+        <div style="font-family:var(--mono);font-size:0.65rem;color:var(--muted);letter-spacing:0.06em;margin-top:2px;">BSIT-NS-2A · Technological University of the Philippines — Taguig</div>
+        <div style="font-size:0.82rem;color:var(--muted);margin-top:0.5rem;line-height:1.5;">Multimedia &amp; Authoring · Final Project · Rotoscoping &amp; 3D Solar System</div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <strong>Chriswell Mae Gentile</strong> · BSIT-NS-2A · TUP — Taguig · Multimedia & Authoring
+  </footer>
+</div>
+
+<!-- ════ SOLAR SYSTEM PAGE ════ -->
+<div class="page" id="page-solar">
+  <div class="solar-hero" id="solar-hero-bg">
+    <video class="solar-hero-video" id="solar-hero-video" src="solarSystem.mp4" muted playsinline></video>
+    <div class="solar-hero-overlay"></div>
+    <div class="section-label">// blender + python rendered</div>
+    <h1>Solar System</h1>
+    <p>Enter your Earth age to compute how old you'd be on each planet — plus Blender 3D render placeholders for each world.</p>
+  </div>
+  <div class="solar-body">
+    <div class="solar-input-row">
+      <label>Your Earth Age (years):</label>
+      <input type="number" id="earth-age-input" value="20" min="1" max="120" oninput="updateAges()">
+    </div>
+    <div class="planets-grid" id="planets-grid"></div>
+  </div>
+
+  <!-- Expanded planet overlay -->
+  <div class="planet-overlay" id="planet-overlay" onclick="if(event.target===this) closePlanetExpand()">
+    <div class="planet-expanded">
+      <div class="expanded-video-side">
+        <button class="expanded-close" onclick="closePlanetExpand()">✕</button>
+        <video id="expanded-video" class="planet-visual" autoplay loop muted playsinline></video>
+      </div>
+      <div class="expanded-info-side">
+        <div class="expanded-name" id="expanded-name">Earth</div>
+        <div class="expanded-stat-pill" id="expanded-yearlen">1yr = 1 Earth yrs</div>
+        <div class="expanded-desc" id="expanded-desc">Description goes here.</div>
+        <div class="expanded-age-box">
+          <div class="expanded-age-label" id="expanded-age-label">Your age on Earth</div>
+          <div class="expanded-age-val" id="expanded-age-val">20 yrs</div>
+        </div>
+        <div class="expanded-input-row">
+          <label>Your Earth Age (years)</label>
+          <input type="number" id="expanded-age-input" min="1" max="120" value="20" oninput="onExpandedAgeInput()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <strong>Chriswell Mae Gentile</strong> · BSIT-NS-2A · TUP — Taguig · Multimedia & Authoring
+  </footer>
+</div>
+
+<!-- ════ ROTOSCOPING WEEK PAGES (dynamically rendered) ════ -->
+<div class="page" id="page-roto">
+  <div class="roto-header">
+    <div class="week-badge" id="roto-week-badge">WEEK 1</div>
+    <h1 id="roto-week-title">Foundation &amp; Setup</h1>
+    <p id="roto-week-subtitle">5 seconds · Weeks 1 of 12 · 0:00 – 0:05</p>
+  </div>
+
+  <div class="roto-page">
+    <!-- Week nav moved right below the header -->
+    <div class="week-nav-top">
+      <button id="prev-week-btn" onclick="changeWeek(-1)">← Previous</button>
+      <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted);" id="week-counter">Week 1 of 12</span>
+      <button id="next-week-btn" onclick="changeWeek(1)">Next →</button>
+    </div>
+
+    <!-- Video embed area -->
+    <div style="margin-bottom:0.5rem;">
+      <div class="section-label">// youtube embed · to update: find <strong>youryoutubelink</strong> in the WEEKS array in the script</div>
+    </div>
+    <div class="video-embed-area" id="video-embed-area">
+      <div class="video-placeholder">
+        <div class="play-icon" onclick="embedYTPrompt()">▶</div>
+        <p>Paste a YouTube URL above to embed your Week <span id="roto-embed-week">1</span> progress video</p>
+      </div>
+    </div>
+
+    <!-- Info cards -->
+    <div class="roto-info-grid">
+      <div class="roto-info-card">
+        <div class="roto-info-label">Duration This Week</div>
+        <div class="roto-info-val">5 seconds</div>
+      </div>
+      <div class="roto-info-card">
+        <div class="roto-info-label">Cumulative Progress</div>
+        <div class="roto-info-val" id="roto-cumulative">5 sec / 60 sec</div>
+      </div>
+      <div class="roto-info-card">
+        <div class="roto-info-label">Technique</div>
+        <div class="roto-info-val" id="roto-technique">Roto Brush</div>
+      </div>
+      <div class="roto-info-card">
+        <div class="roto-info-label">Tools Used</div>
+        <div class="roto-info-val" id="roto-tools">After Effects</div>
+      </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div style="margin:1.5rem 0 0.4rem;display:flex;justify-content:space-between;align-items:center;">
+      <div class="section-label">// overall 60-sec progress</div>
+      <div style="font-family:var(--mono);font-size:0.65rem;color:var(--muted);" id="roto-pct">8%</div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="roto-progress-fill" style="width:8%"></div>
+    </div>
+
+    <!-- Notes -->
+    <div class="roto-notes">
+      <h2 id="roto-notes-title">Week Notes</h2>
+      <p id="roto-notes-body">Select the week to see specific notes and progress details for this rotoscoping session.</p>
+    </div>
+
+    <!-- Week grid nav -->
+    <div style="margin:2rem 0 1rem;">
+      <div class="section-label">// jump to week</div>
+    </div>
+    <div class="weeks-grid" id="weeks-grid"></div>
+  </div>
+  <footer>
+    <strong>Chriswell Mae Gentile</strong> · BSIT-NS-2A · TUP — Taguig · Multimedia & Authoring
+  </footer>
+</div>
+
+<script>
+// ═══ DATA ═══
+const WEEKS = [
+  { title: "Foundation & Setup",   technique: "Reference Study",            tools: "FlipACLip",        ytId: "PskhW8sMcLU", notes: "Setting up the rotoscoping workspace in After Effects. Imported the reference footage and analyzed the subject's movement. Learned the Roto Brush 2.0 tool and created initial rough masks for the first 5 seconds of footage. Focus this week: getting clean edge detection on high-contrast frames." },
+  { title: "First Strokes",        technique: "Roto Brush 2.0",             tools: "FlipACLip",        ytId: "Xske9xSFnMc", notes: "Applied Roto Brush across the 5-second segment and propagated the selection across frames. Discovered edge cases where the subject's hair and loose clothing caused errors. Used the Refine Edge tool to improve hair isolation. Manual Bezier mask correction on 12 problem frames." },
+  { title: "Edge Refinement",      technique: "Roto Brush + Refine Edge",   tools: "FlipACLip",        ytId: "UcaxrMpUWXA", notes: "Major focus on edge quality this week. Used Photoshop to paint-over rough edges on exported PNG sequences. Back-imported corrected frames as a pre-comp. Learning to balance speed with precision — some fast-motion frames required full manual masking." },
+  { title: "Motion Blur",          technique: "Motion Blur Compositing",    tools: "FlipACLip",        ytId: "9S58Gy0Lryc", notes: "Fast arm movements created significant motion blur challenges. Studied how real motion blur works and replicated it artificially on the isolated subject using the CC Force Motion Blur effect. This week's 5 seconds contain the most dynamic movement of the whole sequence." },
+  { title: "Background Removal",   technique: "BG Removal & Keying",        tools: "FlipACLip",        ytId: "8cpdvv0jC3s/", notes: "Experimented with background replacement — substituting the original background with a solid gradient and later a space-themed backdrop to tie into the solar system 3D renders. Used Keylight for green-tinted areas and manual roto for the rest." },
+  { title: "3D Integration Prep",  technique: "Tracking & Matchmove",       tools: "FlipACLip",        ytId: "QPAPPm_YY1Y", notes: "Camera tracking this week to match the movement of the live footage. Created a basic camera solve in After Effects' 3D camera tracker, which will be used to place Blender-rendered planet elements in the scene realistically." },
+  { title: "Blender Elements",     technique: "3D Compositing",             tools: "FlipACLip",        ytId: "B0RKuKz0mro", notes: "First successful composite of a Blender-rendered planet into the rotoscoped footage! Used EXR output from Blender with separate passes (diffuse, specular, shadow) for full compositing control in After Effects. Planet appears behind the subject thanks to the roto mask." },
+  { title: "Depth & Lighting",     technique: "Light Matching",             tools: "FlipACLip",        ytId: "9AKVq845kMk", notes: "Spent this week matching the lighting of 3D elements to the real-world footage. Analyzed the key light direction in the reference video and replicated it in Blender's HDRI setup. Added color grading in After Effects to unify the look of roto and 3D renders." },
+  { title: "Color Grading",        technique: "Color Grading",              tools: "FlipACLip",        ytId: "bBG47i0k1F0", notes: "Developed a cinematic color grade: desaturated shadows, warm highlights, enhanced yellows and golds to match the overall project aesthetic. Applied LUT-based grading as a starting point, then fine-tuned with Curves and Color Balance. Added film grain overlay." },
+  { title: "VFX & Glow",           technique: "Particle & Glow FX",         tools: "FlipACLip",        ytId: "4bh8BmjF8fI", notes: "Added atmospheric glow effects around the 3D planet elements. Particle systems for space dust and light rays. Used the Glow effect and CC Light Sweep for energy-like highlights on planet surfaces. The footage is starting to feel cinematic and polished." },
+  { title: "Final Corrections",    technique: "Full Pipeline Polish",       tools: "FlipACLip",        ytId: "jilcf00gUK8", notes: "Review pass over all 55 seconds compiled so far. Fixed 8 frames with edge artifacts, re-rendered 2 planet shots in Blender for better quality, and adjusted color consistency across weeks. Focus on making the whole 55 seconds feel like one cohesive piece." },
+  { title: "Final Compilation",    technique: "Export & Compilation",       tools: "FlipACLip",        ytId: "QdCrBDkbKWk", notes: "Final week! Assembled all 12 weeks of footage into a single 60-second sequence. Applied master color grade, added opening title card and end credits. Exported in 1080p H.264 for submission. This is the complete MMA final project — rotoscoping meets 3D solar system." }
+];
+
+const PLANETS = [
+  { name: "Mercury", color: "#8B7355", bg: "#3d2b1f", yearLen: 0.241, desc: "The smallest and fastest planet, Mercury completes a year in just 88 Earth days. Extreme temperature swings of 430°C to -180°C.", ring: false, glow: "#c8a882", texture: "radial-gradient(circle at 35% 35%, #c8a882, #8B7355 55%, #5a3d28)" },
+  { name: "Venus", color: "#E8C56A", bg: "#3d2800", yearLen: 0.615, desc: "The hottest planet in the solar system. Its thick CO₂ atmosphere traps heat, reaching 465°C. Venus rotates backwards.", ring: false, glow: "#f5d88a", texture: "radial-gradient(circle at 35% 35%, #f5d88a, #E8C56A 50%, #c8a030)" },
+  { name: "Earth", color: "#4A90D9", bg: "#001833", yearLen: 1, desc: "Our home — the only known planet with liquid water on its surface and complex life. One year = 365.25 days.", ring: false, glow: "#7ab8f0", texture: "radial-gradient(circle at 35% 35%, #7ab8f0, #4A90D9 45%, #2d6b3a)" },
+  { name: "Mars", color: "#C1440E", bg: "#2d0a00", yearLen: 1.881, desc: "The Red Planet. Home to Olympus Mons, the tallest volcano in the solar system. A day on Mars is 24h 37m.", ring: false, glow: "#e06030", texture: "radial-gradient(circle at 35% 35%, #e06030, #C1440E 55%, #8b2800)" },
+  { name: "Jupiter", color: "#C88B3A", bg: "#2a1800", yearLen: 11.86, desc: "The largest planet — 1,300 Earths could fit inside. The Great Red Spot is a storm that has raged for 400 years.", ring: false, glow: "#e0a855", texture: "repeating-linear-gradient(0deg, #e0a855 0px, #C88B3A 14px, #a06828 28px, #C88B3A 42px)" },
+  { name: "Saturn", color: "#E4D191", bg: "#1a1400", yearLen: 29.46, desc: "The ringed jewel of the solar system. Its rings are made of ice and rock. Saturn's density is so low it would float on water.", ring: true, glow: "#f0e0a0", texture: "radial-gradient(circle at 35% 35%, #f0e0a0, #E4D191 50%, #b09a50)" },
+  { name: "Uranus", color: "#7DE8E8", bg: "#001830", yearLen: 84.01, desc: "An ice giant tilted 98° on its axis, essentially rolling around the sun on its side. Has 27 known moons.", ring: false, glow: "#a0f0f0", texture: "radial-gradient(circle at 35% 35%, #a0f0f0, #7DE8E8 55%, #50b8b8)" },
+  { name: "Neptune", color: "#4169E1", bg: "#000820", yearLen: 164.8, desc: "The windiest planet — winds reach 2,100 km/h. Neptune was predicted mathematically before it was ever observed.", ring: false, glow: "#6090ff", texture: "radial-gradient(circle at 35% 35%, #6090ff, #4169E1 55%, #2040a0)" }
+];
+
+let currentWeek = 1;
+
+// ═══ NAVIGATION ═══
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+
+  if (page.startsWith('roto-')) {
+    const week = parseInt(page.split('-')[1]);
+    document.getElementById('page-roto').classList.add('active');
+    document.getElementById('nav-roto').classList.add('active');
+    loadWeek(week);
+  } else {
+    const el = document.getElementById('page-' + page);
+    if (el) el.classList.add('active');
+    const navBtn = document.getElementById('nav-' + page);
+    if (navBtn) navBtn.classList.add('active');
+    if (page === 'solar') playSolarHeroVideo();
+  }
+  window.scrollTo(0,0);
+}
+
+// ═══ SOLAR HERO VIDEO ═══
+// Plays solarSystem.mp4 once when entering the Solar System page,
+// then it becomes the looping background of the header.
+function playSolarHeroVideo() {
+  const vid = document.getElementById('solar-hero-video');
+  if (!vid) return;
+  vid.classList.add('visible');
+  vid.currentTime = 0;
+  vid.loop = true;
+  const playPromise = vid.play();
+  if (playPromise && playPromise.catch) {
+    playPromise.catch(() => { /* autoplay may be blocked until user interacts */ });
+  }
+}
+
+// ═══ BUILD WEEK DROPDOWN ═══
+function buildDropdown() {
+  const dd = document.getElementById('roto-dropdown');
+  dd.innerHTML = '';
+  WEEKS.forEach((w, i) => {
+    const btn = document.createElement('button');
+    btn.textContent = `Week ${i+1}: ${w.title}`;
+    btn.onclick = () => navigate(`roto-${i+1}`);
+    dd.appendChild(btn);
+  });
+}
+
+// ═══ LOAD WEEK ═══
+function loadWeek(n) {
+  currentWeek = Math.max(1, Math.min(12, n));
+  const w = WEEKS[currentWeek - 1];
+  const cumSec = currentWeek * 5;
+  const pct = Math.round((cumSec / 60) * 100);
+  const startSec = (currentWeek - 1) * 5;
+  const endSec = startSec + 5;
+  const fmt = s => `0:${String(s).padStart(2,'0')}`;
+
+  document.getElementById('roto-week-badge').textContent = `WEEK ${currentWeek}`;
+  document.getElementById('roto-week-title').innerHTML = w.title;
+  document.getElementById('roto-week-subtitle').textContent = `5 seconds · Week ${currentWeek} of 12 · ${fmt(startSec)} – ${fmt(endSec)}`;
+  document.getElementById('roto-cumulative').textContent = `${cumSec} sec / 60 sec`;
+  document.getElementById('roto-technique').textContent = w.technique;
+  document.getElementById('roto-tools').textContent = w.tools;
+  document.getElementById('roto-notes-title').textContent = `Week ${currentWeek} Notes`;
+  document.getElementById('roto-notes-body').textContent = w.notes;
+  document.getElementById('roto-pct').textContent = `${pct}%`;
+  document.getElementById('roto-progress-fill').style.width = pct + '%';
+  document.getElementById('week-counter').textContent = `Week ${currentWeek} of 12`;
+  document.getElementById('prev-week-btn').disabled = currentWeek === 1;
+  document.getElementById('next-week-btn').disabled = currentWeek === 12;
+
+  // Load hardcoded YouTube video for this week
+  // To update: find ytId: "youryoutubelink" for the week you want in the WEEKS array above and replace with your real YouTube video ID
+  const area = document.getElementById('video-embed-area');
+  const ytId = w.ytId;
+  if (ytId && ytId !== 'youryoutubelink') {
+    area.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytId}" allowfullscreen></iframe>`;
+  } else {
+    area.innerHTML = `<div class="video-placeholder">
+      <div class="play-icon">▶</div>
+      <p>Week ${currentWeek} video coming soon —<br>replace <strong style="color:var(--y4)">youryoutubelink</strong> in the WEEKS array</p>
+    </div>`;
+  }
+
+  // Update weeks grid
+  buildWeeksGrid();
+}
+
+function buildWeeksGrid() {
+  const grid = document.getElementById('weeks-grid');
+  grid.innerHTML = '';
+  WEEKS.forEach((w, i) => {
+    const div = document.createElement('div');
+    div.className = 'week-thumb' + (i+1 === currentWeek ? ' active' : '');
+    div.innerHTML = `<div class="week-thumb-num">${String(i+1).padStart(2,'0')}</div><div class="week-thumb-label">${w.title.split(' ').slice(0,2).join(' ')}</div>`;
+    div.onclick = () => loadWeek(i+1);
+    grid.appendChild(div);
+  });
+}
+
+function changeWeek(delta) { loadWeek(currentWeek + delta); }
+
+// ═══ SOLAR SYSTEM ═══
+function updateAges() {
+  const earthAge = parseFloat(document.getElementById('earth-age-input').value) || 20;
+  document.querySelectorAll('.planet-age-val').forEach((el, i) => {
+    const age = (earthAge / PLANETS[i].yearLen).toFixed(2);
+    el.textContent = `${age} yrs`;
+  });
+}
+
+function buildPlanets() {
+  const grid = document.getElementById('planets-grid');
+  grid.innerHTML = '';
+  const earthAge = parseFloat(document.getElementById('earth-age-input').value) || 20;
+  PLANETS.forEach((p, i) => {
+    const age = (earthAge / p.yearLen).toFixed(2);
+    const card = document.createElement('div');
+    card.className = 'planet-card';
+    card.onclick = () => openPlanetExpand(i);
+
+    let ringEl = '';
+    if (p.ring) {
+      // Adjusted ring position for the taller 3:4 container
+      ringEl = `<div style="position:absolute;width:80%;height:auto;aspect-ratio:1/.2;border-radius:50%;border:6px solid rgba(228,209,145,0.4);top:50%;left:50%;transform:translate(-50%,-50%) rotateX(75deg);pointer-events:none;z-index:2;"></div>`;
+    }
+
+    card.innerHTML = `
+      <div class="planet-render" style="background:${p.bg};">
+        <video src="planets/${p.name.toLowerCase()}.mp4" class="planet-visual" autoplay loop muted playsinline style="box-shadow: inset 0 0 50px rgba(0,0,0,0.5);"></video>
+        ${ringEl}
+        <div class="render-label">[ Click to expand ]</div>
+      </div>
+      <div class="planet-info">
+        <div class="planet-name">${p.name}</div>
+        <div class="planet-desc">${p.desc}</div>
+        <div class="planet-age-box">
+          <div class="planet-age-label">Your age on ${p.name}</div>
+          <div class="planet-age-val planet-age-val-${i}">${age} yrs</div>
+        </div>
+        <div class="planet-stats">
+          <div class="planet-stat-pill">1yr = ${p.yearLen} Earth yrs</div>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ═══ EXPANDED PLANET OVERLAY ═══
+let expandedPlanetIndex = null;
+
+function openPlanetExpand(i) {
+  expandedPlanetIndex = i;
+  const p = PLANETS[i];
+  const earthAge = parseFloat(document.getElementById('earth-age-input').value) || 20;
+
+  document.getElementById('expanded-name').textContent = p.name;
+  document.getElementById('expanded-desc').textContent = p.desc;
+  document.getElementById('expanded-yearlen').textContent = `1yr = ${p.yearLen} Earth yrs`;
+  document.getElementById('expanded-age-label').textContent = `Your age on ${p.name}`;
+  document.getElementById('expanded-age-input').value = earthAge;
+
+  const age = (earthAge / p.yearLen).toFixed(2);
+  document.getElementById('expanded-age-val').textContent = `${age} yrs`;
+
+  const vid = document.getElementById('expanded-video');
+  vid.src = `planets/${p.name.toLowerCase()}_animation.mp4`;
+  vid.play().catch(() => {});
+
+  document.getElementById('planet-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePlanetExpand() {
+  document.getElementById('planet-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+  const vid = document.getElementById('expanded-video');
+  vid.pause();
+  expandedPlanetIndex = null;
+}
+
+function onExpandedAgeInput() {
+  if (expandedPlanetIndex === null) return;
+  const earthAge = parseFloat(document.getElementById('expanded-age-input').value) || 20;
+  // Keep the main page input and all cards in sync with this value
+  document.getElementById('earth-age-input').value = earthAge;
+  updateAges();
+  const p = PLANETS[expandedPlanetIndex];
+  const age = (earthAge / p.yearLen).toFixed(2);
+  document.getElementById('expanded-age-val').textContent = `${age} yrs`;
+}
+
+// Close on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closePlanetExpand();
+});
+
+// ═══ STARS BG for solar page ═══
+function buildStars() {
+  const hero = document.getElementById('solar-hero-bg');
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.6+0.2}`;
+    hero.appendChild(s);
+  }
+}
+
+// ═══ INIT ═══
+buildDropdown();
+buildPlanets();
+buildStars();
+loadWeek(1);
+</script>
+</body>
+</html>
 
