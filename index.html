@@ -1062,7 +1062,7 @@ function openPlanetExpand(i) {
   document.getElementById('expanded-age-val').textContent = `${age} yrs`;
 
   const vid = document.getElementById('expanded-video');
-  vid.src = `planets/${p.name.toLowerCase()}_animation.mp4`;
+  vid.src = `planets/${p.name.toLowerCase()}.mp4`;
   vid.play().catch(() => {});
 
   document.getElementById('planet-overlay').classList.add('active');
