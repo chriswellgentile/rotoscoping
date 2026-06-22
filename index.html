@@ -325,161 +325,145 @@
   }
   .solar-input-row input:focus { border-color: var(--y4); }
   .planets-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1.5rem;
-  }
-  .planet-card {
-    background: var(--white);
-    border: 1.5px solid var(--border2);
-    border-radius: var(--radius);
-    overflow: visible;
-    transition: transform 0.25s cubic-bezier(.2,.8,.2,1), box-shadow 0.25s, border-color 0.2s;
-    cursor: pointer;
-    position: relative;
-  }
-  .planet-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 50px rgba(180,130,0,0.18);
-    border-color: var(--y4);
-    z-index: 5;
-  }
-  .planet-render {
-    aspect-ratio: 3 / 4;
-    width: 100%;
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    border-radius: var(--radius) var(--radius) 0 0;
-    font-size: 0.65rem;
-    font-family: var(--mono);
-    color: rgba(255,255,255,0.5);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .planet-render .planet-visual {
-    width: 100%;
-    height: 100%;
-    border-radius: 0;
-    object-fit: cover;
-    position: relative;
-    z-index: 1;
-    transition: transform 0.35s;
-  }
-  .planet-card:hover .planet-visual { transform: scale(1.05); }
-  .planet-render .render-label {
-    position: absolute; bottom: 8px; right: 10px;
-    font-family: var(--mono); font-size: 0.55rem;
-    color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
 
-  /* ── PLANET EXPANDED VIEW (overlay, near-fullscreen) ── */
-  .planet-overlay {
-    position: fixed; inset: 0; z-index: 1000;
-    background: rgba(10,8,0,0.78);
-    display: none;
-    align-items: center; justify-content: center;
-    padding: 3vh 3vw;
-  }
-  .planet-overlay.active { display: flex; }
-  .planet-expanded {
-    background: var(--dark2);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
-    width: 100%; height: 100%;
-    max-width: 1400px;
-    display: flex;
-    overflow: hidden;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-    animation: expandIn 0.3s cubic-bezier(.2,.8,.2,1);
-  }
-  @keyframes expandIn {
-    from { transform: scale(0.94); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
-  .expanded-video-side {
-    flex: 0 0 75%;
-    max-width: 75%;
-    position: relative;
-    background: #000;
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-  }
-  .expanded-video-side video {
-    width: 100%; height: 100%;
-    object-fit: cover;
-  }
-  .expanded-info-side {
-    flex: 0 0 25%;
-    max-width: 25%;
-    background: var(--surface);
-    padding: 2rem 1.75rem;
-    overflow-y: auto;
-    display: flex; flex-direction: column;
-  }
-  @media (max-width: 800px) {
-    .planet-expanded { flex-direction: column; }
-    .expanded-video-side { flex: 0 0 50%; max-width: 100%; height: 50%; }
-    .expanded-info-side { flex: 1 1 50%; max-width: 100%; }
-  }
-  .expanded-close {
-    position: absolute; top: 16px; right: 16px; z-index: 10;
-    width: 38px; height: 38px; border-radius: 50%;
-    background: rgba(0,0,0,0.55); color: var(--y3);
-    border: 1px solid rgba(255,255,255,0.2);
-    font-size: 1.1rem; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
-  .expanded-close:hover { background: var(--y4); color: var(--dark2); }
-  .expanded-name { font-family: var(--display); font-weight: 800; font-size: 1.8rem; color: var(--dark); letter-spacing: -1px; }
-  .expanded-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin: 0.75rem 0 1.5rem; }
-  .expanded-age-box {
-    background: var(--y2); border: 1px solid var(--border2);
-    border-radius: var(--radius); padding: 1rem 1.1rem;
-    margin-bottom: 1rem;
-  }
-  .expanded-age-label { font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.4rem; }
-  .expanded-age-val { font-family: var(--display); font-weight: 800; font-size: 1.8rem; color: var(--y7); }
-  .expanded-input-row { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border2); }
-  .expanded-input-row label { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); display: block; margin-bottom: 0.5rem; }
-  .expanded-input-row input {
-    width: 100%; font-family: var(--display); font-weight: 700; font-size: 1.1rem;
-    border: 1.5px solid var(--border2); border-radius: var(--radius-sm);
-    padding: 8px 14px; background: var(--surface2); color: var(--dark);
-    outline: none;
-  }
-  .expanded-input-row input:focus { border-color: var(--y4); }
-  .expanded-stat-pill {
-    display: inline-block;
-    font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em;
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 10px; padding: 4px 10px; color: var(--mid);
-    margin-bottom: 1.5rem;
-  }
-  .planet-info { padding: 1.25rem; }
-  .planet-name { font-family: var(--display); font-weight: 800; font-size: 1.3rem; color: var(--dark); letter-spacing: -0.5px; }
-  .planet-desc { font-size: 0.8rem; color: var(--muted); margin: 0.4rem 0 0.75rem; line-height: 1.5; }
-  .planet-age-box {
-    background: var(--y2);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius-sm);
-    padding: 0.6rem 0.9rem;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .planet-age-label { font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
-  .planet-age-val { font-family: var(--display); font-weight: 800; font-size: 1.1rem; color: var(--y7); }
-  .planet-stats {
-    display: flex; gap: 0.5rem; margin-top: 0.6rem;
-  }
-  .planet-stat-pill {
-    font-family: var(--mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.06em;
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 10px; padding: 3px 8px; color: var(--mid);
-  }
+.planet-card {
+  background: var(--white);
+  border: 1.5px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: visible; /* Keeps the scaled card visible outside its grid tracks */
+  /* Added a fallback transform to make sure transitions remain buttery smooth */
+  transform: translateY(0) scale(1);
+  transition: transform 0.3s cubic-bezier(.2,.8,.2,1), box-shadow 0.3s, border-color 0.2s;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+
+/* Enhanced Hover State: Combines translation and scaling together */
+.planet-card:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 20px 50px rgba(180,130,0,0.18), 0 15px 30px rgba(0, 0, 0, 0.08);
+  border-color: var(--y4);
+  z-index: 10; /* Higher priority layer to overlap adjacent grid elements */
+}
+
+.planet-render {
+  aspect-ratio: 3 / 4;
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius) var(--radius) 0 0;
+  font-size: 0.65rem;
+  font-family: var(--mono);
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.planet-render .planet-visual {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  object-fit: cover;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.35s ease;
+}
+
+.planet-card:hover .planet-visual { 
+  transform: scale(1.03); 
+}
+
+.planet-render .render-label {
+  position: absolute; bottom: 8px; right: 10px;
+  font-family: var(--mono); font-size: 0.55rem;
+  color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em;
+  z-index: 2;
+}
+
+.planet-info { 
+  padding: 1.25rem; 
+}
+
+.planet-name { 
+  font-family: var(--display); font-weight: 800; font-size: 1.3rem; color: var(--dark); letter-spacing: -0.5px; 
+}
+
+.planet-desc { 
+  font-size: 0.8rem; color: var(--muted); margin: 0.4rem 0 0.75rem; line-height: 1.5; 
+}
+
+.planet-age-box {
+  background: var(--y2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.9rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.planet-age-label { 
+  font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); 
+}
+
+.planet-age-val { 
+  font-family: var(--display); font-weight: 800; font-size: 1.1rem; color: var(--y7); 
+}
+
+.planet-stats {
+  display: flex; gap: 0.5rem; margin-top: 0.6rem;
+}
+
+.planet-stat-pill {
+  font-family: var(--mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.06em;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 3px 8px; color: var(--mid);
+}
+
+/* ── NEW NESTED INPUT HOVER ROW ── */
+.planet-hover-input-row {
+  max-height: 0;
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              opacity 0.25s ease, 
+              margin-top 0.3s ease;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 1px dashed var(--border2);
+}
+
+.planet-hover-input-row label {
+  font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--muted); display: block; margin: 0.5rem 0 0.3rem 0;
+}
+
+.planet-hover-input-row input {
+  width: 100%; font-family: var(--display); font-weight: 700; font-size: 1rem;
+  border: 1.5px solid var(--border2); border-radius: var(--radius-sm);
+  padding: 6px 12px; background: var(--surface2); color: var(--dark);
+  outline: none; box-sizing: border-box;
+}
+
+.planet-hover-input-row input:focus { 
+  border-color: var(--y4); 
+}
+
+/* Reveal interactive settings when hovering anywhere on the card */
+.planet-card:hover .planet-hover-input-row {
+  max-height: 80px;
+  opacity: 1;
+  visibility: visible;
+  margin-top: 0.75rem;
+}
 
   /* ── ROTOSCOPING WEEKLY ── */
   .roto-page { max-width: 900px; margin: 0 auto; padding: 1rem 2rem 5rem; }
