@@ -1086,29 +1086,29 @@ function buildPlanets() {
         <div class="planet-render" style="background:${p.bg};">
           <video src="planets/${p.name.toLowerCase()}.mp4" class="planet-visual" autoplay loop muted playsinline style="box-shadow: inset 0 0 50px rgba(0,0,0,0.5);"></video>
           ${ringEl}
-          <div class="render-label">// HOVERED PREVIEW</div>
+          <div class="render-label">[ Hover to expand ]</div>
         </div>
         
         <div class="planet-info">
           <div class="planet-name">${p.name}</div>
           
           <div class="planet-info-box">
-            <div class="planet-info-label">// Overview</div>
+            <div class="planet-info-label">Overview</div>
             <div class="planet-desc">${p.desc}</div>
           </div>
           
           <div class="planet-info-box planet-age-accent">
-            <div class="planet-info-label">// Your age on ${p.name}</div>
-            <div class="planet-age-val planet-age-val-${i}">${age} <small>YRS</small></div>
+            <div class="planet-info-label">Your age on ${p.name}</div>
+            <div class="planet-age-val planet-age-val-${i}">${age} yrs</div>
           </div>
           
           <div class="planet-info-box">
-            <div class="planet-info-label">// Orbital Period</div>
+            <div class="planet-info-label">Orbital Period</div>
             <div class="planet-stat-value">1 Year = ${p.yearLen} Earth Years</div>
           </div>
           
           <div class="planet-hover-input-row">
-            <label>// Your Earth Age (years)</label>
+            <label>Your Earth Age (years)</label>
             <input type="number" class="card-age-input" min="1" max="120" value="${earthAge}" oninput="onCardAgeInput(this)">
           </div>
         </div>
