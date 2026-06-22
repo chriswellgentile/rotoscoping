@@ -353,14 +353,14 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: var(--y4); /* Accent golden-yellow text using --y4 */
+    color: var(--dark); /* Accent golden-yellow text using --y4 */
   }
   
   /* Description Text inside its container */
   .planet-desc {
     font-family: inherit;
     font-size: 0.85rem;
-    color: var(--y1); /* Clean readability color matched to cream --y1 */
+    color: var(--dark); /* Clean readability color matched to cream --y1 */
     line-height: 1.6;
     margin: 0; 
   }
@@ -378,7 +378,7 @@
   .planet-age-val small {
     font-family: var(--mono);
     font-size: 0.8rem;
-    color: var(--y3); /* Text identifier colored with --y3 */
+    color: var(--dark); /* Text identifier colored with --y3 */
     font-weight: 700;
     margin-left: 3px;
   }
@@ -388,7 +388,7 @@
     font-family: var(--mono);
     font-weight: 600;
     font-size: 0.85rem;
-    color: var(--y1); /* Set stats print to cream --y1 */
+    color: var(--dark); /* Set stats print to cream --y1 */
     letter-spacing: 0.02em;
   }
   
@@ -466,7 +466,7 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    background: transparent; /* Removed dark background color */
+    background: --surface; /* Removed dark background color */
     transition: width 0.3s cubic-bezier(.2, .8, .2, 1), 
                 padding 0.3s cubic-bezier(.2, .8, .2, 1);
   }
@@ -474,7 +474,7 @@
   .planet-card:hover .planet-info {
     width: 25%; height: 100%;
     padding: 2rem 1.75rem;
-    background: transparent; /* Removed dark background color */
+    background: --surface; /* Removed dark background color */
     overflow-y: auto;
   }
   
@@ -482,7 +482,7 @@
     font-family: var(--display);
     font-weight: 800;
     font-size: 1.8rem;
-    color: var(--y1); /* Primary Name mapped to cream color --y1 */
+    color: var(--dark); /* Primary Name mapped to cream color --y1 */
     letter-spacing: -0.5px;
     margin-bottom: 1.2rem;
     text-transform: uppercase;
@@ -515,7 +515,7 @@
     font-weight: 700;
     text-transform: uppercase; 
     letter-spacing: 0.08em;
-    color: var(--y2); /* Label text mapped directly to --y2 */
+    color: var(--dark); /* Label text mapped directly to --y2 */
     display: block; 
     margin-bottom: 0.6rem;
   }
@@ -529,7 +529,7 @@
     border-radius: var(--radius-sm);
     padding: 10px 14px; 
     background: transparent; /* Removed dark background color */
-    color: var(--y1); /* Input field character values typed run on --y1 */
+    color: var(--dark); /* Input field character values typed run on --y1 */
     outline: none; 
     box-sizing: border-box;
   }
