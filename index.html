@@ -330,132 +330,124 @@
   gap: 1.5rem;
 }
 
+.planets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  /* Crucial: lets the hovered child reference the full screen, not a confined wrapper */
+  position: relative; 
+}
+
+/* Base Card State */
 .planet-card {
   background: var(--white);
   border: 1.5px solid var(--border2);
   border-radius: var(--radius);
-  overflow: visible; /* Keeps the scaled card visible outside its grid tracks */
-  /* Added a fallback transform to make sure transitions remain buttery smooth */
-  transform: translateY(0) scale(1);
-  transition: transform 0.3s cubic-bezier(.2,.8,.2,1), box-shadow 0.3s, border-color 0.2s;
   cursor: pointer;
-  position: relative;
-  z-index: 1;
+  height: 100%;
+  min-height: 380px; /* Adjust based on your preferred default height */
+  transition: all 0.3s cubic-bezier(.2, .8, .2, 1);
 }
 
-/* Enhanced Hover State: Combines translation and scaling together */
-.planet-card:hover {
-  transform: translateY(-8px) scale(1.05);
-  box-shadow: 0 20px 50px rgba(180,130,0,0.18), 0 15px 30px rgba(0, 0, 0, 0.08);
-  border-color: var(--y4);
-  z-index: 10; /* Higher priority layer to overlap adjacent grid elements */
-}
-
-.planet-render {
-  aspect-ratio: 3 / 4;
+/* Card inner alignment container */
+.planet-card-inner {
+  display: flex;
+  flex-direction: column; /* Vertically stacked by default */
   width: 100%;
-  height: auto;
+  height: 100%;
+}
+
+/* ── THE DEEP HOVER FULLSCREEN FLYOUT ── */
+.planet-card:hover {
+  position: fixed;
+  /* Leaving a small margin window so it feels like an immersive preview card */
+  top: 3vh;
+  left: 3vw;
+  width: 94vw;
+  height: 94vh;
+  
+  z-index: 9999;
+  border-color: var(--y4);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  border-radius: var(--radius);
+}
+
+/* Transform the inner card layout to a split screen layout on hover */
+.planet-card:hover .planet-card-inner {
+  flex-direction: row; /* Switches instantly to horizontal alignment */
+}
+
+/* Video Side (75% width on hover) */
+.planet-render {
+  width: 100%;
+  aspect-ratio: 3 / 4; /* Keeps standard styling inside the grid layout */
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
   border-radius: var(--radius) var(--radius) 0 0;
-  font-size: 0.65rem;
-  font-family: var(--mono);
-  color: rgba(255,255,255,0.5);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  transition: width 0.3s cubic-bezier(.2, .8, .2, 1), aspect-ratio 0.3s;
+}
+
+/* Force video block to expand to 75% wide when parent is hovered */
+.planet-card:hover .planet-render {
+  width: 75%;
+  height: 100%;
+  aspect-ratio: auto; /* Dissolves original aspect lock */
+  border-radius: var(--radius) 0 0 var(--radius);
 }
 
 .planet-render .planet-visual {
   width: 100%;
   height: 100%;
-  border-radius: 0;
   object-fit: cover;
-  position: relative;
-  z-index: 1;
-  transition: transform 0.35s ease;
 }
 
-.planet-card:hover .planet-visual { 
-  transform: scale(1.03); 
+/* Info & Calculation Side (25% width on hover) */
+.planet-info {
+  padding: 1.25rem;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s cubic-bezier(.2, .8, .2, 1), padding 0.3s;
 }
 
-.planet-render .render-label {
-  position: absolute; bottom: 8px; right: 10px;
-  font-family: var(--mono); font-size: 0.55rem;
-  color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em;
-  z-index: 2;
+/* Force panel sidebar block to scale down to 25% wide when parent is hovered */
+.planet-card:hover .planet-info {
+  width: 25%;
+  height: 100%;
+  padding: 2rem 1.75rem;
+  background: var(--surface);
+  overflow-y: auto;
 }
 
-.planet-info { 
-  padding: 1.25rem; 
-}
-
-.planet-name { 
-  font-family: var(--display); font-weight: 800; font-size: 1.3rem; color: var(--dark); letter-spacing: -0.5px; 
-}
-
-.planet-desc { 
-  font-size: 0.8rem; color: var(--muted); margin: 0.4rem 0 0.75rem; line-height: 1.5; 
-}
-
-.planet-age-box {
-  background: var(--y2);
-  border: 1px solid var(--border2);
-  border-radius: var(--radius-sm);
-  padding: 0.6rem 0.9rem;
-  display: flex; justify-content: space-between; align-items: center;
-}
-
-.planet-age-label { 
-  font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); 
-}
-
-.planet-age-val { 
-  font-family: var(--display); font-weight: 800; font-size: 1.1rem; color: var(--y7); 
-}
-
-.planet-stats {
-  display: flex; gap: 0.5rem; margin-top: 0.6rem;
-}
-
-.planet-stat-pill {
-  font-family: var(--mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.06em;
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 10px; padding: 3px 8px; color: var(--mid);
-}
-
-/* ── NEW NESTED INPUT HOVER ROW ── */
+/* Hide calculation controls by default */
 .planet-hover-input-row {
-  max-height: 0;
-  opacity: 0;
-  visibility: hidden;
-  overflow: hidden;
-  transition: max-height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), 
-              opacity 0.25s ease, 
-              margin-top 0.3s ease;
-  margin-top: 0;
-  padding-top: 0;
-  border-top: 1px dashed var(--border2);
+  display: none;
+  margin-top: auto; /* Pushes the entry calculation row cleanly to the bottom */
+  padding-top: 1rem;
+  border-top: 1px solid var(--border2);
+}
+
+/* Reveal input targets exclusively when the system is full screen */
+.planet-card:hover .planet-hover-input-row {
+  display: block;
 }
 
 .planet-hover-input-row label {
-  font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--muted); display: block; margin: 0.5rem 0 0.3rem 0;
+  font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--muted); display: block; margin-bottom: 0.5rem;
 }
 
 .planet-hover-input-row input {
-  width: 100%; font-family: var(--display); font-weight: 700; font-size: 1rem;
+  width: 100%; font-family: var(--display); font-weight: 700; font-size: 1.1rem;
   border: 1.5px solid var(--border2); border-radius: var(--radius-sm);
-  padding: 6px 12px; background: var(--surface2); color: var(--dark);
+  padding: 8px 14px; background: var(--surface2); color: var(--dark);
   outline: none; box-sizing: border-box;
 }
-
-.planet-hover-input-row input:focus { 
-  border-color: var(--y4); 
-}
+.planet-hover-input-row input:focus { border-color: var(--y4); }
 
 /* Reveal interactive settings when hovering anywhere on the card */
 .planet-card:hover .planet-hover-input-row {
@@ -1008,20 +1000,27 @@ function buildPlanets() {
     }
 
     card.innerHTML = `
-      <div class="planet-render" style="background:${p.bg};">
-        <video src="planets/${p.name.toLowerCase()}.mp4" class="planet-visual" autoplay loop muted playsinline style="box-shadow: inset 0 0 50px rgba(0,0,0,0.5);"></video>
-        ${ringEl}
-        <div class="render-label">[ Click to expand ]</div>
-      </div>
-      <div class="planet-info">
-        <div class="planet-name">${p.name}</div>
-        <div class="planet-desc">${p.desc}</div>
-        <div class="planet-age-box">
-          <div class="planet-age-label">Your age on ${p.name}</div>
-          <div class="planet-age-val planet-age-val-${i}">${age} yrs</div>
+      <div class="planet-card-inner">
+        <div class="planet-render" style="background:${p.bg};">
+          <video src="planets/${p.name.toLowerCase()}.mp4" class="planet-visual" autoplay loop muted playsinline style="box-shadow: inset 0 0 50px rgba(0,0,0,0.5);"></video>
+          ${ringEl}
+          <div class="render-label">[ Hover to expand ]</div>
         </div>
-        <div class="planet-stats">
-          <div class="planet-stat-pill">1yr = ${p.yearLen} Earth yrs</div>
+        <div class="planet-info">
+          <div class="planet-name">${p.name}</div>
+          <div class="planet-desc">${p.desc}</div>
+          <div class="planet-age-box">
+            <div class="planet-age-label">Your age on ${p.name}</div>
+            <div class="planet-age-val planet-age-val-${i}">${age} yrs</div>
+          </div>
+          <div class="planet-stats">
+            <div class="planet-stat-pill">1yr = ${p.yearLen} Earth yrs</div>
+          </div>
+          
+          <div class="planet-hover-input-row">
+            <label>Your Earth Age (years)</label>
+            <input type="number" class="card-age-input" min="1" max="120" value="${earthAge}" oninput="onCardAgeInput(this)">
+          </div>
         </div>
       </div>`;
     grid.appendChild(card);
