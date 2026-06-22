@@ -765,7 +765,7 @@
       </div>
     </div>
   </div> -->
-
+  <div class="planets-grid" id="planets-grid"></div>
   <footer>
     <strong>Chriswell Mae Gentile</strong> · BSIT-NS-2A · TUP — Taguig · Multimedia & Authoring
   </footer>
@@ -1035,6 +1035,8 @@ let expandedPlanetIndex = null;
 function buildPlanets() {
   const grid = document.getElementById('planets-grid');
   grid.innerHTML = '';
+  
+  // Grab current user input age, default to 20 if missing
   const earthAge = parseFloat(document.getElementById('earth-age-input').value) || 20;
   
   PLANETS.forEach((p, i) => {
@@ -1042,31 +1044,38 @@ function buildPlanets() {
     const card = document.createElement('div');
     card.className = 'planet-card';
 
+    // Handle optional planetary rings
     let ringEl = '';
     if (p.ring) {
       ringEl = `<div style="position:absolute;width:80%;height:auto;aspect-ratio:1/.2;border-radius:50%;border:6px solid rgba(228,209,145,0.4);top:50%;left:50%;transform:translate(-50%,-50%) rotateX(75deg);pointer-events:none;z-index:2;"></div>`;
     }
 
+    // New nested DOM structure required for the 75% / 25% horizontal split on hover
     card.innerHTML = `
-      <div class="planet-render" style="background:${p.bg};">
-        <video src="planets/${p.name.toLowerCase()}.mp4" class="planet-visual" autoplay loop muted playsinline style="box-shadow: inset 0 0 50px rgba(0,0,0,0.5);"></video>
-        ${ringEl}
-        <div class="render-label">[ Hover to expand ]</div>
-      </div>
-      <div class="planet-info">
-        <div class="planet-name">${p.name}</div>
-        <div class="planet-desc">${p.desc}</div>
-        <div class="planet-age-box">
-          <div class="planet-age-label">Your age on ${p.name}</div>
-          <div class="planet-age-val planet-age-val-${i}">${age} yrs</div>
-        </div>
-        <div class="planet-stats">
-          <div class="planet-stat-pill">1yr = ${p.yearLen} Earth yrs</div>
+      <div class="planet-card-inner">
+        <div class="planet-render" style="background:${p.bg};">
+          <video src="planets/${p.name.toLowerCase()}.mp4" class="planet-visual" autoplay loop muted playsinline style="box-shadow: inset 0 0 50px rgba(0,0,0,0.5);"></video>
+          ${ringEl}
+          <div class="render-label">[ Hover to expand ]</div>
         </div>
         
-        <div class="planet-hover-input-row">
-          <label>Change Earth Age:</label>
-          <input type="number" class="card-age-input" min="1" max="120" value="${earthAge}" oninput="onCardAgeInput(this)">
+        <div class="planet-info">
+          <div class="planet-name">${p.name}</div>
+          <div class="planet-desc">${p.desc}</div>
+          
+          <div class="planet-age-box">
+            <div class="planet-age-label">Your age on ${p.name}</div>
+            <div class="planet-age-val planet-age-val-${i}">${age} yrs</div>
+          </div>
+          
+          <div class="planet-stats">
+            <div class="planet-stat-pill">1yr = ${p.yearLen} Earth yrs</div>
+          </div>
+          
+          <div class="planet-hover-input-row">
+            <label>Your Earth Age (years)</label>
+            <input type="number" class="card-age-input" min="1" max="120" value="${earthAge}" oninput="onCardAgeInput(this)">
+          </div>
         </div>
       </div>`;
       
@@ -1074,20 +1083,28 @@ function buildPlanets() {
   });
 }
 
-// Keep all cards and the main header input perfectly in sync when typing inside a card
+/**
+ * Keeps the main page input and all planet calculations synchronized 
+ * real-time when typing inside any expanded hovered card.
+ */
 function onCardAgeInput(inputElement) {
   const earthAge = parseFloat(inputElement.value) || 20;
   
-  // Update the global header input
+  // 1. Sync the primary top-header/global input element if it exists
   const mainInput = document.getElementById('earth-age-input');
-  if (mainInput) mainInput.value = earthAge;
+  if (mainInput) {
+    mainInput.value = earthAge;
+  }
   
-  // Update all input values across all other cards so they don't look disconnected
+  // 2. Sync all other input boxes hidden across background cards
   document.querySelectorAll('.card-age-input').forEach(input => {
-    if (input !== inputElement) input.value = earthAge;
+    if (input !== inputElement) {
+      input.value = earthAge;
+    }
   });
 
-  // Call your existing function that recalculates the text strings (.planet-age-val-${i})
+  // 3. Fire your application's core logic recalculation loop
+  // (This updates all strings matching `.planet-age-val-${i}`)
   updateAges(); 
 }
 
