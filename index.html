@@ -765,7 +765,7 @@
     <div class="planets-grid" id="planets-grid"></div>
   </div>
 
-  <!-- Expanded planet overlay -->
+  <!-- Expanded planet overlay 
   <div class="planet-overlay" id="planet-overlay" onclick="if(event.target===this) closePlanetExpand()">
     <div class="planet-expanded">
       <div class="expanded-video-side">
@@ -786,7 +786,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <footer>
     <strong>Chriswell Mae Gentile</strong> · BSIT-NS-2A · TUP — Taguig · Multimedia & Authoring
@@ -1047,51 +1047,64 @@ function buildPlanets() {
 // ═══ EXPANDED PLANET OVERLAY ═══
 let expandedPlanetIndex = null;
 
-function openPlanetExpand(i) {
-  expandedPlanetIndex = i;
-  const p = PLANETS[i];
+function buildPlanets() {
+  const grid = document.getElementById('planets-grid');
+  grid.innerHTML = '';
   const earthAge = parseFloat(document.getElementById('earth-age-input').value) || 20;
+  
+  PLANETS.forEach((p, i) => {
+    const age = (earthAge / p.yearLen).toFixed(2);
+    const card = document.createElement('div');
+    card.className = 'planet-card';
 
-  document.getElementById('expanded-name').textContent = p.name;
-  document.getElementById('expanded-desc').textContent = p.desc;
-  document.getElementById('expanded-yearlen').textContent = `1yr = ${p.yearLen} Earth yrs`;
-  document.getElementById('expanded-age-label').textContent = `Your age on ${p.name}`;
-  document.getElementById('expanded-age-input').value = earthAge;
+    let ringEl = '';
+    if (p.ring) {
+      ringEl = `<div style="position:absolute;width:80%;height:auto;aspect-ratio:1/.2;border-radius:50%;border:6px solid rgba(228,209,145,0.4);top:50%;left:50%;transform:translate(-50%,-50%) rotateX(75deg);pointer-events:none;z-index:2;"></div>`;
+    }
 
-  const age = (earthAge / p.yearLen).toFixed(2);
-  document.getElementById('expanded-age-val').textContent = `${age} yrs`;
-
-  const vid = document.getElementById('expanded-video');
-  vid.src = `planets/${p.name.toLowerCase()}.mp4`;
-  vid.play().catch(() => {});
-
-  document.getElementById('planet-overlay').classList.add('active');
-  document.body.style.overflow = 'hidden';
+    card.innerHTML = `
+      <div class="planet-render" style="background:${p.bg};">
+        <video src="planets/${p.name.toLowerCase()}.mp4" class="planet-visual" autoplay loop muted playsinline style="box-shadow: inset 0 0 50px rgba(0,0,0,0.5);"></video>
+        ${ringEl}
+        <div class="render-label">[ Hover to expand ]</div>
+      </div>
+      <div class="planet-info">
+        <div class="planet-name">${p.name}</div>
+        <div class="planet-desc">${p.desc}</div>
+        <div class="planet-age-box">
+          <div class="planet-age-label">Your age on ${p.name}</div>
+          <div class="planet-age-val planet-age-val-${i}">${age} yrs</div>
+        </div>
+        <div class="planet-stats">
+          <div class="planet-stat-pill">1yr = ${p.yearLen} Earth yrs</div>
+        </div>
+        
+        <div class="planet-hover-input-row">
+          <label>Change Earth Age:</label>
+          <input type="number" class="card-age-input" min="1" max="120" value="${earthAge}" oninput="onCardAgeInput(this)">
+        </div>
+      </div>`;
+      
+    grid.appendChild(card);
+  });
 }
 
-function closePlanetExpand() {
-  document.getElementById('planet-overlay').classList.remove('active');
-  document.body.style.overflow = '';
-  const vid = document.getElementById('expanded-video');
-  vid.pause();
-  expandedPlanetIndex = null;
-}
+// Keep all cards and the main header input perfectly in sync when typing inside a card
+function onCardAgeInput(inputElement) {
+  const earthAge = parseFloat(inputElement.value) || 20;
+  
+  // Update the global header input
+  const mainInput = document.getElementById('earth-age-input');
+  if (mainInput) mainInput.value = earthAge;
+  
+  // Update all input values across all other cards so they don't look disconnected
+  document.querySelectorAll('.card-age-input').forEach(input => {
+    if (input !== inputElement) input.value = earthAge;
+  });
 
-function onExpandedAgeInput() {
-  if (expandedPlanetIndex === null) return;
-  const earthAge = parseFloat(document.getElementById('expanded-age-input').value) || 20;
-  // Keep the main page input and all cards in sync with this value
-  document.getElementById('earth-age-input').value = earthAge;
-  updateAges();
-  const p = PLANETS[expandedPlanetIndex];
-  const age = (earthAge / p.yearLen).toFixed(2);
-  document.getElementById('expanded-age-val').textContent = `${age} yrs`;
+  // Call your existing function that recalculates the text strings (.planet-age-val-${i})
+  updateAges(); 
 }
-
-// Close on Escape key
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closePlanetExpand();
-});
 
 // ═══ STARS BG for solar page ═══
 function buildStars() {
