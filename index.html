@@ -329,7 +329,7 @@
 
   /* Shared container styling based on your custom age box structure */
   .planet-info-box {
-    background: rgba(255, 248, 220, 0.04); /* Ultra-faint transparent --y1 tint for depth */
+    background: rgba(255, 248, 220, 0.05); /* Ultra-faint transparent --y1 tint for depth */
     border: 1px solid rgba(255, 215, 0, 0.2); /* Muted --y4 gold tech border outline */
     border-radius: var(--radius-sm);
     padding: 0.8rem 1rem;
@@ -466,7 +466,7 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    background: #0f0d05; 
+    background: transparent; /* Removed dark background color */
     transition: width 0.3s cubic-bezier(.2, .8, .2, 1), 
                 padding 0.3s cubic-bezier(.2, .8, .2, 1);
   }
@@ -474,7 +474,7 @@
   .planet-card:hover .planet-info {
     width: 25%; height: 100%;
     padding: 2rem 1.75rem;
-    background: #0f0d05;
+    background: transparent; /* Removed dark background color */
     overflow-y: auto;
   }
   
@@ -528,14 +528,13 @@
     border: 1.5px solid rgba(255, 215, 0, 0.3); 
     border-radius: var(--radius-sm);
     padding: 10px 14px; 
-    background: #161306; 
+    background: transparent; /* Removed dark background color */
     color: var(--y1); /* Input field character values typed run on --y1 */
     outline: none; 
     box-sizing: border-box;
   }
   .planet-hover-input-row input:focus { border-color: var(--y4); }
-
-  /* ── ROTOSCOPING WEEKLY ── */
+    /* ── ROTOSCOPING WEEKLY ── */
   .roto-page { max-width: 900px; margin: 0 auto; padding: 1rem 2rem 5rem; }
   .roto-header {
     background: var(--dark2);
