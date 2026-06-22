@@ -466,7 +466,8 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    background: --surface; /* Removed dark background color */
+    background: var(--surface2);    /* was: --surface */
+    color: var(--dark);    
     transition: width 0.3s cubic-bezier(.2, .8, .2, 1), 
                 padding 0.3s cubic-bezier(.2, .8, .2, 1);
   }
@@ -474,7 +475,7 @@
   .planet-card:hover .planet-info {
     width: 25%; height: 100%;
     padding: 2rem 1.75rem;
-    background: --surface; /* Removed dark background color */
+    background: var(--surface2); /* Removed dark background color */
     overflow-y: auto;
   }
   
