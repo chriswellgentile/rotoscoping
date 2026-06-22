@@ -325,6 +325,63 @@
   }
   .solar-input-row input:focus { border-color: var(--y4); }
   /* 1. Grid Container (Removed duplicate declaration) */
+  /* ── UNIFIED SIDEBAR TEXT BLOCKS ── */
+
+/* Shared container styling based on your custom age box structure */
+  .planet-info-box {
+    background: var(--surface2); /* Default subtle tint */
+    border: 1.5px solid var(--border2);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    box-sizing: border-box;
+  }
+  
+  /* Give the Age block a distinctive color accent block matching your theme */
+  .planet-info-box.planet-age-accent {
+    background: var(--y2);
+    border-color: var(--border2);
+  }
+  
+  /* Universal top micro-label */
+  .planet-info-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  
+  /* Description Text inside its container */
+  .planet-desc {
+    font-size: 0.8rem;
+    color: var(--dark);
+    line-height: 1.5;
+    margin: 0; /* Reset margins since wrapper handles layout spacing */
+  }
+  
+  /* Large Main Age Output */
+  .planet-age-val {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--y7);
+    line-height: 1;
+  }
+  
+  /* Orbital Stat Text */
+  .planet-stat-value {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--dark);
+  }
+  
+  /* ── LAYOUT & HOVER CONFIGURATIONS ── */
+  
   .planets-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -332,14 +389,12 @@
     position: relative; 
   }
   
-  /* 2. Base Card State */
   .planet-card {
     background: var(--white);
     border: 1.5px solid var(--border2);
     border-radius: var(--radius);
     cursor: pointer;
     min-height: 380px; 
-    /* Explicitly transition layout sizes so the expansion doesn't snap instantly */
     transition: transform 0.3s cubic-bezier(.2, .8, .2, 1), 
                 box-shadow 0.3s ease, 
                 border-color 0.2s ease,
@@ -347,7 +402,6 @@
                 width 0.3s ease, height 0.3s ease;
   }
   
-  /* Card inner alignment container */
   .planet-card-inner {
     display: flex;
     flex-direction: column; 
@@ -355,25 +409,20 @@
     height: 100%;
   }
   
-  /* 3. ── THE DEEP HOVER FULLSCREEN FLYOUT ── */
   .planet-card:hover {
     position: fixed;
-    top: 3vh;
-    left: 3vw;
-    width: 94vw;
-    height: 94vh;
+    top: 3vh; left: 3vw;
+    width: 94vw; height: 94vh;
     z-index: 9999;
     border-color: var(--y4);
     box-shadow: 0 30px 80px rgba(0,0,0,0.6);
     border-radius: var(--radius);
   }
   
-  /* Transform layout to horizontal split screen on hover */
   .planet-card:hover .planet-card-inner {
     flex-direction: row; 
   }
   
-  /* 4. Video Side (75% width on hover) */
   .planet-render {
     width: 100%;
     aspect-ratio: 3 / 4; 
@@ -383,27 +432,22 @@
     position: relative;
     overflow: hidden;
     border-radius: var(--radius) var(--radius) 0 0;
-    /* Added height and border-radius transitions */
     transition: width 0.3s cubic-bezier(.2, .8, .2, 1), 
                 height 0.3s cubic-bezier(.2, .8, .2, 1), 
                 border-radius 0.3s ease;
   }
   
-  /* Force video block to expand to 75% wide on hover */
   .planet-card:hover .planet-render {
-    width: 75%;
-    height: 100%;
+    width: 75%; height: 100%;
     aspect-ratio: auto; 
     border-radius: var(--radius) 0 0 var(--radius);
   }
   
   .planet-render .planet-visual {
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     object-fit: cover;
   }
   
-  /* 5. Info & Calculation Side (25% width on hover) */
   .planet-info {
     padding: 1.25rem;
     width: 100%;
@@ -414,33 +458,38 @@
                 padding 0.3s cubic-bezier(.2, .8, .2, 1);
   }
   
-  /* Force panel sidebar block to scale to 25% wide on hover */
   .planet-card:hover .planet-info {
-    width: 25%;
-    height: 100%;
+    width: 25%; height: 100%;
     padding: 2rem 1.75rem;
     background: var(--surface);
     overflow-y: auto;
   }
   
-  /* 6. Input Row (FIXED: Removed display:none conflict) */
+  .planet-name {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.6rem;
+    color: var(--dark);
+    letter-spacing: -0.5px;
+    margin-bottom: 1rem;
+  }
+  
+  /* ── LOWER POSITION HOVER INPUT PANEL ── */
   .planet-hover-input-row {
     max-height: 0;
     opacity: 0;
     visibility: hidden;
     overflow: hidden;
-    margin-top: auto; 
+    margin-top: auto; /* Pin to panel floor */
     padding-top: 0;
-    border-top: 1px solid var(--border2);
-    /* Added smooth sliding transitions */
+    border-top: 1px dashed var(--border2);
     transition: max-height 0.3s cubic-bezier(.2, .8, .2, 1), 
                 opacity 0.25s ease, 
                 padding 0.3s ease;
   }
   
-  /* Reveal input row smoothly when full screen */
   .planet-card:hover .planet-hover-input-row {
-    max-height: 120px; /* Gives plenty of room for layout without clipping */
+    max-height: 120px;
     opacity: 1;
     visibility: visible;
     padding-top: 1rem;
@@ -993,7 +1042,6 @@ function buildPlanets() {
   const grid = document.getElementById('planets-grid');
   grid.innerHTML = '';
   
-  // Grab current user input age, default to 20 if missing
   const earthAge = parseFloat(document.getElementById('earth-age-input').value) || 20;
   
   PLANETS.forEach((p, i) => {
@@ -1001,13 +1049,11 @@ function buildPlanets() {
     const card = document.createElement('div');
     card.className = 'planet-card';
 
-    // Handle optional planetary rings
     let ringEl = '';
     if (p.ring) {
       ringEl = `<div style="position:absolute;width:80%;height:auto;aspect-ratio:1/.2;border-radius:50%;border:6px solid rgba(228,209,145,0.4);top:50%;left:50%;transform:translate(-50%,-50%) rotateX(75deg);pointer-events:none;z-index:2;"></div>`;
     }
 
-    // New nested DOM structure required for the 75% / 25% horizontal split on hover
     card.innerHTML = `
       <div class="planet-card-inner">
         <div class="planet-render" style="background:${p.bg};">
@@ -1018,15 +1064,20 @@ function buildPlanets() {
         
         <div class="planet-info">
           <div class="planet-name">${p.name}</div>
-          <div class="planet-desc">${p.desc}</div>
           
-          <div class="planet-age-box">
-            <div class="planet-age-label">Your age on ${p.name}</div>
+          <div class="planet-info-box">
+            <div class="planet-info-label">Overview</div>
+            <div class="planet-desc">${p.desc}</div>
+          </div>
+          
+          <div class="planet-info-box planet-age-accent">
+            <div class="planet-info-label">Your age on ${p.name}</div>
             <div class="planet-age-val planet-age-val-${i}">${age} yrs</div>
           </div>
           
-          <div class="planet-stats">
-            <div class="planet-stat-pill">1yr = ${p.yearLen} Earth yrs</div>
+          <div class="planet-info-box">
+            <div class="planet-info-label">Orbital Period</div>
+            <div class="planet-stat-value">1 Year = ${p.yearLen} Earth Years</div>
           </div>
           
           <div class="planet-hover-input-row">
@@ -1039,7 +1090,6 @@ function buildPlanets() {
     grid.appendChild(card);
   });
 }
-
 /**
  * Keeps the main page input and all planet calculations synchronized 
  * real-time when typing inside any expanded hovered card.
