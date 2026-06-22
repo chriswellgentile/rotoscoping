@@ -329,8 +329,8 @@
 
   /* Shared container styling based on your custom age box structure */
   .planet-info-box {
-    background: rgba(22, 19, 6, 0.6); /* Translucent tech charcoal matching header theme */
-    border: 1px solid rgba(180, 130, 0, 0.25); /* Muted gold tech borders */
+    background: rgba(255, 248, 220, 0.04); /* Ultra-faint transparent --y1 tint for depth */
+    border: 1px solid rgba(255, 215, 0, 0.2); /* Muted --y4 gold tech border outline */
     border-radius: var(--radius-sm);
     padding: 0.8rem 1rem;
     margin-bottom: 0.75rem;
@@ -342,8 +342,8 @@
   
   /* Give the Age block a distinctive color accent block matching your theme */
   .planet-info-box.planet-age-accent {
-    background: rgba(180, 130, 0, 0.08); /* Amber dashboard tint */
-    border-color: var(--y4); /* Highlighting brand gold */
+    background: rgba(255, 243, 176, 0.08); /* Clean dashboard ambient accent fill using --y2 */
+    border-color: var(--y3); /* Focus border highlighting brand gold --y3 */
   }
   
   /* Universal top micro-label */
@@ -353,14 +353,14 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: var(--y4); /* Accent golden-yellow text */
+    color: var(--y4); /* Accent golden-yellow text using --y4 */
   }
   
   /* Description Text inside its container */
   .planet-desc {
     font-family: inherit;
     font-size: 0.85rem;
-    color: #e5dec9; /* Readability cream tone */
+    color: var(--y1); /* Clean readability color matched to cream --y1 */
     line-height: 1.6;
     margin: 0; 
   }
@@ -370,7 +370,7 @@
     font-family: var(--display);
     font-weight: 800;
     font-size: 1.6rem;
-    color: #ffffff; /* Brilliant white display text */
+    color: #ffffff; /* Keeping main calculation crisp white for clear priority */
     line-height: 1;
   }
   
@@ -378,7 +378,7 @@
   .planet-age-val small {
     font-family: var(--mono);
     font-size: 0.8rem;
-    color: var(--y4);
+    color: var(--y3); /* Text identifier colored with --y3 */
     font-weight: 700;
     margin-left: 3px;
   }
@@ -388,7 +388,7 @@
     font-family: var(--mono);
     font-weight: 600;
     font-size: 0.85rem;
-    color: #fffdf6; /* Clean off-white header tint */
+    color: var(--y1); /* Set stats print to cream --y1 */
     letter-spacing: 0.02em;
   }
   
@@ -466,7 +466,7 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    background: #0f0d05; /* Deep dashboard backdrop charcoal */
+    background: #0f0d05; 
     transition: width 0.3s cubic-bezier(.2, .8, .2, 1), 
                 padding 0.3s cubic-bezier(.2, .8, .2, 1);
   }
@@ -482,7 +482,7 @@
     font-family: var(--display);
     font-weight: 800;
     font-size: 1.8rem;
-    color: #fffdf6;
+    color: var(--y1); /* Primary Name mapped to cream color --y1 */
     letter-spacing: -0.5px;
     margin-bottom: 1.2rem;
     text-transform: uppercase;
@@ -496,7 +496,7 @@
     overflow: hidden;
     margin-top: auto; 
     padding-top: 0;
-    border-top: 1px dashed rgba(180, 130, 0, 0.3);
+    border-top: 1px dashed rgba(255, 215, 0, 0.25);
     transition: max-height 0.3s cubic-bezier(.2, .8, .2, 1), 
                 opacity 0.25s ease, 
                 padding 0.3s ease;
@@ -515,7 +515,7 @@
     font-weight: 700;
     text-transform: uppercase; 
     letter-spacing: 0.08em;
-    color: #c4bca6; 
+    color: var(--y2); /* Label text mapped directly to --y2 */
     display: block; 
     margin-bottom: 0.6rem;
   }
@@ -525,11 +525,11 @@
     font-family: var(--display); 
     font-weight: 700; 
     font-size: 1.1rem;
-    border: 1.5px solid rgba(180, 130, 0, 0.4); 
+    border: 1.5px solid rgba(255, 215, 0, 0.3); 
     border-radius: var(--radius-sm);
     padding: 10px 14px; 
     background: #161306; 
-    color: #fffdf6;
+    color: var(--y1); /* Input field character values typed run on --y1 */
     outline: none; 
     box-sizing: border-box;
   }
