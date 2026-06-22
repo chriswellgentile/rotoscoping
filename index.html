@@ -325,188 +325,152 @@
   }
   .solar-input-row input:focus { border-color: var(--y4); }
   /* 1. Grid Container (Removed duplicate declaration) */
-  /* ── UNIFIED SIDEBAR TEXT BLOCKS ── */
+  /* ── MMA PORTFOLIO UNIFIED SIDEBAR INFO BLOCKS ── */
 
-/* Shared container styling based on your custom age box structure */
-  .planet-info-box {
-    background: var(--surface2); /* Default subtle tint */
-    border: 1.5px solid var(--border2);
-    border-radius: var(--radius-sm);
-    padding: 0.8rem 1rem;
-    margin-bottom: 0.75rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    box-sizing: border-box;
-  }
-  
-  /* Give the Age block a distinctive color accent block matching your theme */
-  .planet-info-box.planet-age-accent {
-    background: var(--y2);
-    border-color: var(--border2);
-  }
-  
-  /* Universal top micro-label */
-  .planet-info-label {
-    font-family: var(--mono);
-    font-size: 0.6rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-  }
-  
-  /* Description Text inside its container */
-  .planet-desc {
-    font-size: 0.8rem;
-    color: var(--dark);
-    line-height: 1.5;
-    margin: 0; /* Reset margins since wrapper handles layout spacing */
-  }
-  
-  /* Large Main Age Output */
-  .planet-age-val {
-    font-family: var(--display);
-    font-weight: 800;
-    font-size: 1.3rem;
-    color: var(--y7);
-    line-height: 1;
-  }
-  
-  /* Orbital Stat Text */
-  .planet-stat-value {
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: var(--dark);
-  }
-  
-  /* ── LAYOUT & HOVER CONFIGURATIONS ── */
-  
-  .planets-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1.5rem;
-    position: relative; 
-  }
-  
-  .planet-card {
-    background: var(--white);
-    border: 1.5px solid var(--border2);
-    border-radius: var(--radius);
-    cursor: pointer;
-    min-height: 380px; 
-    transition: transform 0.3s cubic-bezier(.2, .8, .2, 1), 
-                box-shadow 0.3s ease, 
-                border-color 0.2s ease,
-                top 0.3s ease, left 0.3s ease, 
-                width 0.3s ease, height 0.3s ease;
-  }
-  
-  .planet-card-inner {
-    display: flex;
-    flex-direction: column; 
-    width: 100%;
-    height: 100%;
-  }
-  
-  .planet-card:hover {
-    position: fixed;
-    top: 3vh; left: 3vw;
-    width: 94vw; height: 94vh;
-    z-index: 9999;
-    border-color: var(--y4);
-    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-    border-radius: var(--radius);
-  }
-  
-  .planet-card:hover .planet-card-inner {
-    flex-direction: row; 
-  }
-  
-  .planet-render {
-    width: 100%;
-    aspect-ratio: 3 / 4; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    border-radius: var(--radius) var(--radius) 0 0;
-    transition: width 0.3s cubic-bezier(.2, .8, .2, 1), 
-                height 0.3s cubic-bezier(.2, .8, .2, 1), 
-                border-radius 0.3s ease;
-  }
-  
-  .planet-card:hover .planet-render {
-    width: 75%; height: 100%;
-    aspect-ratio: auto; 
-    border-radius: var(--radius) 0 0 var(--radius);
-  }
-  
-  .planet-render .planet-visual {
-    width: 100%; height: 100%;
-    object-fit: cover;
-  }
-  
+  /* Info Panel Sidebar Container */
   .planet-info {
     padding: 1.25rem;
     width: 100%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    transition: width 0.3s cubic-bezier(.2, .8, .2, 1), 
-                padding 0.3s cubic-bezier(.2, .8, .2, 1);
+    background: #0f0d05; /* Deep deep space charcoal from your header banner */
+    border-left: 1.5px solid var(--border2);
+    transition: width 0.3s cubic-bezier(.2, .8, .2, 1), padding 0.3s ease;
   }
   
-  .planet-card:hover .planet-info {
-    width: 25%; height: 100%;
-    padding: 2rem 1.75rem;
-    background: var(--surface);
-    overflow-y: auto;
+  /* Base style for every card block - mimicking the clean, dark UI headers */
+  .planet-info-box {
+    background: rgba(22, 19, 6, 0.6); /* Slightly lighter transparent charcoal fill */
+    border: 1px solid rgba(180, 130, 0, 0.25); /* Muted gold tech borders */
+    border-radius: var(--radius-sm);
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    box-sizing: border-box;
   }
   
+  /* Accent highlight block for the generated Age calculation */
+  .planet-info-box.planet-age-accent {
+    background: rgba(180, 130, 0, 0.08); /* Faint amber/yellow ambient glow */
+    border-color: var(--y4); /* Uses your bold brand yellow from the active header button */
+  }
+  
+  /* Dashboard Technical Mini-Labels */
+  .planet-info-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--y4); /* Dynamic header active yellow color text label */
+    opacity: 0.85;
+  }
+  
+  /* Main Planet Header */
   .planet-name {
     font-family: var(--display);
     font-weight: 800;
-    font-size: 1.6rem;
-    color: var(--dark);
+    font-size: 1.8rem;
+    color: #fffdf6; /* Off-white cream text */
     letter-spacing: -0.5px;
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
   }
   
-  /* ── LOWER POSITION HOVER INPUT PANEL ── */
+  /* Dynamic Overview Text Component */
+  .planet-desc {
+    font-size: 0.8rem;
+    color: #e5dec9; /* Creamy light text ensuring excellent readability */
+    line-height: 1.6;
+    margin: 0;
+  }
+  
+  /* Age Wrapper and Readout Engine */
+  .planet-age-wrapper {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  
+  .planet-age-sub {
+    font-size: 0.85rem;
+    color: #c4bca6;
+  }
+  
+  .planet-age-val {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: #ffffff; /* Bright focal highlight */
+    line-height: 1;
+  }
+  
+  .planet-age-val small {
+    font-size: 0.8rem;
+    color: var(--y4);
+    font-weight: 600;
+    margin-left: 2px;
+  }
+  
+  /* Tech Stat Period Values */
+  .planet-stat-value {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #fffdf6;
+  }
+  
+  /* ── LOWER POSITION INTERACTIVE CONTROLS ── */
+  
   .planet-hover-input-row {
     max-height: 0;
     opacity: 0;
     visibility: hidden;
     overflow: hidden;
-    margin-top: auto; /* Pin to panel floor */
+    margin-top: auto; /* Fasten directly to footer */
     padding-top: 0;
-    border-top: 1px dashed var(--border2);
-    transition: max-height 0.3s cubic-bezier(.2, .8, .2, 1), 
-                opacity 0.25s ease, 
-                padding 0.3s ease;
+    border-top: 1px dashed rgba(180, 130, 0, 0.3);
+    transition: max-height 0.3s cubic-bezier(.2, .8, .2, 1), opacity 0.25s ease, padding 0.3s ease;
   }
   
   .planet-card:hover .planet-hover-input-row {
     max-height: 120px;
     opacity: 1;
     visibility: visible;
-    padding-top: 1rem;
+    padding-top: 1.2rem;
   }
   
   .planet-hover-input-row label {
-    font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em;
-    color: var(--muted); display: block; margin-bottom: 0.5rem;
+    font-family: var(--mono); 
+    font-size: 0.6rem; 
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #c4bca6; 
+    display: block; 
+    margin-bottom: 0.6rem;
   }
   
   .planet-hover-input-row input {
-    width: 100%; font-family: var(--display); font-weight: 700; font-size: 1.1rem;
-    border: 1.5px solid var(--border2); border-radius: var(--radius-sm);
-    padding: 8px 14px; background: var(--surface2); color: var(--dark);
-    outline: none; box-sizing: border-box;
+    width: 100%; 
+    font-family: var(--display); 
+    font-weight: 700; 
+    font-size: 1.1rem;
+    border: 1.5px solid rgba(180, 130, 0, 0.4); 
+    border-radius: var(--radius-sm);
+    padding: 10px 14px; 
+    background: #161306; /* Dark input fill to match input rules */
+    color: #fffdf6;
+    outline: none; 
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
   }
-  .planet-hover-input-row input:focus { border-color: var(--y4); }
+  
+  .planet-hover-input-row input:focus { 
+    border-color: var(--y4); 
+    box-shadow: 0 0 10px rgba(180, 130, 0, 0.2);
+  }
 
   /* ── ROTOSCOPING WEEKLY ── */
   .roto-page { max-width: 900px; margin: 0 auto; padding: 1rem 2rem 5rem; }
@@ -1059,29 +1023,32 @@ function buildPlanets() {
         <div class="planet-render" style="background:${p.bg};">
           <video src="planets/${p.name.toLowerCase()}.mp4" class="planet-visual" autoplay loop muted playsinline style="box-shadow: inset 0 0 50px rgba(0,0,0,0.5);"></video>
           ${ringEl}
-          <div class="render-label">[ Hover to expand ]</div>
+          <div class="render-label">// HOVERED PREVIEW</div>
         </div>
         
         <div class="planet-info">
           <div class="planet-name">${p.name}</div>
           
           <div class="planet-info-box">
-            <div class="planet-info-label">Overview</div>
+            <div class="planet-info-label">// PLANETARY OVERVIEW</div>
             <div class="planet-desc">${p.desc}</div>
           </div>
           
           <div class="planet-info-box planet-age-accent">
-            <div class="planet-info-label">Your age on ${p.name}</div>
-            <div class="planet-age-val planet-age-val-${i}">${age} yrs</div>
+            <div class="planet-info-label">// COMPUTED METRIC</div>
+            <div class="planet-age-wrapper">
+              <span class="planet-age-sub text-muted">Your age:</span>
+              <span class="planet-age-val planet-age-val-${i}">${age} <small>YRS</small></span>
+            </div>
           </div>
           
           <div class="planet-info-box">
-            <div class="planet-info-label">Orbital Period</div>
-            <div class="planet-stat-value">1 Year = ${p.yearLen} Earth Years</div>
+            <div class="planet-info-label">// ORBITAL METRICS</div>
+            <div class="planet-stat-value">1 yr = ${p.yearLen} Earth yrs</div>
           </div>
           
           <div class="planet-hover-input-row">
-            <label>Your Earth Age (years)</label>
+            <label>// ADJUST TIME METRIC (EARTH YRS)</label>
             <input type="number" class="card-age-input" min="1" max="120" value="${earthAge}" oninput="onCardAgeInput(this)">
           </div>
         </div>
