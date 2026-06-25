@@ -878,7 +878,7 @@
 <!-- ════ SOLAR SYSTEM PAGE ════ -->
 <div class="page" id="page-solar">
   <div class="solar-splash" id="solar-splash">
-    <video id="solar-splash-video" src="solarSystem2.mp4" muted playsinline loop></video>
+    <video id="solar-splash-video" src="solarSystem_animation2.mp4" muted playsinline loop></video>
     <div class="solar-splash-overlay"></div>
     <div class="solar-splash-text">
       <h1>Solar System</h1>
@@ -886,7 +886,7 @@
     </div>
   </div>
   <div class="solar-hero" id="solar-hero-bg">
-    <video class="solar-hero-video" id="solar-hero-video" src="solarSystem2.mp4" muted playsinline></video>
+    <video class="solar-hero-video" id="solar-hero-video" src="solarSystem_animation2.mp4" muted playsinline></video>
     <div class="solar-hero-overlay"></div>
     <div class="section-label">blender + python rendered</div>
     <h1>Solar System</h1>
@@ -1016,20 +1016,20 @@
       <div class="final-video-slot">
         <div class="final-video-label">Final Cut · Part 1</div>
         <div class="video-embed-area-vertical" id="final-video-1">
-          <iframe src="https://www.youtube.com/embed/shorts/zPKNDNvR8Vw" allowfullscreen></iframe>
+          <iframe id="yt-final-1" src="https://www.youtube.com/embed/zPKNDNvR8Vw?enablejsapi=1" allowfullscreen></iframe>
         </div>
       </div>
       <div class="final-video-slot">
         <div class="final-video-label">Final Cut · Part 2</div>
         <div class="video-embed-area-vertical" id="final-video-2">
-          <iframe src="https://www.youtube.com/embed/shorts/_pVVrx-xGIs" allowfullscreen></iframe>
+          <iframe id="yt-final-2" src="https://www.youtube.com/embed/_pVVrx-xGIs?enablejsapi=1" allowfullscreen></iframe>
         </div>
       </div>
     </div>
 
     <div class="roto-notes">
       <h2>About the Final Output</h2>
-      <p>This page presents the completed 60-second rotoscoping project as two vertical (9:16) YouTube embeds. To update: replace <strong style="color:var(--y6)">youryoutubelink1</strong> and <strong style="color:var(--y6)">youryoutubelink2</strong> in the iframe <code>src</code> attributes above with your real YouTube video IDs.</p>
+      <p>This page presents the completed 60-second rotoscoping project as two vertical (9:16) YouTube embeds, synced so playing or pausing either one does the same to the other. To update: replace <strong style="color:var(--y6)">youryoutubelink1</strong> and <strong style="color:var(--y6)">youryoutubelink2</strong> in the iframe <code>src</code> attributes above with your real YouTube video IDs — keep the <code>?enablejsapi=1</code> part so the sync keeps working.</p>
     </div>
   </div>
   <footer>
@@ -1037,6 +1037,7 @@
   </footer>
 </div>
 
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
 // ═══ DATA ═══
 const WEEKS = [
@@ -1324,6 +1325,35 @@ function buildStars() {
     s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.6+0.2}`;
     hero.appendChild(s);
   }
+}
+
+// ═══ FINAL PAGE: SYNC THE TWO YOUTUBE VIDEOS ═══
+// Requires the iframes to include ?enablejsapi=1 (already set on yt-final-1 / yt-final-2).
+let finalPlayer1 = null;
+let finalPlayer2 = null;
+let finalVideosSyncing = false;
+
+function onYouTubeIframeAPIReady() {
+  finalPlayer1 = new YT.Player('yt-final-1', {
+    events: { onStateChange: (e) => syncFinalVideos(e, () => finalPlayer2) }
+  });
+  finalPlayer2 = new YT.Player('yt-final-2', {
+    events: { onStateChange: (e) => syncFinalVideos(e, () => finalPlayer1) }
+  });
+}
+
+function syncFinalVideos(event, getOtherPlayer) {
+  if (finalVideosSyncing) return;
+  const other = getOtherPlayer();
+  if (!other || typeof other.playVideo !== 'function') return;
+
+  finalVideosSyncing = true;
+  if (event.data === YT.PlayerState.PLAYING) {
+    other.playVideo();
+  } else if (event.data === YT.PlayerState.PAUSED) {
+    other.pauseVideo();
+  }
+  setTimeout(() => { finalVideosSyncing = false; }, 100);
 }
 
 // ═══ INIT ═══
