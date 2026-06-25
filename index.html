@@ -305,6 +305,45 @@
     z-index: 1;
     pointer-events: none;
   }
+  /* ── SOLAR SPLASH (fullscreen intro before it collapses into the header) ── */
+  .solar-splash {
+    position: fixed; inset: 0; z-index: 9998;
+    background: var(--dark2);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.6s ease;
+  }
+  .solar-splash.hide { opacity: 0; pointer-events: none; }
+  .solar-splash video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .solar-splash-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(26,18,0,0.2) 0%, rgba(26,18,0,0.65) 100%);
+    z-index: 1;
+  }
+  .solar-splash-text {
+    position: relative; z-index: 2;
+    text-align: center; color: var(--y2);
+    padding: 0 1.5rem;
+  }
+  .solar-splash-text h1 {
+    font-family: var(--display); font-weight: 800;
+    font-size: clamp(2.5rem, 9vw, 5.5rem);
+    letter-spacing: -2px;
+  }
+  .solar-splash-text p {
+    font-family: var(--mono); font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: rgba(255,243,176,0.7);
+    margin-top: 1.2rem;
+    animation: splashPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes splashPulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+
   .solar-hero h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2rem,5vw,4rem); letter-spacing: -2px; position: relative; z-index: 2; }
   .solar-hero p { font-size: 0.95rem; color: rgba(255,243,176,0.7); max-width: 500px; margin: 1rem auto 0; font-weight: 300; position: relative; z-index: 2; }
   .solar-hero .section-label { color: var(--y4); position: relative; z-index: 2; }
@@ -838,8 +877,16 @@
 
 <!-- ════ SOLAR SYSTEM PAGE ════ -->
 <div class="page" id="page-solar">
+  <div class="solar-splash" id="solar-splash">
+    <video id="solar-splash-video" src="solarSystem2.mp4" muted playsinline loop></video>
+    <div class="solar-splash-overlay"></div>
+    <div class="solar-splash-text">
+      <h1>Solar System</h1>
+      <p>Click anywhere or press space to continue</p>
+    </div>
+  </div>
   <div class="solar-hero" id="solar-hero-bg">
-    <video class="solar-hero-video" id="solar-hero-video" src="solarSystem_animation2.mp4" muted playsinline></video>
+    <video class="solar-hero-video" id="solar-hero-video" src="solarSystem2.mp4" muted playsinline></video>
     <div class="solar-hero-overlay"></div>
     <div class="section-label">blender + python rendered</div>
     <h1>Solar System</h1>
@@ -969,13 +1016,13 @@
       <div class="final-video-slot">
         <div class="final-video-label">Final Cut · Part 1</div>
         <div class="video-embed-area-vertical" id="final-video-1">
-          <iframe src="https://www.youtube.com/embed/youryoutubelink1" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/shorts/zPKNDNvR8Vw" allowfullscreen></iframe>
         </div>
       </div>
       <div class="final-video-slot">
         <div class="final-video-label">Final Cut · Part 2</div>
         <div class="video-embed-area-vertical" id="final-video-2">
-          <iframe src="https://www.youtube.com/embed/youryoutubelink2" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/shorts/_pVVrx-xGIs" allowfullscreen></iframe>
         </div>
       </div>
     </div>
@@ -1038,7 +1085,7 @@ function navigate(page) {
     if (el) el.classList.add('active');
     const navBtn = document.getElementById('nav-' + page);
     if (navBtn) navBtn.classList.add('active');
-    if (page === 'solar') playSolarHeroVideo();
+    if (page === 'solar') showSolarSplash();
   }
   window.scrollTo(0,0);
 }
@@ -1057,6 +1104,45 @@ function playSolarHeroVideo() {
     playPromise.catch(() => { /* autoplay may be blocked until user interacts */ });
   }
 }
+
+// ═══ SOLAR SPLASH (fullscreen intro, collapses into header bg on interaction) ═══
+function showSolarSplash() {
+  const splash = document.getElementById('solar-splash');
+  const splashVideo = document.getElementById('solar-splash-video');
+  if (!splash) return;
+  splash.classList.remove('hide');
+  splash.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  if (splashVideo) {
+    splashVideo.currentTime = 0;
+    const p = splashVideo.play();
+    if (p && p.catch) p.catch(() => {});
+  }
+}
+
+function dismissSolarSplash() {
+  const splash = document.getElementById('solar-splash');
+  if (!splash || splash.classList.contains('hide')) return;
+  splash.classList.add('hide');
+  document.body.style.overflow = '';
+  playSolarHeroVideo(); // the same footage fades in as the header background
+  setTimeout(() => { splash.style.display = 'none'; }, 650);
+}
+
+function isSolarSplashActive() {
+  const splash = document.getElementById('solar-splash');
+  return !!splash && !splash.classList.contains('hide') && splash.style.display !== 'none';
+}
+
+document.getElementById('solar-splash').addEventListener('click', () => {
+  if (isSolarSplashActive()) dismissSolarSplash();
+});
+document.addEventListener('keydown', (e) => {
+  if ((e.code === 'Space' || e.key === ' ') && isSolarSplashActive()) {
+    e.preventDefault();
+    dismissSolarSplash();
+  }
+});
 
 // ═══ BUILD WEEK DROPDOWN ═══
 function buildDropdown() {
