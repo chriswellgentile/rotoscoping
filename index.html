@@ -669,7 +669,7 @@
     position: relative;
     overflow: hidden;
   }
-  
+
   .solar-hero::after {
     content: '';
     position: absolute;
@@ -678,10 +678,97 @@
     opacity: 0.5;
     pointer-events: none;
   }
-  
+
+  .solar-hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    z-index: 0;
+  }
+
+  .solar-hero-video.visible { opacity: 0.5; }
+
+  .solar-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10, 14, 39, 0.3) 0%, rgba(10, 14, 39, 0.6) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* ──── SOLAR SPLASH (fullscreen intro) ──── */
+  .solar-splash {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: var(--dark2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.6s ease;
+  }
+
+  .solar-splash.hide {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .solar-splash video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .solar-splash-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10, 14, 39, 0.3) 0%, rgba(10, 14, 39, 0.7) 100%);
+    z-index: 1;
+  }
+
+  .solar-splash-text {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: var(--y2);
+    padding: 0 1.5rem;
+  }
+
+  .solar-splash-text h1 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(2.5rem, 9vw, 5.5rem);
+    letter-spacing: -2px;
+    color: var(--y1);
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+  }
+
+  .solar-splash-text p {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255, 243, 176, 0.7);
+    margin-top: 1.5rem;
+    animation: splashPulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes splashPulse {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 1; }
+  }
+
   .solar-hero-content {
     position: relative;
-    z-index: 1;
+    z-index: 2;
   }
   
   .solar-input-row {
@@ -748,7 +835,14 @@
     display: flex;
     flex-direction: column;
   }
-  
+
+  .planet-card-inner {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
+
   .planet-card::before {
     content: '';
     position: absolute;
@@ -757,15 +851,32 @@
     opacity: 0;
     transition: opacity 0.3s;
   }
-  
+
   .planet-card:hover {
     border-color: var(--y1);
     box-shadow: 0 0 40px rgba(255, 215, 0, 0.3), inset 0 0 30px rgba(255, 215, 0, 0.05);
     transform: translateY(-8px);
   }
-  
+
   .planet-card:hover::before { opacity: 1; }
-  
+
+  .planet-card.expanded {
+    position: fixed;
+    top: 3vh;
+    left: 3vw;
+    right: 3vw;
+    width: auto;
+    height: 94vh;
+    z-index: 9999;
+    border-color: var(--y1);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 50px rgba(255, 215, 0, 0.3);
+    min-height: auto;
+  }
+
+  .planet-card.expanded .planet-card-inner {
+    flex-direction: row;
+  }
+
   .planet-render {
     width: 100%;
     aspect-ratio: 3/4;
@@ -775,14 +886,21 @@
     position: relative;
     overflow: hidden;
     background: radial-gradient(circle at 35% 35%, rgba(255, 215, 0, 0.1), transparent);
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
-  
+
+  .planet-card.expanded .planet-render {
+    width: 75%;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
   .planet-visual {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-  
+
   .planet-info {
     padding: 2rem;
     flex: 1;
@@ -790,6 +908,14 @@
     flex-direction: column;
     background: rgba(255, 215, 0, 0.02);
     color: var(--white);
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .planet-card.expanded .planet-info {
+    width: 25%;
+    height: 100%;
+    padding: 2.5rem 2rem;
+    overflow-y: auto;
   }
   
   .planet-name {
@@ -1301,7 +1427,19 @@
 
 <!-- SOLAR SYSTEM PAGE -->
 <div class="page" id="page-solar">
-  <div class="solar-hero">
+  <!-- SOLAR SPLASH SCREEN -->
+  <div class="solar-splash" id="solar-splash">
+    <video id="solar-splash-video" src="solarsystem_animation2.mp4" muted playsinline loop></video>
+    <div class="solar-splash-overlay"></div>
+    <div class="solar-splash-text">
+      <h1>Planetary System</h1>
+      <p>Click anywhere or press space to continue</p>
+    </div>
+  </div>
+
+  <div class="solar-hero" id="solar-hero-bg">
+    <video class="solar-hero-video" id="solar-hero-video" src="solarsystem_animation2.mp4" muted playsinline></video>
+    <div class="solar-hero-overlay"></div>
     <div class="solar-hero-content">
       <div class="section-label">/ / interactive 3d simulation</div>
       <h1 class="section-title">Planetary System</h1>
@@ -1474,18 +1612,18 @@ function createStarfield() {
 
 // ═══ DATA ═══
 const WEEKS = [
-  { title: "Foundation & Setup", technique: "Reference Study", tools: "After Effects, CapCut", ytId: "PskhW8sMcLU", notes: "Setting up the rotoscoping workspace in After Effects. Imported the reference footage and analyzed the subject's movement." },
-  { title: "First Strokes", technique: "Roto Brush 2.0", tools: "After Effects, CapCut", ytId: "Xske9xSFnMc", notes: "Applied Roto Brush across the 5-second segment and propagated the selection across frames." },
-  { title: "Edge Refinement", technique: "Roto Brush + Refine Edge", tools: "After Effects, CapCut", ytId: "UcaxrMpUWXA", notes: "Major focus on edge quality this week. Used Photoshop to paint-over rough edges." },
-  { title: "Motion Blur", technique: "Motion Blur Compositing", tools: "After Effects, CapCut", ytId: "9S58Gy0Lryc", notes: "Fast arm movements created significant motion blur challenges." },
-  { title: "Background Removal", technique: "BG Removal & Keying", tools: "After Effects, CapCut", ytId: "8cpdvv0jC3s/", notes: "Experimented with background replacement — substituting the original background." },
-  { title: "3D Integration Prep", technique: "Tracking & Matchmove", tools: "After Effects, CapCut", ytId: "QPAPPm_YY1Y", notes: "Camera tracking this week to match the movement of the live footage." },
-  { title: "Blender Elements", technique: "3D Compositing", tools: "After Effects, CapCut", ytId: "B0RKuKz0mro", notes: "First successful composite of a Blender-rendered planet into the rotoscoped footage!" },
-  { title: "Depth & Lighting", technique: "Light Matching", tools: "After Effects, CapCut", ytId: "9AKVq845kMk", notes: "Spent this week matching the lighting of 3D elements to the real-world footage." },
-  { title: "Color Grading", technique: "Color Grading", tools: "After Effects, CapCut", ytId: "bBG47i0k1F0", notes: "Developed a cinematic color grade: desaturated shadows, warm highlights." },
-  { title: "VFX & Glow", technique: "Particle & Glow FX", tools: "After Effects, CapCut", ytId: "4bh8BmjF8fI", notes: "Added atmospheric glow effects around the 3D planet elements." },
-  { title: "Final Corrections", technique: "Full Pipeline Polish", tools: "After Effects, CapCut", ytId: "jilcf00gUK8", notes: "Review pass over all 55 seconds compiled so far. Fixed edge artifacts." },
-  { title: "Final Compilation", technique: "Export & Compilation", tools: "After Effects, CapCut", ytId: "QdCrBDkbKWk", notes: "Final week! Assembled all 12 weeks into a single 60-second sequence." }
+  { title: "Foundation & Setup", technique: "Reference Study", tools: "FlipACLip", ytId: "PskhW8sMcLU", notes: "Setting up the rotoscoping workspace in After Effects. Imported the reference footage and analyzed the subject's movement." },
+  { title: "First Strokes", technique: "Roto Brush 2.0", tools: "FlipACLip", ytId: "Xske9xSFnMc", notes: "Applied Roto Brush across the 5-second segment and propagated the selection across frames." },
+  { title: "Edge Refinement", technique: "Roto Brush + Refine Edge", tools: "FlipACLip", ytId: "UcaxrMpUWXA", notes: "Major focus on edge quality this week. Used Photoshop to paint-over rough edges." },
+  { title: "Motion Blur", technique: "Motion Blur Compositing", tools: "FlipACLip", ytId: "9S58Gy0Lryc", notes: "Fast arm movements created significant motion blur challenges." },
+  { title: "Background Removal", technique: "BG Removal & Keying", tools: "FlipACLip", ytId: "8cpdvv0jC3s/", notes: "Experimented with background replacement — substituting the original background." },
+  { title: "3D Integration Prep", technique: "Tracking & Matchmove", tools: "FlipACLip", ytId: "QPAPPm_YY1Y", notes: "Camera tracking this week to match the movement of the live footage." },
+  { title: "Blender Elements", technique: "3D Compositing", tools: "FlipACLip", ytId: "B0RKuKz0mro", notes: "First successful composite of a Blender-rendered planet into the rotoscoped footage!" },
+  { title: "Depth & Lighting", technique: "Light Matching", tools: "FlipACLip", ytId: "9AKVq845kMk", notes: "Spent this week matching the lighting of 3D elements to the real-world footage." },
+  { title: "Color Grading", technique: "Color Grading", tools: "FlipACLip", ytId: "bBG47i0k1F0", notes: "Developed a cinematic color grade: desaturated shadows, warm highlights." },
+  { title: "VFX & Glow", technique: "Particle & Glow FX", tools: "FlipACLip", ytId: "4bh8BmjF8fI", notes: "Added atmospheric glow effects around the 3D planet elements." },
+  { title: "Final Corrections", technique: "Full Pipeline Polish", tools: "FlipACLip", ytId: "jilcf00gUK8", notes: "Review pass over all 55 seconds compiled so far. Fixed edge artifacts." },
+  { title: "Final Compilation", technique: "Export & Compilation", tools: "FlipACLip", ytId: "QdCrBDkbKWk", notes: "Final week! Assembled all 12 weeks into a single 60-second sequence." }
 ];
 
 const PLANETS = [
@@ -1543,6 +1681,48 @@ const STEPS = [
 
 let currentWeek = 1;
 
+// ═══ SOLAR HERO VIDEO ═══
+function playSolarHeroVideo() {
+  const vid = document.getElementById('solar-hero-video');
+  if (!vid) return;
+  vid.classList.add('visible');
+  vid.currentTime = 0;
+  vid.loop = true;
+  const playPromise = vid.play();
+  if (playPromise && playPromise.catch) {
+    playPromise.catch(() => { /* autoplay may be blocked until user interacts */ });
+  }
+}
+
+// ═══ SOLAR SPLASH (fullscreen intro, collapses into header bg on interaction) ═══
+function showSolarSplash() {
+  const splash = document.getElementById('solar-splash');
+  const splashVideo = document.getElementById('solar-splash-video');
+  if (!splash) return;
+  splash.classList.remove('hide');
+  splash.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  if (splashVideo) {
+    splashVideo.currentTime = 0;
+    const p = splashVideo.play();
+    if (p && p.catch) p.catch(() => {});
+  }
+}
+
+function dismissSolarSplash() {
+  const splash = document.getElementById('solar-splash');
+  if (!splash || splash.classList.contains('hide')) return;
+  splash.classList.add('hide');
+  document.body.style.overflow = '';
+  playSolarHeroVideo();
+  setTimeout(() => { splash.style.display = 'none'; }, 650);
+}
+
+function isSolarSplashActive() {
+  const splash = document.getElementById('solar-splash');
+  return !!splash && !splash.classList.contains('hide') && splash.style.display !== 'none';
+}
+
 // ═══ NAVIGATION ═══
 function navigate(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1561,6 +1741,7 @@ function navigate(page) {
     if (el) el.classList.add('active');
     const navBtn = document.getElementById('nav-' + page);
     if (navBtn) navBtn.classList.add('active');
+    if (page === 'solar') showSolarSplash();
   }
   window.scrollTo(0, 0);
 }
@@ -1666,6 +1847,7 @@ function buildPlanets() {
 
     const card = document.createElement('div');
     card.className = 'planet-card';
+    card.setAttribute('data-planet-index', i);
 
     let ringEl = '';
     if (p.ring) {
@@ -1673,32 +1855,75 @@ function buildPlanets() {
     }
 
     card.innerHTML = `
-      <div class="planet-render" style="background:${p.bg};">
-        <div style="width:80%;aspect-ratio:1/1;border-radius:50%;background:${p.texture};box-shadow:inset 0 0 60px rgba(0,0,0,0.6), 0 0 40px rgba(255,215,0,0.2);"></div>
-        ${ringEl}
-      </div>
-      
-      <div class="planet-info">
-        <div class="planet-name">${p.name}</div>
-        
-        <div class="planet-info-box">
-          <div class="planet-info-label">About</div>
-          <div class="planet-desc">${p.desc}</div>
+      <div class="planet-card-inner">
+        <div class="planet-render" style="background:${p.bg};">
+          <video src="planets/${p.name.toLowerCase()}.mp4" class="planet-visual" autoplay loop muted playsinline></video>
+          ${ringEl}
         </div>
         
-        <div class="planet-info-box">
-          <div class="planet-info-label">Your Age</div>
-          <div class="planet-age-val">${ageDisplay}<small></small></div>
-        </div>
-        
-        <div class="planet-info-box">
-          <div class="planet-info-label">Orbital Period</div>
-          <div class="planet-stat-value">${p.yearLen === 0 ? 'Star' : (p.yearLen === 0.0748 ? 'Satellite' : p.yearLen + ' Earth Yrs')}</div>
+        <div class="planet-info">
+          <div class="planet-name">${p.name}</div>
+          
+          <div class="planet-info-box">
+            <div class="planet-info-label">About</div>
+            <div class="planet-desc">${p.desc}</div>
+          </div>
+          
+          <div class="planet-info-box">
+            <div class="planet-info-label">Your Age</div>
+            <div class="planet-age-val">${ageDisplay}<small></small></div>
+          </div>
+          
+          <div class="planet-info-box">
+            <div class="planet-info-label">Orbital Period</div>
+            <div class="planet-stat-value">${p.yearLen === 0 ? 'Star' : (p.yearLen === 0.0748 ? 'Satellite' : p.yearLen + ' Earth Yrs')}</div>
+          </div>
         </div>
       </div>`;
       
+    card.addEventListener('click', (e) => {
+      expandPlanetCard(card, i);
+    });
+    
     grid.appendChild(card);
   });
+}
+
+function expandPlanetCard(card) {
+  // Close any existing expanded card
+  document.querySelectorAll('.planet-card.expanded').forEach(c => {
+    if (c !== card) closePlanetCard(c);
+  });
+  
+  if (card.classList.contains('expanded')) {
+    closePlanetCard(card);
+  } else {
+    card.classList.add('expanded');
+    
+    // Close when pressing escape
+    const escapeHandler = (e) => {
+      if (e.key === 'Escape' && card.classList.contains('expanded')) {
+        closePlanetCard(card);
+        document.removeEventListener('keydown', escapeHandler);
+      }
+    };
+    document.addEventListener('keydown', escapeHandler);
+    
+    // Close when clicking outside
+    const clickHandler = (e) => {
+      if (!card.contains(e.target) && card.classList.contains('expanded')) {
+        closePlanetCard(card);
+        document.removeEventListener('click', clickHandler);
+      }
+    };
+    setTimeout(() => {
+      document.addEventListener('click', clickHandler);
+    }, 100);
+  }
+}
+
+function closePlanetCard(card) {
+  card.classList.remove('expanded');
 }
 
 function buildSteps() {
@@ -1725,6 +1950,18 @@ buildDropdown();
 buildPlanets();
 buildSteps();
 loadWeek(1);
+
+// ═══ SOLAR SPLASH EVENTS ═══
+document.getElementById('solar-splash').addEventListener('click', () => {
+  if (isSolarSplashActive()) dismissSolarSplash();
+});
+
+document.addEventListener('keydown', (e) => {
+  if ((e.code === 'Space' || e.key === ' ') && isSolarSplashActive()) {
+    e.preventDefault();
+    dismissSolarSplash();
+  }
+});
 </script>
 </body>
 </html>
