@@ -669,7 +669,7 @@
     position: relative;
     overflow: hidden;
   }
-
+  
   .solar-hero::after {
     content: '';
     position: absolute;
@@ -678,35 +678,33 @@
     opacity: 0.5;
     pointer-events: none;
   }
+  
+  .solar-hero-content {
+    position: relative;
+    z-index: 1;
+  }
 
-  .solar-hero-video {
+  .solar-hero-bg-video {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    z-index: -1;
     opacity: 0;
     transition: opacity 0.8s ease;
-    z-index: 0;
-  }
-
-  .solar-hero-video.visible { opacity: 0.5; }
-
-  .solar-hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(10, 14, 39, 0.3) 0%, rgba(10, 14, 39, 0.6) 100%);
-    z-index: 1;
     pointer-events: none;
   }
 
-  /* ──── SOLAR SPLASH (fullscreen intro) ──── */
-  .solar-splash {
+  .solar-hero-bg-video.active { opacity: 0.35; }
+
+  /* ──── SOLAR INTRO FULLSCREEN VIDEO ──── */
+  .solar-intro-overlay {
     position: fixed;
     inset: 0;
-    z-index: 9998;
-    background: var(--dark2);
-    display: flex;
+    z-index: 300;
+    background: #000;
+    display: none;
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -714,63 +712,39 @@
     transition: opacity 0.6s ease;
   }
 
-  .solar-splash.hide {
-    opacity: 0;
-    pointer-events: none;
-  }
+  .solar-intro-overlay.active { display: flex; }
+  .solar-intro-overlay.fading { opacity: 0; }
 
-  .solar-splash video {
-    position: absolute;
-    inset: 0;
+  .solar-intro-overlay video {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .solar-splash-overlay {
+  .solar-intro-hint {
     position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(10, 14, 39, 0.3) 0%, rgba(10, 14, 39, 0.7) 100%);
-    z-index: 1;
-  }
-
-  .solar-splash-text {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    color: var(--y2);
-    padding: 0 1.5rem;
-  }
-
-  .solar-splash-text h1 {
-    font-family: var(--display);
-    font-weight: 800;
-    font-size: clamp(2.5rem, 9vw, 5.5rem);
-    letter-spacing: -2px;
-    color: var(--y1);
-    text-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
-  }
-
-  .solar-splash-text p {
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
     font-family: var(--mono);
-    font-size: 0.75rem;
-    text-transform: uppercase;
+    font-size: 0.7rem;
     letter-spacing: 0.15em;
-    color: rgba(255, 243, 176, 0.7);
-    margin-top: 1.5rem;
-    animation: splashPulse 1.8s ease-in-out infinite;
+    text-transform: uppercase;
+    color: var(--y1);
+    background: rgba(10, 14, 39, 0.7);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    padding: 10px 22px;
+    border-radius: 20px;
+    animation: solarHintPulse 1.8s ease-in-out infinite;
+    pointer-events: none;
+    white-space: nowrap;
   }
 
-  @keyframes splashPulse {
-    0%, 100% { opacity: 0.45; }
+  @keyframes solarHintPulse {
+    0%, 100% { opacity: 0.6; }
     50% { opacity: 1; }
   }
 
-  .solar-hero-content {
-    position: relative;
-    z-index: 2;
-  }
-  
   .solar-input-row {
     display: flex;
     align-items: center;
@@ -835,14 +809,7 @@
     display: flex;
     flex-direction: column;
   }
-
-  .planet-card-inner {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-  }
-
+  
   .planet-card::before {
     content: '';
     position: absolute;
@@ -851,32 +818,15 @@
     opacity: 0;
     transition: opacity 0.3s;
   }
-
+  
   .planet-card:hover {
     border-color: var(--y1);
     box-shadow: 0 0 40px rgba(255, 215, 0, 0.3), inset 0 0 30px rgba(255, 215, 0, 0.05);
     transform: translateY(-8px);
   }
-
+  
   .planet-card:hover::before { opacity: 1; }
-
-  .planet-card.expanded {
-    position: fixed;
-    top: 3vh;
-    left: 3vw;
-    right: 3vw;
-    width: auto;
-    height: 94vh;
-    z-index: 9999;
-    border-color: var(--y1);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 50px rgba(255, 215, 0, 0.3);
-    min-height: auto;
-  }
-
-  .planet-card.expanded .planet-card-inner {
-    flex-direction: row;
-  }
-
+  
   .planet-render {
     width: 100%;
     aspect-ratio: 3/4;
@@ -886,21 +836,14 @@
     position: relative;
     overflow: hidden;
     background: radial-gradient(circle at 35% 35%, rgba(255, 215, 0, 0.1), transparent);
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
-
-  .planet-card.expanded .planet-render {
-    width: 75%;
-    height: 100%;
-    aspect-ratio: auto;
-  }
-
+  
   .planet-visual {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-
+  
   .planet-info {
     padding: 2rem;
     flex: 1;
@@ -908,14 +851,6 @@
     flex-direction: column;
     background: rgba(255, 215, 0, 0.02);
     color: var(--white);
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-
-  .planet-card.expanded .planet-info {
-    width: 25%;
-    height: 100%;
-    padding: 2.5rem 2rem;
-    overflow-y: auto;
   }
   
   .planet-name {
@@ -978,6 +913,108 @@
     font-size: 0.85rem;
     color: rgba(255, 215, 0, 0.8);
     letter-spacing: 0.02em;
+  }
+
+  /* ──── PLANET EXPANDED MODAL ──── */
+  .planet-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(5, 8, 18, 0.9);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .planet-modal-overlay.active {
+    display: flex;
+    animation: fadeIn 0.25s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .planet-modal {
+    display: flex;
+    width: 100%;
+    max-width: 1100px;
+    max-height: 90vh;
+    background: var(--dark2);
+    border: 1px solid rgba(255, 215, 0, 0.35);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(255, 215, 0, 0.25);
+  }
+
+  .planet-modal-video {
+    flex: 0 0 75%;
+    max-width: 75%;
+    aspect-ratio: 1/1;
+    background: #000;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .planet-modal-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .planet-modal-video .video-fallback {
+    text-align: center;
+    color: rgba(255, 215, 0, 0.5);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    padding: 2rem;
+  }
+
+  .planet-modal-info {
+    flex: 0 0 25%;
+    max-width: 25%;
+    padding: 2rem 1.5rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background: rgba(255, 215, 0, 0.02);
+  }
+
+  .planet-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(10, 14, 39, 0.8);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    color: var(--y1);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: all 0.2s;
+  }
+
+  .planet-modal-close:hover {
+    background: rgba(255, 215, 0, 0.15);
+    box-shadow: var(--glow-yellow);
+  }
+
+  @media (max-width: 800px) {
+    .planet-modal { flex-direction: column; max-height: 95vh; overflow-y: auto; }
+    .planet-modal-video { flex: 0 0 auto; max-width: 100%; }
+    .planet-modal-info { flex: 0 0 auto; max-width: 100%; }
   }
 
   /* ──── ROTOSCOPING PAGE ──── */
@@ -1125,6 +1162,81 @@
   .week-thumb-num { font-family: var(--display); font-weight: 800; font-size: 1.3rem; color: var(--y1); }
   .week-thumb-label { font-family: var(--mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255, 215, 0, 0.6); margin-top: 0.3rem; }
 
+  /* ──── ALL EPISODES / VIDEOS PAGE ──── */
+  .all-videos-page { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem 5rem; position: relative; z-index: 1; }
+
+  .all-videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .all-video-card {
+    background: rgba(255, 215, 0, 0.03);
+    border: 1px solid rgba(255, 215, 0, 0.25);
+    border-radius: var(--radius);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .all-video-card:hover {
+    border-color: var(--y1);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+    transform: translateY(-5px);
+  }
+
+  .all-video-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: rgba(0,0,0,0.4);
+    overflow: hidden;
+  }
+
+  .all-video-thumb iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .all-video-meta {
+    padding: 1.2rem;
+  }
+
+  .all-video-badge {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--neon-cyan);
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    padding: 3px 10px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-bottom: 0.6rem;
+  }
+
+  .all-video-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--y1);
+  }
+
+  .all-video-link {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: rgba(255, 215, 0, 0.5);
+    margin-top: 0.5rem;
+    display: block;
+    text-decoration: none;
+    word-break: break-all;
+  }
+
+  .all-video-link:hover { color: var(--y1); }
+
   /* ──── FINAL PAGE ──── */
   .final-page { max-width: 1000px; margin: 0 auto; padding: 1rem 2rem 5rem; position: relative; z-index: 1; }
   
@@ -1219,6 +1331,12 @@
 
 <div class="starfield" id="starfield"></div>
 
+<!-- SOLAR SYSTEM FULLSCREEN INTRO VIDEO -->
+<div class="solar-intro-overlay" id="solar-intro-overlay">
+  <video id="solar-intro-video" src="./solarsystem.mp4" autoplay muted playsinline loop></video>
+  <div class="solar-intro-hint">Click or press Space to continue</div>
+</div>
+
 <!-- NAV -->
 <nav>
   <div class="nav-logo" onclick="navigate('home')">◆ BSIT PORTFOLIO</div>
@@ -1306,7 +1424,7 @@
 <!-- ABOUT PAGE -->
 <div class="page" id="page-about">
   <div class="about-hero">
-    <div class="section-label">/ / student profile</div>
+    <div class="section-label">student profile</div>
     <h1 class="section-title">About Me</h1>
     <p style="color: rgba(255, 255, 255, 0.7); max-width: 600px; margin: 1rem auto 0; font-size: 1rem; line-height: 1.8;">Driven IT student passionate about web technologies, multimedia production, and innovative problem-solving.</p>
   </div>
@@ -1340,23 +1458,43 @@
         <div class="courses-group-title">Core Courses with Projects</div>
         
         <div class="course-item">
-          <div class="course-name">Computer Programming 1–5</div>
+          <div class="course-name">Computer Programming 1</div>
           <div class="course-placeholder">[Final Project Name & Description — Click to Add]</div>
+        </div>
+
+        <div class="course-item">
+          <div class="course-name">Computer Programming 2</div>
+          <div class="course-placeholder">"Find the Thief" - A VB.Net game where users will find the criminal using the clues they will unlock through 5 Levels with different games. It has a Loud House UI.</div>
+        </div>
+
+        <div class="course-item">
+          <div class="course-name">Computer Programming 3</div>
+          <div class="course-placeholder">"EG SaniClean" - A VB.Net and MySQL combination applying 3NF that handles transaction, monthly report, and users access.</div>
+        </div>
+
+        <div class="course-item">
+          <div class="course-name">Computer Programming 4</div>
+          <div class="course-placeholder">""</div>
+        </div>
+
+        <div class="course-item">
+          <div class="course-name">Computer Programming 5</div>
+          <div class="course-placeholder">"LeafMeAlone" - A Web Application that uses Laravel. Handles cart, transaction, user authentication, CMV model.</div>
         </div>
         
         <div class="course-item">
           <div class="course-name">Fundamentals of Database Systems</div>
-          <div class="course-placeholder">[Final Project Name & Description — Click to Add]</div>
+          <div class="course-placeholder">"EG SaniClean" - A VB.Net and MySQL combination applying 3NF that handles transaction, monthly report, and users access.</div>
         </div>
         
         <div class="course-item">
           <div class="course-name">Operating Systems</div>
-          <div class="course-placeholder">[Final Project Link & Description — Click to Add]</div>
+          <div class="course-placeholder">Creating VirtualBox for Windows Operating Systems and Server. - File Link - https://sites.google.com/view/chriswell-gentile/home </div>
         </div>
         
         <div class="course-item">
           <div class="course-name">Advanced Web Application</div>
-          <div class="course-placeholder">[Final Project Name & Description — Click to Add]</div>
+          <div class="course-placeholder">"Echelon Garage" - Uses Node.js, HTML, CSS, and Javascript. Handles tokens, authorization, and separate directory for frontend and backend</div>
         </div>
         
         <div class="course-item">
@@ -1366,7 +1504,7 @@
         
         <div class="course-item">
           <div class="course-name">Multimedia and Authoring</div>
-          <div class="course-placeholder">[Final Project Name & Description — Click to Add]</div>
+          <div class="course-placeholder">A live Website for rendered planets and rotoscoping videos.</div>
         </div>
       </div>
 
@@ -1427,21 +1565,10 @@
 
 <!-- SOLAR SYSTEM PAGE -->
 <div class="page" id="page-solar">
-  <!-- SOLAR SPLASH SCREEN -->
-  <div class="solar-splash" id="solar-splash">
-    <video id="solar-splash-video" src="solarsystem_animation2.mp4" muted playsinline loop></video>
-    <div class="solar-splash-overlay"></div>
-    <div class="solar-splash-text">
-      <h1>Planetary System</h1>
-      <p>Click anywhere or press space to continue</p>
-    </div>
-  </div>
-
-  <div class="solar-hero" id="solar-hero-bg">
-    <video class="solar-hero-video" id="solar-hero-video" src="solarsystem_animation2.mp4" muted playsinline></video>
-    <div class="solar-hero-overlay"></div>
+  <div class="solar-hero">
+    <video class="solar-hero-bg-video" id="solar-hero-bg-video" src="./solarsystem.mp4" muted loop playsinline></video>
     <div class="solar-hero-content">
-      <div class="section-label">/ / interactive 3d simulation</div>
+      <div class="section-label">interactive 3d simulation</div>
       <h1 class="section-title">Planetary System</h1>
       <p style="color: rgba(255, 255, 255, 0.7); max-width: 600px; margin: 1rem auto 0; font-size: 1.05rem; line-height: 1.8;">Calculate your age across all planets in our solar system. Enter your Earth age to discover how time works on Mercury, Venus, Mars, and beyond.</p>
 
@@ -1457,7 +1584,7 @@
 
     <!-- PROCEDURE SECTION -->
     <div style="margin-top: 6rem; padding-top: 3rem; border-top: 1px solid rgba(255, 215, 0, 0.2);">
-      <div class="section-label">/ / blender setup guide</div>
+      <div class="section-label">blender setup guide</div>
       <h2 class="section-title" style="font-size: 2.2rem; margin-bottom: 2rem;">How to Render Planets</h2>
       <p style="color: rgba(255, 255, 255, 0.7); max-width: 700px; margin-bottom: 3rem; font-size: 1rem; line-height: 1.8;">Follow these steps to set up Blender and generate the planetary 3D renders using Python automation scripts.</p>
 
@@ -1465,14 +1592,14 @@
 
       <!-- RESOURCE DOWNLOAD CARD -->
       <div style="margin-top: 3rem;">
-        <div class="section-label">/ / project resources</div>
+        <div class="section-label">project resources</div>
         <div class="resource-card">
           <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
             <div style="flex: 1; min-width: 300px;">
               <div style="font-family: var(--display); font-weight: 800; font-size: 1.3rem; color: var(--y1); margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);">Download Project Resources</div>
               <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1rem;">Access all textures (JPG, PNG), Python automation scripts, and Blender project files needed to render the planetary system.</p>
               <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                <a href="https://drive.google.com/drive/folders/your-folder-id-here" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--display); font-weight: 700; padding: 12px 24px; background: var(--y1); color: var(--dark); border: none; border-radius: 12px; cursor: pointer; text-decoration: none; transition: all 0.3s; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);">
+                <a href="https://drive.google.com/drive/folders/16KxGfIneAW7ztNxOtnb6BfG7_XZTWWK8" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--display); font-weight: 700; padding: 12px 24px; background: var(--y1); color: var(--dark); border: none; border-radius: 12px; cursor: pointer; text-decoration: none; transition: all 0.3s; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);">
                   <span>📁 Open Google Drive</span>
                 </a>
                 <a href="./resources.zip" download="blender-resources.zip" style="display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--display); font-weight: 600; padding: 12px 24px; background: transparent; color: var(--y1); border: 2px solid rgba(255, 215, 0, 0.4); border-radius: 12px; cursor: pointer; text-decoration: none; transition: all 0.3s;">
@@ -1490,6 +1617,16 @@
   <footer>
     <strong>Chriswell Mae Gentile</strong> · BSIT-NS-2A · TUP — Taguig
   </footer>
+</div>
+
+<!-- PLANET EXPANDED MODAL -->
+<div class="planet-modal-overlay" id="planet-modal-overlay" onclick="closePlanetModalOnBackdrop(event)">
+  <div class="planet-modal">
+    <div class="planet-modal-video" id="planet-modal-video">
+      <button class="planet-modal-close" onclick="closePlanetModal()">✕</button>
+    </div>
+    <div class="planet-modal-info" id="planet-modal-info"></div>
+  </div>
 </div>
 
 <!-- ROTOSCOPING WEEK PAGES -->
@@ -1554,6 +1691,29 @@
   </footer>
 </div>
 
+<!-- ALL VIDEOS PAGE -->
+<div class="page" id="page-roto-all">
+  <div class="roto-header">
+    <div class="week-badge">ALL EPISODES</div>
+    <h1>Every Week, One Page</h1>
+    <p>All 12 weekly rotoscoping videos plus the final compilation, in one place.</p>
+  </div>
+
+  <div class="all-videos-page">
+    <div class="week-nav-top">
+      <button onclick="navigate('roto-1')">← Back to Weeks</button>
+      <span style="font-family:var(--mono);font-size:0.65rem;color:rgba(255,215,0,0.6);">13 videos total</span>
+      <button onclick="navigate('home')">Home →</button>
+    </div>
+
+    <div class="all-videos-grid" id="all-videos-grid"></div>
+  </div>
+
+  <footer>
+    <strong>Chriswell Mae Gentile</strong> · BSIT-NS-2A · TUP — Taguig
+  </footer>
+</div>
+
 <!-- FINAL ROTOSCOPING PAGE -->
 <div class="page" id="page-roto-final">
   <div class="roto-header">
@@ -1571,13 +1731,13 @@
 
     <div class="final-videos-grid">
       <div class="final-video-slot">
-        <div class="final-video-label">Final Cut · Part 1</div>
+        <div class="final-video-label">REFERENCE</div>
         <div class="video-embed-area-vertical" id="final-video-1">
           <iframe id="yt-final-1" src="https://www.youtube.com/embed/zPKNDNvR8Vw?enablejsapi=1" allowfullscreen></iframe>
         </div>
       </div>
       <div class="final-video-slot">
-        <div class="final-video-label">Final Cut · Part 2</div>
+        <div class="final-video-label">Final Cut</div>
         <div class="video-embed-area-vertical" id="final-video-2">
           <iframe id="yt-final-2" src="https://www.youtube.com/embed/_pVVrx-xGIs?enablejsapi=1" allowfullscreen></iframe>
         </div>
@@ -1612,32 +1772,37 @@ function createStarfield() {
 
 // ═══ DATA ═══
 const WEEKS = [
-  { title: "Foundation & Setup", technique: "Reference Study", tools: "FlipACLip", ytId: "PskhW8sMcLU", notes: "Setting up the rotoscoping workspace in After Effects. Imported the reference footage and analyzed the subject's movement." },
-  { title: "First Strokes", technique: "Roto Brush 2.0", tools: "FlipACLip", ytId: "Xske9xSFnMc", notes: "Applied Roto Brush across the 5-second segment and propagated the selection across frames." },
-  { title: "Edge Refinement", technique: "Roto Brush + Refine Edge", tools: "FlipACLip", ytId: "UcaxrMpUWXA", notes: "Major focus on edge quality this week. Used Photoshop to paint-over rough edges." },
-  { title: "Motion Blur", technique: "Motion Blur Compositing", tools: "FlipACLip", ytId: "9S58Gy0Lryc", notes: "Fast arm movements created significant motion blur challenges." },
-  { title: "Background Removal", technique: "BG Removal & Keying", tools: "FlipACLip", ytId: "8cpdvv0jC3s/", notes: "Experimented with background replacement — substituting the original background." },
-  { title: "3D Integration Prep", technique: "Tracking & Matchmove", tools: "FlipACLip", ytId: "QPAPPm_YY1Y", notes: "Camera tracking this week to match the movement of the live footage." },
-  { title: "Blender Elements", technique: "3D Compositing", tools: "FlipACLip", ytId: "B0RKuKz0mro", notes: "First successful composite of a Blender-rendered planet into the rotoscoped footage!" },
-  { title: "Depth & Lighting", technique: "Light Matching", tools: "FlipACLip", ytId: "9AKVq845kMk", notes: "Spent this week matching the lighting of 3D elements to the real-world footage." },
-  { title: "Color Grading", technique: "Color Grading", tools: "FlipACLip", ytId: "bBG47i0k1F0", notes: "Developed a cinematic color grade: desaturated shadows, warm highlights." },
-  { title: "VFX & Glow", technique: "Particle & Glow FX", tools: "FlipACLip", ytId: "4bh8BmjF8fI", notes: "Added atmospheric glow effects around the 3D planet elements." },
-  { title: "Final Corrections", technique: "Full Pipeline Polish", tools: "FlipACLip", ytId: "jilcf00gUK8", notes: "Review pass over all 55 seconds compiled so far. Fixed edge artifacts." },
-  { title: "Final Compilation", technique: "Export & Compilation", tools: "FlipACLip", ytId: "QdCrBDkbKWk", notes: "Final week! Assembled all 12 weeks into a single 60-second sequence." }
+  { title: "Week 1", technique: "Project Setup", tools: "After Effects, CapCut", ytId: "PskhW8sMcLU", notes: "Imported the reference video and started rotoscoping the first 5 seconds of the dance." },
+  { title: "Week 2", technique: "Rotoscoping", tools: "After Effects, CapCut", ytId: "Xske9xSFnMc", notes: "Finished rotoscoping the next 5 seconds of the dance animation." },
+  { title: "Week 3", technique: "Rotoscoping", tools: "After Effects, CapCut", ytId: "UcaxrMpUWXA", notes: "Continued tracing another 5 seconds while keeping the movement smooth." },
+  { title: "Week 4", technique: "Rotoscoping", tools: "After Effects, CapCut", ytId: "9S58Gy0Lryc", notes: "Completed another 5-second section of the dance animation." },
+  { title: "Week 5", technique: "Rotoscoping", tools: "After Effects, CapCut", ytId: "8cpdvv0jC3s", notes: "Traced the next 5 seconds and checked the animation for consistency." },
+  { title: "Week 6", technique: "Rotoscoping", tools: "After Effects, CapCut", ytId: "QPAPPm_YY1Y", notes: "Finished another 5-second portion of the dance sequence." },
+  { title: "Week 7", technique: "Rotoscoping", tools: "After Effects, CapCut", ytId: "B0RKuKz0mro", notes: "Continued the animation by tracing the next 5 seconds." },
+  { title: "Week 8", technique: "Rotoscoping", tools: "After Effects, CapCut", ytId: "9AKVq845kMk", notes: "Completed another part of the dance and reviewed previous frames." },
+  { title: "Week 9", technique: "Rotoscoping", tools: "After Effects, CapCut", ytId: "bBG47i0k1F0", notes: "Finished the next 5 seconds and adjusted small details where needed." },
+  { title: "Week 10", technique: "Rotoscoping", tools: "After Effects, CapCut", ytId: "4bh8BmjF8fI", notes: "Continued tracing the dance while maintaining consistent frame quality." },
+  { title: "Week 11", technique: "Rotoscoping", tools: "After Effects, CapCut", ytId: "jilcf00gUK8", notes: "Completed the last 5-second section and checked the full animation." },
+  { title: "Week 12", technique: "Final Editing", tools: "After Effects, CapCut", ytId: "QdCrBDkbKWk", notes: "Combined all 12 weeks into a 1-minute rotoscoping animation." }
+];
+
+const FINAL_VIDEOS = [
+  { label: "Reference", ytId: "zPKNDNvR8Vw" },
+  { label: "Final Cut", ytId: "_pVVrx-xGIs" }
 ];
 
 const PLANETS = [
-  { name: "Sun", color: "#FDB813", bg: "#2a1a00", yearLen: 0, desc: "The massive star at the center of our solar system. 99.86% of all solar system mass.", ring: false, texture: "radial-gradient(circle at 35% 35%, #FFE66D, #FDB813 40%, #D4860D)" },
-  { name: "Mercury", color: "#8B7355", bg: "#3d2b1f", yearLen: 0.241, desc: "The smallest and fastest planet, Mercury completes a year in just 88 Earth days.", ring: false, texture: "radial-gradient(circle at 35% 35%, #c8a882, #8B7355 55%, #5a3d28)" },
-  { name: "Venus", color: "#E8C56A", bg: "#3d2800", yearLen: 0.615, desc: "The hottest planet in the solar system. Its thick CO₂ atmosphere traps heat at 465°C.", ring: false, texture: "radial-gradient(circle at 35% 35%, #f5d88a, #E8C56A 50%, #c8a030)" },
-  { name: "Earth", color: "#4A90D9", bg: "#001833", yearLen: 1, desc: "Our home — the only known planet with liquid water and complex life. 365.25 days.", ring: false, texture: "radial-gradient(circle at 35% 35%, #7ab8f0, #4A90D9 45%, #2d6b3a)" },
-  { name: "Mars", color: "#C1440E", bg: "#2d0a00", yearLen: 1.881, desc: "The Red Planet. Home to Olympus Mons, the tallest volcano in the solar system.", ring: false, texture: "radial-gradient(circle at 35% 35%, #e06030, #C1440E 55%, #8b2800)" },
-  { name: "Jupiter", color: "#C88B3A", bg: "#2a1800", yearLen: 11.86, desc: "The largest planet — 1,300 Earths could fit inside. Great Red Spot rages for 400 years.", ring: false, texture: "repeating-linear-gradient(0deg, #e0a855 0px, #C88B3A 14px, #a06828 28px, #C88B3A 42px)" },
-  { name: "Saturn", color: "#E4D191", bg: "#1a1400", yearLen: 29.46, desc: "The ringed jewel of the solar system. Its rings are made of ice and rock.", ring: true, texture: "radial-gradient(circle at 35% 35%, #f0e0a0, #E4D191 50%, #b09a50)" },
-  { name: "Uranus", color: "#7DE8E8", bg: "#001830", yearLen: 84.01, desc: "An ice giant tilted 98° on its axis, rolling around the sun on its side.", ring: false, texture: "radial-gradient(circle at 35% 35%, #a0f0f0, #7DE8E8 55%, #50b8b8)" },
-  { name: "Neptune", color: "#4169E1", bg: "#000820", yearLen: 164.8, desc: "The windiest planet — winds reach 2,100 km/h. Discovered mathematically first.", ring: false, texture: "radial-gradient(circle at 35% 35%, #6090ff, #4169E1 55%, #2040a0)" },
-  { name: "Moon", color: "#C0C0C0", bg: "#1a1a1a", yearLen: 0.0748, desc: "Earth's natural satellite. Orbits Earth every 27.3 days. Causes tides and stabilizes seasons.", ring: false, texture: "radial-gradient(circle at 35% 35%, #E8E8E8, #C0C0C0 50%, #808080)" },
-  { name: "Pluto", color: "#9E8B7E", bg: "#0f0a05", yearLen: 248, desc: "The dwarf planet beyond Neptune. Reclassified in 2006. Heart-shaped icy world.", ring: false, texture: "radial-gradient(circle at 35% 35%, #C5B5A8, #9E8B7E 55%, #6B5D50)" }
+  { name: "Sun", color: "#FDB813", bg: "#2a1a00", yearLen: 0, desc: "Texture: Hot plasma with sunspots. Axial Tilt: 7.25°. Rotates about 0.2 times in 5 Earth days. Moons: None.", ring: false, texture: "radial-gradient(circle at 35% 35%, #FFE66D, #FDB813 40%, #D4860D)" },
+  { name: "Mercury", color: "#8B7355", bg: "#3d2b1f", yearLen: 0.241, desc: "Texture: Rocky and heavily cratered. Axial Tilt: 0.03°. Rotates about 0.08 times in 5 Earth days. Moons: None.", ring: false, texture: "radial-gradient(circle at 35% 35%, #c8a882, #8B7355 55%, #5a3d28)" },
+  { name: "Venus", color: "#E8C56A", bg: "#3d2800", yearLen: 0.615, desc: "Texture: Thick clouds over a volcanic surface. Axial Tilt: 177.4° (retrograde). Rotates about 0.02 times in 5 Earth days. Moons: None.", ring: false, texture: "radial-gradient(circle at 35% 35%, #f5d88a, #E8C56A 50%, #c8a030)" },
+  { name: "Earth", color: "#4A90D9", bg: "#001833", yearLen: 1, desc: "Texture: Oceans, continents, and clouds. Axial Tilt: 23.4°. Rotates 5 times in 5 Earth days. Moons: 1 (Moon).", ring: false, texture: "radial-gradient(circle at 35% 35%, #7ab8f0, #4A90D9 45%, #2d6b3a)" },
+  { name: "Mars", color: "#C1440E", bg: "#2d0a00", yearLen: 1.881, desc: "Texture: Dusty rocky surface with iron oxide. Axial Tilt: 25.2°. Rotates about 4.9 times in 5 Earth days. Moons: 2 (Phobos, Deimos).", ring: false, texture: "radial-gradient(circle at 35% 35%, #e06030, #C1440E 55%, #8b2800)" },
+  { name: "Jupiter", color: "#C88B3A", bg: "#2a1800", yearLen: 11.86, desc: "Texture: Gas giant with colorful cloud bands. Axial Tilt: 3.1°. Rotates about 12 times in 5 Earth days. Moons: 95 (Io, Europa, Ganymede, Callisto).", ring: false, texture: "repeating-linear-gradient(0deg, #e0a855 0px, #C88B3A 14px, #a06828 28px, #C88B3A 42px)" },
+  { name: "Saturn", color: "#E4D191", bg: "#1a1400", yearLen: 29.46, desc: "Texture: Gas giant with icy rings and cloud bands. Axial Tilt: 26.7°. Rotates about 11 times in 5 Earth days. Moons: 274 (Titan, Enceladus, Rhea, Dione, Iapetus, Mimas).", ring: true, texture: "radial-gradient(circle at 35% 35%, #f0e0a0, #E4D191 50%, #b09a50)" },
+  { name: "Uranus", color: "#7DE8E8", bg: "#001830", yearLen: 84.01, desc: "Texture: Blue-green ice giant with methane clouds. Axial Tilt: 97.8°. Rotates about 7 times in 5 Earth days. Moons: 28 (Titania, Oberon, Umbriel, Ariel, Miranda).", ring: false, texture: "radial-gradient(circle at 35% 35%, #a0f0f0, #7DE8E8 55%, #50b8b8)" },
+  { name: "Neptune", color: "#4169E1", bg: "#000820", yearLen: 164.8, desc: "Texture: Deep blue ice giant with storm systems. Axial Tilt: 28.3°. Rotates about 8 times in 5 Earth days. Moons: 16 (Triton, Nereid, Proteus, Larissa).", ring: false, texture: "radial-gradient(circle at 35% 35%, #6090ff, #4169E1 55%, #2040a0)" },
+  { name: "Moon", color: "#C0C0C0", bg: "#1a1a1a", yearLen: 0.0748, desc: "Texture: Rocky surface with many craters. Axial Tilt: 6.7°. Rotates about 0.2 times in 5 Earth days. Moons: None.", ring: false, texture: "radial-gradient(circle at 35% 35%, #E8E8E8, #C0C0C0 50%, #808080)" },
+  { name: "Pluto", color: "#9E8B7E", bg: "#0f0a05", yearLen: 248, desc: "Texture: Icy surface of nitrogen and methane. Axial Tilt: 122.5°. Rotates about 0.8 times in 5 Earth days. Moons: 5 (Charon, Nix, Hydra, Kerberos, Styx).", ring: false, texture: "radial-gradient(circle at 35% 35%, #C5B5A8, #9E8B7E 55%, #6B5D50)" }
 ];
 
 const STEPS = [
@@ -1681,48 +1846,6 @@ const STEPS = [
 
 let currentWeek = 1;
 
-// ═══ SOLAR HERO VIDEO ═══
-function playSolarHeroVideo() {
-  const vid = document.getElementById('solar-hero-video');
-  if (!vid) return;
-  vid.classList.add('visible');
-  vid.currentTime = 0;
-  vid.loop = true;
-  const playPromise = vid.play();
-  if (playPromise && playPromise.catch) {
-    playPromise.catch(() => { /* autoplay may be blocked until user interacts */ });
-  }
-}
-
-// ═══ SOLAR SPLASH (fullscreen intro, collapses into header bg on interaction) ═══
-function showSolarSplash() {
-  const splash = document.getElementById('solar-splash');
-  const splashVideo = document.getElementById('solar-splash-video');
-  if (!splash) return;
-  splash.classList.remove('hide');
-  splash.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-  if (splashVideo) {
-    splashVideo.currentTime = 0;
-    const p = splashVideo.play();
-    if (p && p.catch) p.catch(() => {});
-  }
-}
-
-function dismissSolarSplash() {
-  const splash = document.getElementById('solar-splash');
-  if (!splash || splash.classList.contains('hide')) return;
-  splash.classList.add('hide');
-  document.body.style.overflow = '';
-  playSolarHeroVideo();
-  setTimeout(() => { splash.style.display = 'none'; }, 650);
-}
-
-function isSolarSplashActive() {
-  const splash = document.getElementById('solar-splash');
-  return !!splash && !splash.classList.contains('hide') && splash.style.display !== 'none';
-}
-
 // ═══ NAVIGATION ═══
 function navigate(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1731,6 +1854,10 @@ function navigate(page) {
   if (page === 'roto-final') {
     document.getElementById('page-roto-final').classList.add('active');
     document.getElementById('nav-roto').classList.add('active');
+  } else if (page === 'roto-all') {
+    document.getElementById('page-roto-all').classList.add('active');
+    document.getElementById('nav-roto').classList.add('active');
+    buildAllVideos();
   } else if (page.startsWith('roto-')) {
     const week = parseInt(page.split('-')[1]);
     document.getElementById('page-roto').classList.add('active');
@@ -1741,10 +1868,50 @@ function navigate(page) {
     if (el) el.classList.add('active');
     const navBtn = document.getElementById('nav-' + page);
     if (navBtn) navBtn.classList.add('active');
-    if (page === 'solar') showSolarSplash();
+    if (page === 'solar') showSolarIntro();
   }
   window.scrollTo(0, 0);
 }
+
+// ═══ SOLAR INTRO FULLSCREEN VIDEO ═══
+let solarIntroActive = false;
+
+function showSolarIntro() {
+  const overlay = document.getElementById('solar-intro-overlay');
+  const introVideo = document.getElementById('solar-intro-video');
+  const heroVideo = document.getElementById('solar-hero-bg-video');
+
+  heroVideo.classList.remove('active');
+  heroVideo.pause();
+
+  overlay.classList.remove('fading');
+  overlay.classList.add('active');
+  introVideo.currentTime = 0;
+  introVideo.play().catch(() => {});
+  solarIntroActive = true;
+}
+
+function dismissSolarIntro() {
+  if (!solarIntroActive) return;
+  solarIntroActive = false;
+
+  const overlay = document.getElementById('solar-intro-overlay');
+  const introVideo = document.getElementById('solar-intro-video');
+  const heroVideo = document.getElementById('solar-hero-bg-video');
+
+  heroVideo.currentTime = introVideo.currentTime || 0;
+  heroVideo.play().catch(() => {});
+  heroVideo.classList.add('active');
+
+  overlay.classList.add('fading');
+  setTimeout(() => {
+    overlay.classList.remove('active');
+    overlay.classList.remove('fading');
+    introVideo.pause();
+  }, 650);
+}
+
+document.getElementById('solar-intro-overlay').addEventListener('click', dismissSolarIntro);
 
 // ═══ BUILD WEEK DROPDOWN ═══
 function buildDropdown() {
@@ -1756,6 +1923,11 @@ function buildDropdown() {
     btn.onclick = () => navigate(`roto-${i+1}`);
     dd.appendChild(btn);
   });
+  const allBtn = document.createElement('button');
+  allBtn.textContent = `All Episodes`;
+  allBtn.style.fontWeight = '700';
+  allBtn.onclick = () => navigate('roto-all');
+  dd.appendChild(allBtn);
   const finalBtn = document.createElement('button');
   finalBtn.textContent = `Final: Final Compilation`;
   finalBtn.style.fontWeight = '700';
@@ -1808,6 +1980,11 @@ function buildWeeksGrid() {
     div.onclick = () => loadWeek(i+1);
     grid.appendChild(div);
   });
+  const allDiv = document.createElement('div');
+  allDiv.className = 'week-thumb';
+  allDiv.innerHTML = `<div class="week-thumb-num">▤</div><div class="week-thumb-label">All Episodes</div>`;
+  allDiv.onclick = () => navigate('roto-all');
+  grid.appendChild(allDiv);
   const finalDiv = document.createElement('div');
   finalDiv.className = 'week-thumb';
   finalDiv.innerHTML = `<div class="week-thumb-num">★</div><div class="week-thumb-label">Final Cut</div>`;
@@ -1819,6 +1996,45 @@ function changeWeek(delta) {
   const target = currentWeek + delta;
   if (target > 12) { navigate('roto-final'); return; }
   loadWeek(target);
+}
+
+// ═══ ALL VIDEOS PAGE ═══
+function buildAllVideos() {
+  const grid = document.getElementById('all-videos-grid');
+  grid.innerHTML = '';
+
+  WEEKS.forEach((w, i) => {
+    const card = document.createElement('div');
+    card.className = 'all-video-card';
+    const cleanId = w.ytId.replace('/', '');
+    card.innerHTML = `
+      <div class="all-video-thumb">
+        <iframe src="https://www.youtube.com/embed/${cleanId}" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="all-video-meta">
+        <span class="all-video-badge">WEEK ${i+1}</span>
+        <div class="all-video-title">${w.title}</div>
+        <a class="all-video-link" href="https://youtu.be/${cleanId}" target="_blank" onclick="event.stopPropagation()">youtu.be/${cleanId}</a>
+      </div>`;
+    card.onclick = () => navigate(`roto-${i+1}`);
+    grid.appendChild(card);
+  });
+
+  FINAL_VIDEOS.forEach((v) => {
+    const card = document.createElement('div');
+    card.className = 'all-video-card';
+    card.innerHTML = `
+      <div class="all-video-thumb">
+        <iframe src="https://www.youtube.com/embed/${v.ytId}" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="all-video-meta">
+        <span class="all-video-badge">FINAL</span>
+        <div class="all-video-title">${v.label}</div>
+        <a class="all-video-link" href="https://youtu.be/${v.ytId}" target="_blank" onclick="event.stopPropagation()">youtu.be/${v.ytId}</a>
+      </div>`;
+    card.onclick = () => navigate('roto-final');
+    grid.appendChild(card);
+  });
 }
 
 // ═══ SOLAR SYSTEM ═══
@@ -1847,7 +2063,6 @@ function buildPlanets() {
 
     const card = document.createElement('div');
     card.className = 'planet-card';
-    card.setAttribute('data-planet-index', i);
 
     let ringEl = '';
     if (p.ring) {
@@ -1855,76 +2070,85 @@ function buildPlanets() {
     }
 
     card.innerHTML = `
-      <div class="planet-card-inner">
-        <div class="planet-render" style="background:${p.bg};">
-          <video src="planets/${p.name.toLowerCase()}.mp4" class="planet-visual" autoplay loop muted playsinline></video>
-          ${ringEl}
+      <div class="planet-render" style="background:${p.bg};">
+        <video src="./planets/${p.name}.mp4" autoplay loop muted playsinline></video>
+        <div style="width:80%;aspect-ratio:1/1;border-radius:50%;background:${p.texture};box-shadow:inset 0 0 60px rgba(0,0,0,0.6), 0 0 40px rgba(255,215,0,0.2);"></div>
+        ${ringEl}
+      </div>
+      
+      <div class="planet-info">
+        <div class="planet-name">${p.name}</div>
+        
+        <div class="planet-info-box">
+          <div class="planet-info-label">About</div>
+          <div class="planet-desc">${p.desc}</div>
         </div>
         
-        <div class="planet-info">
-          <div class="planet-name">${p.name}</div>
-          
-          <div class="planet-info-box">
-            <div class="planet-info-label">About</div>
-            <div class="planet-desc">${p.desc}</div>
-          </div>
-          
-          <div class="planet-info-box">
-            <div class="planet-info-label">Your Age</div>
-            <div class="planet-age-val">${ageDisplay}<small></small></div>
-          </div>
-          
-          <div class="planet-info-box">
-            <div class="planet-info-label">Orbital Period</div>
-            <div class="planet-stat-value">${p.yearLen === 0 ? 'Star' : (p.yearLen === 0.0748 ? 'Satellite' : p.yearLen + ' Earth Yrs')}</div>
-          </div>
+        <div class="planet-info-box">
+          <div class="planet-info-label">Your Age</div>
+          <div class="planet-age-val">${ageDisplay}<small></small></div>
+        </div>
+        
+        <div class="planet-info-box">
+          <div class="planet-info-label">Orbital Period</div>
+          <div class="planet-stat-value">${p.yearLen === 0 ? 'Star' : (p.yearLen === 0.0748 ? 'Satellite' : p.yearLen + ' Earth Yrs')}</div>
         </div>
       </div>`;
-      
-    card.addEventListener('click', (e) => {
-      expandPlanetCard(card, i);
-    });
-    
+
+    card.addEventListener('click', () => openPlanetModal(i));
     grid.appendChild(card);
   });
 }
 
-function expandPlanetCard(card) {
-  // Close any existing expanded card
-  document.querySelectorAll('.planet-card.expanded').forEach(c => {
-    if (c !== card) closePlanetCard(c);
-  });
-  
-  if (card.classList.contains('expanded')) {
-    closePlanetCard(card);
-  } else {
-    card.classList.add('expanded');
-    
-    // Close when pressing escape
-    const escapeHandler = (e) => {
-      if (e.key === 'Escape' && card.classList.contains('expanded')) {
-        closePlanetCard(card);
-        document.removeEventListener('keydown', escapeHandler);
-      }
-    };
-    document.addEventListener('keydown', escapeHandler);
-    
-    // Close when clicking outside
-    const clickHandler = (e) => {
-      if (!card.contains(e.target) && card.classList.contains('expanded')) {
-        closePlanetCard(card);
-        document.removeEventListener('click', clickHandler);
-      }
-    };
-    setTimeout(() => {
-      document.addEventListener('click', clickHandler);
-    }, 100);
-  }
+// ═══ PLANET EXPANDED MODAL ═══
+function openPlanetModal(i) {
+  const p = PLANETS[i];
+  const earthAge = parseFloat(document.getElementById('earth-age-input').value) || 20;
+  let ageDisplay = 'N/A yrs';
+  if (p.yearLen !== 0) ageDisplay = (earthAge / p.yearLen).toFixed(2) + ' yrs';
+
+  const videoArea = document.getElementById('planet-modal-video');
+  videoArea.innerHTML = `
+    <button class="planet-modal-close" onclick="closePlanetModal()">✕</button>
+    <video src="./planets/${p.name}.mp4" autoplay loop muted playsinline disablepictureinpicture
+      onerror="this.replaceWith(Object.assign(document.createElement('div'), {className:'video-fallback', innerHTML:'Video not found:<br>./planets/${p.name}.mp4'}))">
+    </video>`;
+
+  const infoArea = document.getElementById('planet-modal-info');
+  infoArea.innerHTML = `
+    <div class="planet-name" style="font-size:1.5rem;">${p.name}</div>
+    <div class="planet-info-box">
+      <div class="planet-info-label">About</div>
+      <div class="planet-desc">${p.desc}</div>
+    </div>
+    <div class="planet-info-box">
+      <div class="planet-info-label">Your Age</div>
+      <div class="planet-age-val">${ageDisplay}<small></small></div>
+    </div>
+    <div class="planet-info-box">
+      <div class="planet-info-label">Orbital Period</div>
+      <div class="planet-stat-value">${p.yearLen === 0 ? 'Star' : (p.yearLen === 0.0748 ? 'Satellite' : p.yearLen + ' Earth Yrs')}</div>
+    </div>`;
+
+  document.getElementById('planet-modal-overlay').classList.add('active');
 }
 
-function closePlanetCard(card) {
-  card.classList.remove('expanded');
+function closePlanetModal() {
+  document.getElementById('planet-modal-overlay').classList.remove('active');
+  document.getElementById('planet-modal-video').querySelectorAll('video').forEach(v => v.pause());
 }
+
+function closePlanetModalOnBackdrop(e) {
+  if (e.target.id === 'planet-modal-overlay') closePlanetModal();
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closePlanetModal();
+  if (solarIntroActive && e.code === 'Space') {
+    e.preventDefault();
+    dismissSolarIntro();
+  }
+});
 
 function buildSteps() {
   const grid = document.getElementById('steps-grid');
@@ -1950,18 +2174,6 @@ buildDropdown();
 buildPlanets();
 buildSteps();
 loadWeek(1);
-
-// ═══ SOLAR SPLASH EVENTS ═══
-document.getElementById('solar-splash').addEventListener('click', () => {
-  if (isSolarSplashActive()) dismissSolarSplash();
-});
-
-document.addEventListener('keydown', (e) => {
-  if ((e.code === 'Space' || e.key === ' ') && isSolarSplashActive()) {
-    e.preventDefault();
-    dismissSolarSplash();
-  }
-});
 </script>
 </body>
 </html>
