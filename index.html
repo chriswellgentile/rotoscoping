@@ -580,18 +580,46 @@
     margin-left: auto;
     margin-right: auto;
   }
+
   
-  .student-info {
+  
+ .student-info {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: auto repeat(auto-fit, minmax(160px, 1fr));
     gap: 1.5rem;
-    margin: 3rem 0;
-    padding: 2rem;
-    background: rgba(255, 215, 0, 0.05);
-    border: 1px solid rgba(255, 215, 0, 0.2);
-    border-radius: var(--radius);
+    align-items: center;
   }
   
+  .profile-photo {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 3px solid var(--y1);
+    box-shadow: var(--glow-yellow);
+    background: rgba(255, 215, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  
+  .profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .profile-photo-placeholder {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: rgba(255, 215, 0, 0.5);
+    text-align: center;
+    padding: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
   .info-block {
     text-align: left;
   }
@@ -1456,23 +1484,31 @@
     </p>
 
     <div class="student-info">
-      <div class="info-block">
-        <div class="info-label">Program</div>
-        <div class="info-value">BSIT</div>
-      </div>
-      <div class="info-block">
-        <div class="info-label">Section</div>
-        <div class="info-value">NS-2A</div>
-      </div>
-      <div class="info-block">
-        <div class="info-label">Institution</div>
-        <div class="info-value">TUP Taguig</div>
-      </div>
-      <div class="info-block">
-        <div class="info-label">Status</div>
-        <div class="info-value">Active</div>
-      </div>
+    <div class="profile-photo">
+      <!-- Replace src with your actual photo path, e.g. ./profile.jpg -->
+      <img src="./profile.jpg" alt="Chriswell Mae Gentile" onerror="this.replaceWith(Object.assign(document.createElement('div'), {className:'profile-photo-placeholder', innerText:'Add Photo\n./profile.jpg'}))">
     </div>
+    <div class="info-block">
+      <div class="info-label">Name</div>
+      <div class="info-value">Chriswell Mae Gentile</div>
+    </div>
+    <div class="info-block">
+      <div class="info-label">Program</div>
+      <div class="info-value">BSIT</div>
+    </div>
+    <div class="info-block">
+      <div class="info-label">Section</div>
+      <div class="info-value">NS-2A</div>
+    </div>
+    <div class="info-block">
+      <div class="info-label">Institution</div>
+      <div class="info-value">TUP Taguig</div>
+    </div>
+    <div class="info-block">
+      <div class="info-label">Status</div>
+      <div class="info-value">Regular</div>
+    </div>
+  </div>
 
     <div class="courses-section">
       <div class="courses-group">
