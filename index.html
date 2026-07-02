@@ -2181,8 +2181,8 @@ function openPlanetModal(i) {
   const videoArea = document.getElementById('planet-modal-video');
   videoArea.innerHTML = `
     <button class="planet-modal-close" onclick="closePlanetModal()">✕</button>
-    <video src="./planets/${p.name}.mp4" autoplay loop muted playsinline disablepictureinpicture
-      onerror="this.replaceWith(Object.assign(document.createElement('div'), {className:'video-fallback', innerHTML:'Video not found:<br>./planets/${p.name}.mp4'}))">
+    <video src="./planets/${p.name.toLowerCase()}.mp4" autoplay loop muted playsinline disablepictureinpicture
+      onerror="this.replaceWith(Object.assign(document.createElement('div'), {className:'video-fallback', innerHTML:'Video not found:<br>./planets/${p.name.toLowerCase()}.mp4'}))">
     </video>`;
 
   const infoArea = document.getElementById('planet-modal-info');
