@@ -1863,7 +1863,7 @@ const FINAL_VIDEOS = [
 ];
 
 const PLANETS = [
-  { name: "Sun", color: "#FDB813", bg: "#2a1a00", yearLen: 0, desc: "Texture: Hot plasma with sunspots. Axial Tilt: 7.25°. Rotates about 0.2 times in 5 Earth days. Moons: None.", ring: false, texture: "radial-gradient(circle at 35% 35%, #FFE66D, #FDB813 40%, #D4860D)", scale: 0.6 },
+  { name: "Sun", color: "#FDB813", bg: "#2a1a00", yearLen: 0, desc: "Texture: Hot plasma with sunspots. Axial Tilt: 7.25°. Rotates about 0.2 times in 5 Earth days. Moons: None.", ring: false, texture: "radial-gradient(circle at 35% 35%, #FFE66D, #FDB813 40%, #D4860D)"},
   { name: "Mercury", color: "#8B7355", bg: "#3d2b1f", yearLen: 0.241, desc: "Texture: Rocky and heavily cratered. Axial Tilt: 0.03°. Rotates about 0.08 times in 5 Earth days. Moons: None.", ring: false, texture: "radial-gradient(circle at 35% 35%, #c8a882, #8B7355 55%, #5a3d28)" },
   { name: "Venus", color: "#E8C56A", bg: "#3d2800", yearLen: 0.615, desc: "Texture: Thick clouds over a volcanic surface. Axial Tilt: 177.4° (retrograde). Rotates about 0.02 times in 5 Earth days. Moons: None.", ring: false, texture: "radial-gradient(circle at 35% 35%, #f5d88a, #E8C56A 50%, #c8a030)" },
   { name: "Earth", color: "#4A90D9", bg: "#001833", yearLen: 1, desc: "Texture: Oceans, continents, and clouds. Axial Tilt: 23.4°. Rotates 5 times in 5 Earth days. Moons: 1 (Moon).", ring: false, texture: "radial-gradient(circle at 35% 35%, #7ab8f0, #4A90D9 45%, #2d6b3a)" },
@@ -1873,7 +1873,7 @@ const PLANETS = [
   { name: "Uranus", color: "#7DE8E8", bg: "#001830", yearLen: 84.01, desc: "Texture: Blue-green ice giant with methane clouds. Axial Tilt: 97.8°. Rotates about 7 times in 5 Earth days. Moons: 28 (Titania, Oberon, Umbriel, Ariel, Miranda).", ring: false, texture: "radial-gradient(circle at 35% 35%, #a0f0f0, #7DE8E8 55%, #50b8b8)" },
   { name: "Neptune", color: "#4169E1", bg: "#000820", yearLen: 164.8, desc: "Texture: Deep blue ice giant with storm systems. Axial Tilt: 28.3°. Rotates about 8 times in 5 Earth days. Moons: 16 (Triton, Nereid, Proteus, Larissa).", ring: false, texture: "radial-gradient(circle at 35% 35%, #6090ff, #4169E1 55%, #2040a0)" },
   { name: "Moon", color: "#C0C0C0", bg: "#1a1a1a", yearLen: 0.0748, desc: "Texture: Rocky surface with many craters. Axial Tilt: 6.7°. Rotates about 0.2 times in 5 Earth days. Moons: None.", ring: false, texture: "radial-gradient(circle at 35% 35%, #E8E8E8, #C0C0C0 50%, #808080)" },
-  { name: "Pluto", color: "#9E8B7E", bg: "#0f0a05", yearLen: 248, desc: "Texture: Icy surface of nitrogen and methane. Axial Tilt: 122.5°. Rotates about 0.8 times in 5 Earth days. Moons: 5 (Charon, Nix, Hydra, Kerberos, Styx).", ring: false, texture: "radial-gradient(circle at 35% 35%, #C5B5A8, #9E8B7E 55%, #6B5D50)", scale: 0.45 }
+  { name: "Pluto", color: "#9E8B7E", bg: "#0f0a05", yearLen: 248, desc: "Texture: Icy surface of nitrogen and methane. Axial Tilt: 122.5°. Rotates about 0.8 times in 5 Earth days. Moons: 5 (Charon, Nix, Hydra, Kerberos, Styx).", ring: false, texture: "radial-gradient(circle at 35% 35%, #C5B5A8, #9E8B7E 55%, #6B5D50)" }
 ];
 
 const STEPS = [
@@ -1925,6 +1925,7 @@ function navigate(page) {
   if (page === 'roto-final') {
     document.getElementById('page-roto-final').classList.add('active');
     document.getElementById('nav-roto').classList.add('active');
+    initFinalPlayers();
   } else if (page === 'roto-all') {
     document.getElementById('page-roto-all').classList.add('active');
     document.getElementById('nav-roto').classList.add('active');
@@ -2244,7 +2245,13 @@ function buildSteps() {
 // ═══ SYNC FINAL VIDEOS ═══
 let ytPlayer1, ytPlayer2, ytSyncLock = false;
 
+let ytApiReady = false;
 function onYouTubeIframeAPIReady() {
+  ytApiReady = true;
+}
+
+function initFinalPlayers() {
+  if (!ytApiReady || ytPlayer1) return; // already ready & already created
   ytPlayer1 = new YT.Player('yt-final-1-inner', {
     videoId: FINAL_VIDEOS[0].ytId,
     width: '100%',
