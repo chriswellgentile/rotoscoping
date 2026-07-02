@@ -1863,7 +1863,7 @@ const FINAL_VIDEOS = [
 ];
 
 const PLANETS = [
-  { name: "Sun", color: "#FDB813", bg: "#2a1a00", yearLen: 0, desc: "Texture: Hot plasma with sunspots. Axial Tilt: 7.25°. Rotates about 0.2 times in 5 Earth days. Moons: None.", ring: false, texture: "radial-gradient(circle at 35% 35%, #FFE66D, #FDB813 40%, #D4860D)" },
+  { name: "Sun", color: "#FDB813", bg: "#2a1a00", yearLen: 0, desc: "Texture: Hot plasma with sunspots. Axial Tilt: 7.25°. Rotates about 0.2 times in 5 Earth days. Moons: None.", ring: false, texture: "radial-gradient(circle at 35% 35%, #FFE66D, #FDB813 40%, #D4860D)", scale: 0.6 },
   { name: "Mercury", color: "#8B7355", bg: "#3d2b1f", yearLen: 0.241, desc: "Texture: Rocky and heavily cratered. Axial Tilt: 0.03°. Rotates about 0.08 times in 5 Earth days. Moons: None.", ring: false, texture: "radial-gradient(circle at 35% 35%, #c8a882, #8B7355 55%, #5a3d28)" },
   { name: "Venus", color: "#E8C56A", bg: "#3d2800", yearLen: 0.615, desc: "Texture: Thick clouds over a volcanic surface. Axial Tilt: 177.4° (retrograde). Rotates about 0.02 times in 5 Earth days. Moons: None.", ring: false, texture: "radial-gradient(circle at 35% 35%, #f5d88a, #E8C56A 50%, #c8a030)" },
   { name: "Earth", color: "#4A90D9", bg: "#001833", yearLen: 1, desc: "Texture: Oceans, continents, and clouds. Axial Tilt: 23.4°. Rotates 5 times in 5 Earth days. Moons: 1 (Moon).", ring: false, texture: "radial-gradient(circle at 35% 35%, #7ab8f0, #4A90D9 45%, #2d6b3a)" },
@@ -1873,7 +1873,7 @@ const PLANETS = [
   { name: "Uranus", color: "#7DE8E8", bg: "#001830", yearLen: 84.01, desc: "Texture: Blue-green ice giant with methane clouds. Axial Tilt: 97.8°. Rotates about 7 times in 5 Earth days. Moons: 28 (Titania, Oberon, Umbriel, Ariel, Miranda).", ring: false, texture: "radial-gradient(circle at 35% 35%, #a0f0f0, #7DE8E8 55%, #50b8b8)" },
   { name: "Neptune", color: "#4169E1", bg: "#000820", yearLen: 164.8, desc: "Texture: Deep blue ice giant with storm systems. Axial Tilt: 28.3°. Rotates about 8 times in 5 Earth days. Moons: 16 (Triton, Nereid, Proteus, Larissa).", ring: false, texture: "radial-gradient(circle at 35% 35%, #6090ff, #4169E1 55%, #2040a0)" },
   { name: "Moon", color: "#C0C0C0", bg: "#1a1a1a", yearLen: 0.0748, desc: "Texture: Rocky surface with many craters. Axial Tilt: 6.7°. Rotates about 0.2 times in 5 Earth days. Moons: None.", ring: false, texture: "radial-gradient(circle at 35% 35%, #E8E8E8, #C0C0C0 50%, #808080)" },
-  { name: "Pluto", color: "#9E8B7E", bg: "#0f0a05", yearLen: 248, desc: "Texture: Icy surface of nitrogen and methane. Axial Tilt: 122.5°. Rotates about 0.8 times in 5 Earth days. Moons: 5 (Charon, Nix, Hydra, Kerberos, Styx).", ring: false, texture: "radial-gradient(circle at 35% 35%, #C5B5A8, #9E8B7E 55%, #6B5D50)" }
+  { name: "Pluto", color: "#9E8B7E", bg: "#0f0a05", yearLen: 248, desc: "Texture: Icy surface of nitrogen and methane. Axial Tilt: 122.5°. Rotates about 0.8 times in 5 Earth days. Moons: 5 (Charon, Nix, Hydra, Kerberos, Styx).", ring: false, texture: "radial-gradient(circle at 35% 35%, #C5B5A8, #9E8B7E 55%, #6B5D50)", scale: 0.55 }
 ];
 
 const STEPS = [
@@ -2140,12 +2140,14 @@ function buildPlanets() {
       ringEl = `<div style="position:absolute;width:75%;height:auto;aspect-ratio:1/.25;border-radius:50%;border:5px solid rgba(228,209,145,0.4);top:50%;left:50%;transform:translate(-50%,-50%) rotateX(70deg);pointer-events:none;z-index:2;"></div>`;
     }
 
+    const zoom = p.scale || 1;
+    const circleSize = 80 * zoom;
+    
     card.innerHTML = `
-      <div class="planet-render" style="background:${p.bg};">
-        <video src="./planets/${p.name.toLowerCase()}.mp4" autoplay loop muted playsinline></video>
-        <div style="width:80%;aspect-ratio:1/1;border-radius:50%;background:${p.texture};box-shadow:inset 0 0 60px rgba(0,0,0,0.6), 0 0 40px rgba(255,215,0,0.2);"></div>
-        ${ringEl}
-      </div>
+          <div class="planet-render" style="background:${p.bg};">
+            <video src="./planets/${p.name.toLowerCase()}.mp4" autoplay loop muted playsinline style="transform:scale(${zoom});"></video>
+            <div style="width:${circleSize}%;aspect-ratio:1/1;border-radius:50%;background:${p.texture};box-shadow:inset 0 0 60px rgba(0,0,0,0.6), 0 0 40px rgba(255,215,0,0.2);"></div>
+          </div>
       
       <div class="planet-info">
         <div class="planet-name">${p.name}</div>
@@ -2178,10 +2180,11 @@ function openPlanetModal(i) {
   let ageDisplay = 'N/A yrs';
   if (p.yearLen !== 0) ageDisplay = (earthAge / p.yearLen).toFixed(2) + ' yrs';
 
-  const videoArea = document.getElementById('planet-modal-video');
+ const videoArea = document.getElementById('planet-modal-video');
+  const modalZoom = p.scale || 1;
   videoArea.innerHTML = `
     <button class="planet-modal-close" onclick="closePlanetModal()">✕</button>
-    <video src="./planets/${p.name.toLowerCase()}.mp4" autoplay loop muted playsinline disablepictureinpicture
+    <video src="./planets/${p.name.toLowerCase()}.mp4" autoplay loop muted playsinline disablepictureinpicture style="transform:scale(${modalZoom});"
       onerror="this.replaceWith(Object.assign(document.createElement('div'), {className:'video-fallback', innerHTML:'Video not found:<br>./planets/${p.name.toLowerCase()}.mp4'}))">
     </video>`;
 
