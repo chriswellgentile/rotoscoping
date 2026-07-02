@@ -1858,7 +1858,7 @@ const WEEKS = [
 ];
 
 const FINAL_VIDEOS = [
-  { label: "FINAL 1 MINUTE", ytId: "zPKNDNvR8Vw" },
+  { label: "FINAL 1 MINUTE", ytId: "eGuEzDGoX0A" },
   { label: "COMPARISON", ytId: "8IzH-qYOdUg" }
 ];
 
@@ -1922,9 +1922,10 @@ function navigate(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
 
-  if (page === 'roto-final') {
+ if (page === 'roto-final') {
     document.getElementById('page-roto-final').classList.add('active');
     document.getElementById('nav-roto').classList.add('active');
+    initFinalPlayers();
   } else if (page === 'roto-all') {
     document.getElementById('page-roto-all').classList.add('active');
     document.getElementById('nav-roto').classList.add('active');
@@ -2242,9 +2243,21 @@ function buildSteps() {
   });
 }
 // ═══ SYNC FINAL VIDEOS ═══
-let ytPlayer1, ytPlayer2, ytSyncLock = false;
+let ytApiReady = false;
+let ytPlayer1, ytPlayer2, ytSyncLock = false, finalPlayersInitialized = false;
 
 function onYouTubeIframeAPIReady() {
+  ytApiReady = true;
+}
+
+function initFinalPlayers() {
+  if (finalPlayersInitialized) return;
+  if (!ytApiReady) {
+    setTimeout(initFinalPlayers, 200);
+    return;
+  }
+  finalPlayersInitialized = true;
+
   ytPlayer1 = new YT.Player('yt-final-1-inner', {
     videoId: FINAL_VIDEOS[0].ytId,
     width: '100%',
