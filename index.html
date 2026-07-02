@@ -2238,7 +2238,41 @@ function buildSteps() {
     grid.appendChild(card);
   });
 }
+// ═══ SYNC FINAL VIDEOS ═══
+let ytPlayer1, ytPlayer2, ytSyncLock = false;
 
+function onYouTubeIframeAPIReady() {
+  ytPlayer1 = new YT.Player('yt-final-1-inner', {
+    videoId: FINAL_VIDEOS[0].ytId,
+    width: '100%',
+    height: '100%',
+    playerVars: { playsinline: 1 },
+    events: { onStateChange: (e) => syncPlayers(ytPlayer1, ytPlayer2, e) }
+  });
+  ytPlayer2 = new YT.Player('yt-final-2-inner', {
+    videoId: FINAL_VIDEOS[1].ytId,
+    width: '100%',
+    height: '100%',
+    playerVars: { playsinline: 1 },
+    events: { onStateChange: (e) => syncPlayers(ytPlayer2, ytPlayer1, e) }
+  });
+}
+
+function syncPlayers(source, target, event) {
+  if (ytSyncLock || !target) return;
+  ytSyncLock = true;
+
+  if (event.data === YT.PlayerState.PLAYING) {
+    target.seekTo(source.getCurrentTime(), true);
+    target.playVideo();
+  } else if (event.data === YT.PlayerState.PAUSED) {
+    target.pauseVideo();
+  } else if (event.data === YT.PlayerState.ENDED) {
+    target.pauseVideo();
+  }
+
+  setTimeout(() => { ytSyncLock = false; }, 300);
+}
 // ═══ INIT ═══
 createStarfield();
 buildDropdown();
