@@ -583,11 +583,24 @@
 
   
   
- .student-info {
-    display: grid;
-    grid-template-columns: auto repeat(auto-fit, minmax(160px, 1fr));
-    gap: 1.5rem;
+  .student-info {
+    display: flex;
     align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin: 3rem 0;
+    padding: 2rem;
+    background: rgba(255, 215, 0, 0.05);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: var(--radius);
+  }
+  
+  .student-info-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.5rem;
+    flex: 1;
+    min-width: 260px;
   }
   
   .profile-photo {
@@ -1485,28 +1498,29 @@
 
     <div class="student-info">
     <div class="profile-photo">
-      <!-- Replace src with your actual photo path, e.g. ./profile.jpg -->
       <img src="./profile.jpg" alt="Chriswell Mae Gentile" onerror="this.replaceWith(Object.assign(document.createElement('div'), {className:'profile-photo-placeholder', innerText:'Add Photo\n./profile.jpg'}))">
     </div>
-    <div class="info-block">
-      <div class="info-label">Name</div>
-      <div class="info-value">Chriswell Mae Gentile</div>
-    </div>
-    <div class="info-block">
-      <div class="info-label">Program</div>
-      <div class="info-value">BSIT</div>
-    </div>
-    <div class="info-block">
-      <div class="info-label">Section</div>
-      <div class="info-value">NS-2A</div>
-    </div>
-    <div class="info-block">
-      <div class="info-label">Institution</div>
-      <div class="info-value">TUP Taguig</div>
-    </div>
-    <div class="info-block">
-      <div class="info-label">Status</div>
-      <div class="info-value">Regular</div>
+    <div class="student-info-fields">
+      <div class="info-block">
+        <div class="info-label">Name</div>
+        <div class="info-value">Chriswell Mae Gentile</div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Program</div>
+        <div class="info-value">BSIT</div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Section</div>
+        <div class="info-value">NS-2A</div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Institution</div>
+        <div class="info-value">TUP Taguig</div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Status</div>
+        <div class="info-value">Active</div>
+      </div>
     </div>
   </div>
 
