@@ -1925,7 +1925,6 @@ function navigate(page) {
   if (page === 'roto-final') {
     document.getElementById('page-roto-final').classList.add('active');
     document.getElementById('nav-roto').classList.add('active');
-    initFinalPlayers();
   } else if (page === 'roto-all') {
     document.getElementById('page-roto-all').classList.add('active');
     document.getElementById('nav-roto').classList.add('active');
@@ -2245,13 +2244,7 @@ function buildSteps() {
 // ═══ SYNC FINAL VIDEOS ═══
 let ytPlayer1, ytPlayer2, ytSyncLock = false;
 
-let ytApiReady = false;
 function onYouTubeIframeAPIReady() {
-  ytApiReady = true;
-}
-
-function initFinalPlayers() {
-  if (!ytApiReady || ytPlayer1) return; // already ready & already created
   ytPlayer1 = new YT.Player('yt-final-1-inner', {
     videoId: FINAL_VIDEOS[0].ytId,
     width: '100%',
